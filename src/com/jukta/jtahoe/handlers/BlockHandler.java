@@ -1,14 +1,9 @@
 package com.jukta.jtahoe.handlers;
 
-import com.jukta.jtahoe.Block;
 import com.jukta.jtahoe.JavaSourceFromString;
 
 import javax.tools.*;
-import java.io.File;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.*;
 
 /**
@@ -48,17 +43,23 @@ public class BlockHandler extends AbstractHandler {
     public void end() {
         try {
             String name = getAttrs().get("name");
-
+            String parent = getAttrs().get("parent");
             StringWriter fw = new StringWriter();
-            fw.write("public class " + name + " extends com.jukta.jtahoe.Block {");
+            fw.write("public class " + name);
+            if (parent == null) {
+                fw.write(" extends com.jukta.jtahoe.Block {");
+            } else {
+                fw.write(" extends " + parent + " {");
+            }
             for (Map.Entry<String, String> entry : defs.entrySet()) {
                 fw.write(entry.getKey());
                 fw.write(entry.getValue());
             }
-
-            fw.write("public com.jukta.jtahoe.jschema.JElement body(final com.jukta.jtahoe.Attrs attrs) {");
-            fw.write("return " + body + ";");
-            fw.write("}");
+            if (parent == null) {
+                fw.write("public com.jukta.jtahoe.jschema.JElement body(final com.jukta.jtahoe.Attrs attrs) {");
+                fw.write("return " + body + ";");
+                fw.write("}");
+            }
 
             fw.write("}");
             fw.close();

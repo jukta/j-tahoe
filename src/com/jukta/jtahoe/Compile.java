@@ -43,43 +43,41 @@ public class Compile implements ContentHandler {
             System.out.println(diagnostic.getMessage(null));
 
         }
+        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new File("").toURI().toURL()});
 
-        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { new File("").toURI().toURL() });
-        Block block = (Block) Class.forName("blockB", true, classLoader).newInstance();
-        System.out.println(block.body(new Attrs().set("x", 123)).toHtml());
-
+        long t = System.currentTimeMillis();
+        for (int i = 0; i < 1; i++) {
+            Block block = (Block) Class.forName("blockC", true, classLoader).newInstance();
+            String s = block.body(new Attrs().set("x", 123)).toHtml();
+            System.out.println(s);
+        }
+        System.out.println(System.currentTimeMillis() - t);
     }
 
 
     private Stack<AbstractHandler> stack = new Stack<AbstractHandler>();
 
 
-    @Override
     public void setDocumentLocator(Locator locator) {
 
     }
 
-    @Override
     public void startDocument() throws SAXException {
 
     }
 
-    @Override
     public void endDocument() throws SAXException {
 
     }
 
-    @Override
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
 
     }
 
-    @Override
     public void endPrefixMapping(String prefix) throws SAXException {
 
     }
 
-    @Override
     public void startElement(String uri, String localName, String qName, Attributes attrs) throws SAXException {
         AbstractHandler handler = null;
         Map<String, String> a = new HashMap<String, String>();
@@ -95,6 +93,8 @@ public class Compile implements ContentHandler {
             ((BlockHandler) handler).setFiles(files);
         } else if (qName.startsWith("sv:def")) {
             handler = new DefHandler(qName, a, parent);
+        } else if (qName.startsWith("sv:parent")) {
+            handler = new ParentHandler(qName, a, parent);
         } else if (qName.startsWith("sv:")) {
             handler = new FuncHandler(qName, a, parent);
         } else {
@@ -104,27 +104,22 @@ public class Compile implements ContentHandler {
         handler.start();
     }
 
-    @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         stack.pop().end();
     }
 
-    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         stack.peek().text(new String(ch, start, length));
     }
 
-    @Override
     public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
 
     }
 
-    @Override
     public void processingInstruction(String target, String data) throws SAXException {
 
     }
 
-    @Override
     public void skippedEntity(String name) throws SAXException {
 
     }

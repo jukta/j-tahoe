@@ -14,8 +14,16 @@
         <sv:blockA>
             <sv:def name="qwe">
                 override ${x}
+                <sv:parent/>
             </sv:def>
         </sv:blockA>
+    </sv:block>
+
+    <sv:block name="blockC" parent="blockA">
+        <sv:def name="qwe">
+            override ${x}
+            <sv:parent/>
+        </sv:def>
     </sv:block>
 
 </sv:root>

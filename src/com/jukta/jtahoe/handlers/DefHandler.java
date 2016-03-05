@@ -8,9 +8,15 @@ import java.util.Map;
 public class DefHandler extends AbstractHandler {
 
     String body = "new com.jukta.jtahoe.jschema.JBody()";
+    private String name;
 
     public DefHandler(String name, Map<String, String> attrs, AbstractHandler parent) {
         super(name, attrs, parent);
+        this.name = getAttrs().get("name");
+    }
+
+    public String getDefName() {
+        return name;
     }
 
     @Override
@@ -20,21 +26,19 @@ public class DefHandler extends AbstractHandler {
 
     @Override
     public void end() {
-        String attrs = "new com.jukta.jtahoe.Attrs()";
-        for (String s : getAttrs().keySet()) {
-            attrs += ".set(\"" + s + "\", \"" + getAttrs().get(s) + "\")";
-        }
-        String name = getAttrs().get("name");
-        String el = "this.def_" + name + "(" + attrs +")";
+//        String attrs = "new com.jukta.jtahoe.Attrs()";
+//        for (String s : getAttrs().keySet()) {
+//            attrs += ".set(\"" + s + "\", \"" + getAttrs().get(s) + "\")";
+//        }
+        String defName = name == null ? "def" : "def_" + name;
+        String el = "this." + defName + "(attrs)";
         getParent().addElement(el);
 
         BlockHandler blockHandler = getBlock();
         if (blockHandler instanceof FuncHandler) {
-            blockHandler.addDef("com.jukta.jtahoe.jschema.JElement def_" + name + "(com.jukta.jtahoe.Attrs _attrs)", "{return " + body + ";}");
+            blockHandler.addDef("com.jukta.jtahoe.jschema.JElement " + defName + "(com.jukta.jtahoe.Attrs _attrs)", "{return " + body + ";}");
         } else {
-            blockHandler.addDef("com.jukta.jtahoe.jschema.JElement def_" + name + "(com.jukta.jtahoe.Attrs attrs)", "{return " + body + ";}");
+            blockHandler.addDef("com.jukta.jtahoe.jschema.JElement " + defName + "(com.jukta.jtahoe.Attrs attrs)", "{return " + body + ";}");
         }
-
-
     }
 }

@@ -1,7 +1,5 @@
 package com.jukta.jtahoe.handlers;
 
-import com.jukta.jtahoe.jschema.JElement;
-
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

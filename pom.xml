@@ -13,4 +13,8 @@
 
     </dependencies>
 
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+    </build>
+
 </project>
