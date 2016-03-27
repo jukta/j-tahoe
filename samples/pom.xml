@@ -1,7 +1,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jukta</groupId>
-    <artifactId>j-tahoe</artifactId>
+    <artifactId>j-tahoe-samples</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
@@ -12,9 +12,5 @@
         </dependency>
 
     </dependencies>
-
-    <build>
-        <sourceDirectory>src</sourceDirectory>
-    </build>
 
 </project>

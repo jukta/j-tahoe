@@ -1,5 +1,7 @@
 package com.jukta.jtahoe.handlers;
 
+import com.jukta.jtahoe.GenContext;
+
 import java.util.Map;
 
 /**
@@ -10,8 +12,8 @@ public class DefHandler extends AbstractHandler {
     String body = "new com.jukta.jtahoe.jschema.JBody()";
     private String name;
 
-    public DefHandler(String name, Map<String, String> attrs, AbstractHandler parent) {
-        super(name, attrs, parent);
+    public DefHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
+        super(genContext, name, attrs, parent);
         this.name = getAttrs().get("name");
     }
 

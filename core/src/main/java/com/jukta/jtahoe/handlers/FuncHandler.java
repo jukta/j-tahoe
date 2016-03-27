@@ -1,5 +1,7 @@
 package com.jukta.jtahoe.handlers;
 
+import com.jukta.jtahoe.GenContext;
+
 import java.util.Map;
 
 /**
@@ -9,8 +11,8 @@ public class FuncHandler extends BlockHandler {
 
     String body = "new com.jukta.jtahoe.jschema.JBody()";
 
-    public FuncHandler(String name, Map<String, String> attrs, AbstractHandler parent) {
-        super(name, attrs, parent);
+    public FuncHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
+        super(genContext, name, attrs, parent);
     }
 
     @Override

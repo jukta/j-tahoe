@@ -1,5 +1,7 @@
 package com.jukta.jtahoe.handlers;
 
+import com.jukta.jtahoe.GenContext;
+
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,11 +14,13 @@ public abstract class AbstractHandler {
     private AbstractHandler parent;
     private String name;
     private Map<String, String> attrs;
+    protected GenContext genContext;
 
-    protected AbstractHandler(String name, Map<String, String> attrs, AbstractHandler parent) {
+    protected AbstractHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
         this.name = name;
         this.attrs = attrs;
         this.parent = parent;
+        this.genContext = genContext;
     }
 
     public void start() {
