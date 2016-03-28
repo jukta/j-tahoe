@@ -9,11 +9,18 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-    <context:component-scan base-package="test" />
+    <context:component-scan base-package="test"/>
 
-    <mvc:annotation-driven />
+    <mvc:annotation-driven/>
     <mvc:resources mapping="/resources" location="/resources"/>
 
-    <bean id="viewResolver" class="com.jukta.jtahoe.springmvc.JTahoeViewResolver"/>
+    <bean id="viewResolver" class="com.jukta.jtahoe.springmvc.JTahoeViewResolver">
+        <!--init-method="loadClasses">-->
+        <property name="dirHandler" ref="dirHandler"/>
+    </bean>
+
+    <bean id="dirHandler" class="com.jukta.jtahoe.DirHandler">
+        <constructor-arg name="rootPath" value="E:\\SANDBOX\\repos\\jtahoe\\j-tahoe\\samples\\blocks"/>
+    </bean>
 
 </beans>

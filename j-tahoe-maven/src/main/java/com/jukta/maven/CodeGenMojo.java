@@ -11,12 +11,8 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.twdata.maven.mojoexecutor.MojoExecutor;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @author Sergey Sidorov
@@ -39,7 +35,6 @@ public class CodeGenMojo extends AbstractMojo {
 //    protected MojoExecutor.ExecutionEnvironment _pluginEnv;
 
     @Override
-
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
             DirHandler dirHandler = new DirHandler(new File(blocksDir));
