@@ -1,6 +1,5 @@
 package com.jukta.jtahoe;
 
-import com.jukta.jtahoe.loader.MemoryClassLoader;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -26,9 +25,9 @@ public class DirHandler {
         this(new File(rootPath));
     }
 
-    public List<JavaFileObject> getFiles(File dir) throws ParserConfigurationException, SAXException, IOException {
+    public List<JavaFileObject> getFiles() throws ParserConfigurationException, SAXException, IOException {
         List<File> l = new ArrayList<>();
-        scan(dir, l, new FileExtensionFilter("xml"));
+        scan(rootDir, l, new FileExtensionFilter("xml"));
         List<JavaFileObject> files = new ArrayList<>();
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setNamespaceAware(false);
@@ -43,7 +42,7 @@ public class DirHandler {
     }
 
     public void generateSources(File targetDir) throws IOException, SAXException, ParserConfigurationException {
-        List<JavaFileObject> files = getFiles(rootDir);
+        List<JavaFileObject> files = getFiles();
         for (JavaFileObject f : files) {
             System.out.println(f.getName());
             BufferedReader reader = new BufferedReader(f.openReader(false));
@@ -57,14 +56,6 @@ public class DirHandler {
             w.close();
             reader.close();
         }
-    }
-
-    public void loadCompiledSources() throws IOException, SAXException, ParserConfigurationException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        List<JavaFileObject> files = getFiles(rootDir);
-        MemoryClassLoader classLoader = new MemoryClassLoader(files);
-        Block block = (Block) Class.forName("test.blockC", true, classLoader).newInstance();
-        String s = block.body(new Attrs().set("x", 123)).toHtml();
-        System.out.println(s);
     }
 
     private void scan(File file, List<File> list, FileFilter filter) {
@@ -81,8 +72,7 @@ public class DirHandler {
         DirHandler h = new DirHandler(new File("E:\\SANDBOX\\repos\\jtahoe\\j-tahoe\\samples\\blocks"));
         File target = new File("E:\\SANDBOX\\repos\\jtahoe\\j-tahoe\\samples\\gen");
         target.mkdirs();
-//        h.generateSources(target);
-        h.loadCompiledSources();
+        h.generateSources(target);
     }
 
     class FileExtensionFilter implements FileFilter {

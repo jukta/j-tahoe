@@ -15,9 +15,11 @@ public class JTahoeView implements View {
     private String contentType = "text/html;charset=ISO-8859-1";
 
     private String viewName;
+    private ClassLoader classLoader;
 
-    public JTahoeView(String viewName) {
+    public JTahoeView(String viewName, ClassLoader classLoader) {
         this.viewName = viewName;
+        this.classLoader = classLoader;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class JTahoeView implements View {
 
     @Override
     public void render(Map<String, ?> map, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) throws Exception {
-        Block block = (Block) Class.forName(viewName).newInstance();
+        Block block = (Block) Class.forName(viewName, true, classLoader).newInstance();
         String s = block.body(new Attrs().set("x", 123)).toHtml();
         httpservletresponse.getWriter().write(s);
     }

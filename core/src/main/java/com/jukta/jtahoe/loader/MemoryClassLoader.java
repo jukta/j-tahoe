@@ -3,6 +3,10 @@ package com.jukta.jtahoe.loader;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.ToolProvider;
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,8 +18,9 @@ public class MemoryClassLoader extends ClassLoader {
     private final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
     private final MemoryFileManager manager = new MemoryFileManager(this.compiler);
 
-    public MemoryClassLoader(List<JavaFileObject> files) {
-        this.compiler.getTask(null, this.manager, null, null, null, files).call();
+    public MemoryClassLoader(List<JavaFileObject> files) throws Exception {
+        super(Thread.currentThread().getContextClassLoader());
+        this.compiler.getTask(null, this.manager, null, getClasspathOptions(), null, files).call();
     }
 
     @Override
@@ -28,5 +33,16 @@ public class MemoryClassLoader extends ClassLoader {
             }
         }
         return super.findClass(name);
+    }
+
+    private List<String> getClasspathOptions() {
+        List<String> options = new ArrayList<>();
+        options.add("-classpath");
+        StringBuilder sb = new StringBuilder();
+        URLClassLoader urlClassLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+        for (URL url : urlClassLoader.getURLs())
+            sb.append(url.getFile()).append(File.pathSeparator);
+        options.add(sb.toString());
+        return options;
     }
 }

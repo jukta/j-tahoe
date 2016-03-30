@@ -14,8 +14,8 @@
     <mvc:annotation-driven/>
     <mvc:resources mapping="/resources" location="/resources"/>
 
-    <bean id="viewResolver" class="com.jukta.jtahoe.springmvc.JTahoeViewResolver">
-        <!--init-method="loadClasses">-->
+    <bean id="viewResolver" class="com.jukta.jtahoe.springmvc.JTahoeViewResolver"
+          init-method="loadClasses">
         <property name="dirHandler" ref="dirHandler"/>
     </bean>
 
