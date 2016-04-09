@@ -3,9 +3,11 @@
     <sv:block name="blockA">
         <input></input>
         <sv:def name="qwe">
-            <div>
-                <span>hello</span>
-            </div>
+            <sv:for var="i" in="${name}">
+                <div>
+                    <span>hello</span>
+                </div>
+            </sv:for>
         </sv:def>
 
     </sv:block>
@@ -29,7 +31,9 @@
     <sv:block name="Main">
         <html>
             <body>
-                <h1>Hello world  !!! ${name}</h1>
+                <sv:for var="i" in="${arr}">
+                    <h1>Hello world  !!! ${i}</h1>
+                </sv:for>
             </body>
         </html>
     </sv:block>

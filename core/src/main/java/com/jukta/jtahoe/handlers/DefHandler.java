@@ -2,6 +2,7 @@ package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.GenContext;
 
+import java.io.StringWriter;
 import java.util.Map;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Map;
  */
 public class DefHandler extends AbstractHandler {
 
-    String body = "new JBody()";
+    String body = "";
     private String name;
 
     public DefHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
@@ -21,9 +22,13 @@ public class DefHandler extends AbstractHandler {
         return name;
     }
 
+    public void appendCode(String code) {
+        body += code;
+    }
+
     @Override
     public void addElement(String element) {
-        body += ".addElement(" + element + ")";
+        body += getVarName()+".addElement(" + element + ");\n";
     }
 
     @Override
@@ -37,10 +42,21 @@ public class DefHandler extends AbstractHandler {
         getParent().addElement(el);
 
         BlockHandler blockHandler = getBlock();
+        String def;
         if (blockHandler instanceof FuncHandler) {
-            blockHandler.addDef("JElement " + defName + "(Attrs _attrs)", "{return " + body + ";}");
+            def = "public JElement " + defName + "(Attrs _attrs)";
+
         } else {
-            blockHandler.addDef("JElement " + defName + "(Attrs attrs)", "{return " + body + ";}");
+            def = "public JElement " + defName + "(Attrs attrs)";
         }
+        StringWriter fw = new StringWriter();
+        fw.write("{");
+        fw.write("JBody " + getVarName() + " = new JBody();\n");
+        fw.write(body);
+        fw.write("return " + getVarName() + ";");
+        fw.write("}");
+
+        blockHandler.addDef(def, fw.toString());
+
     }
 }

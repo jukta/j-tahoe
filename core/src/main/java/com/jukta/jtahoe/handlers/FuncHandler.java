@@ -17,7 +17,7 @@ public class FuncHandler extends BlockHandler {
 
     @Override
     public void addElement(String element) {
-        body += ".addElement(" + element + ")";
+        body += getVarName() + ".addElement(" + element + ");";
     }
 
     @Override

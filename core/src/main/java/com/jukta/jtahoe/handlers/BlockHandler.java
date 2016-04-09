@@ -4,7 +4,6 @@ import com.jukta.jtahoe.GenContext;
 import com.jukta.jtahoe.JavaSourceFromString;
 
 import javax.tools.*;
-import java.io.File;
 import java.io.StringWriter;
 import java.util.*;
 
@@ -12,19 +11,19 @@ import java.util.*;
  * Created by aleph on 18.02.2016.
  */
 public class BlockHandler extends AbstractHandler {
-    String body = "new JBody()";
-    Map<String, String> defs = new HashMap<String, String>();
+    private String body = "";
+    protected Map<String, String> defs = new HashMap<String, String>();
 
     public BlockHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
         super(genContext, name, attrs, parent);
     }
 
     public void appendCode(String code) {
-
+        body += code;
     }
 
     public void addElement(String element) {
-        body += ".addElement(" + element + ")";
+        body += getVarName() + ".addElement(" + element + ");\n";
     }
 
     public void addDef(String name, String body) {
@@ -53,7 +52,11 @@ public class BlockHandler extends AbstractHandler {
             }
             if (parent == null) {
                 fw.write("public JElement body(final Attrs attrs) {");
-                fw.write("return " + body + ";");
+
+                fw.write("JBody " + getVarName() + " = new JBody();\n");
+
+                fw.write(body);
+                fw.write("return " + getVarName() + ";");
                 fw.write("}");
             }
 

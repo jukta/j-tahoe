@@ -15,15 +15,18 @@ public class HtmlHandler extends AbstractHandler {
 
     @Override
     public void end() {
-        String el = "new JTag(\"" + getName() + "\").setjBody(" + body + ")";
+        String cd = "JBody " + getVarName() + " = new JBody();\n";
+        cd += body;
+        appendCode(cd);
+        String el = "new JTag(\"" + getName() + "\").setjBody(" + getVarName() + ")";
         getParent().addElement(el);
     }
 
-    String body = "new JBody()";
+    String body = "";
 
     @Override
     public void addElement(String element) {
-        body += ".addElement(" + element + ")";
+        body += getVarName()+".addElement(" + element + ");\n";
     }
 
     @Override
