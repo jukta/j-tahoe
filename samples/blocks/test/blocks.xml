@@ -11,12 +11,12 @@
     </sv:block>
 
     <sv:block name="blockB">
-        <sv:blockA>
+        <lc:blockA>
             <sv:def name="qwe">
                 override ${x}
                 <sv:parent/>
             </sv:def>
-        </sv:blockA>
+        </lc:blockA>
     </sv:block>
 
     <sv:block name="blockC" parent="blockA">
@@ -29,10 +29,9 @@
     <sv:block name="Main">
         <html>
             <body>
-                <h1>Hello world!!!</h1>
+                <h1>Hello world  !!! ${name}</h1>
             </body>
         </html>
     </sv:block>
-
 
 </sv:root>

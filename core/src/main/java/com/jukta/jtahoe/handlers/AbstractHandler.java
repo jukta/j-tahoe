@@ -77,4 +77,15 @@ public abstract class AbstractHandler {
         if (handler instanceof BlockHandler) return (BlockHandler) handler;
         else return getBlock(handler.getParent());
     }
+
+    public GenContext getGenContext() {
+        return genContext;
+    }
+
+    public String getCurPackage() {
+        String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentFile().toURI()).getPath();
+        String pack = relPath.replaceAll("/", ".");
+        if (pack.endsWith(".")) pack = pack.substring(0, pack.length()-1);
+        return pack;
+    }
 }

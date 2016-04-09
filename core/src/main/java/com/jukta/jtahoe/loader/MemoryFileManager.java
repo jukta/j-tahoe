@@ -11,7 +11,7 @@ import java.util.Map;
  * @since *.*.*
  */
 public class MemoryFileManager extends ForwardingJavaFileManager<JavaFileManager> {
-    public final Map<String, CompiledJavaObject> map = new HashMap<>();
+    public final Map<String, CompiledJavaObject> map = new HashMap<String, CompiledJavaObject>();
 
     public MemoryFileManager(JavaCompiler compiler) {
         super(compiler.getStandardFileManager(null, null, null));

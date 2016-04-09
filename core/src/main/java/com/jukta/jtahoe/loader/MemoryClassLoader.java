@@ -36,7 +36,7 @@ public class MemoryClassLoader extends ClassLoader {
     }
 
     private List<String> getClasspathOptions() {
-        List<String> options = new ArrayList<>();
+        List<String> options = new ArrayList<String>();
         options.add("-classpath");
         StringBuilder sb = new StringBuilder();
         URLClassLoader urlClassLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();

@@ -30,7 +30,7 @@ public class JTahoeView implements View {
     @Override
     public void render(Map<String, ?> map, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) throws Exception {
         Block block = (Block) Class.forName(viewName, true, classLoader).newInstance();
-        String s = block.body(new Attrs().set("x", 123)).toHtml();
+        String s = block.body(new Attrs().set("name", "my name")).toHtml();
         httpservletresponse.getWriter().write(s);
     }
 }

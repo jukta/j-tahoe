@@ -32,8 +32,9 @@ public class DirHandler {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setNamespaceAware(false);
         XMLReader xmlReader = factory.newSAXParser().getXMLReader();
+        GenContext genContext = new GenContext(rootDir, files);
         for (File f : l) {
-            GenContext genContext = new GenContext(rootDir, files, f);
+            genContext.setCurrentFile(f);
             FileHandler fileHandler = new FileHandler(genContext);
             xmlReader.setContentHandler(fileHandler);
             xmlReader.parse(f.getAbsolutePath());

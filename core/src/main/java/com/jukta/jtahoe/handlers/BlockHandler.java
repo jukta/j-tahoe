@@ -37,9 +37,7 @@ public class BlockHandler extends AbstractHandler {
             String name = getAttrs().get("name");
             String parent = getAttrs().get("parent");
             StringWriter fw = new StringWriter();
-            String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentFile().toURI()).getPath();
-            String pack = relPath.replaceAll("/", ".");
-            if (pack.endsWith(".")) pack = pack.substring(0, pack.length()-1);
+            String pack = getCurPackage();
             fw.write("package " + pack + ";");
             fw.write("public class " + name);
             if (parent == null) {
@@ -62,6 +60,7 @@ public class BlockHandler extends AbstractHandler {
 
 
             System.out.println(fw.toString());
+            String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentFile().toURI()).getPath();
             JavaFileObject file = new JavaSourceFromString(relPath + name, fw.toString());
             genContext.getFiles().add(file);
 

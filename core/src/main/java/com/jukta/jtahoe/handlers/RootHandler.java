@@ -15,12 +15,11 @@ public class RootHandler extends AbstractHandler {
 
     @Override
     public void start() {
-//        super.start();
-    }
-
-    @Override
-    public void text(String text) {
-//        super.text(text);
+        String pref = getAttrs().get("pref");
+        if (pref == null) {
+            pref = "lc";
+        }
+        getGenContext().getPrefixes().put(pref, getCurPackage());
     }
 
     @Override

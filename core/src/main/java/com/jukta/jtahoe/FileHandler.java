@@ -49,24 +49,26 @@ public class FileHandler implements ContentHandler {
 
     public void startElement(String uri, String localName, String qName, Attributes attrs) throws SAXException {
         AbstractHandler handler = null;
-        Map<String, String> a = new HashMap<String, String>();
+        Map<String, String> attributes = new HashMap<String, String>();
         AbstractHandler parent = null;
         if (!stack.isEmpty()) parent = stack.peek();
         for (int i = 0; i < attrs.getLength(); i++) {
-            a.put(attrs.getLocalName(i), attrs.getValue(i));
+            attributes.put(attrs.getLocalName(i), attrs.getValue(i));
         }
         if (qName.equals("sv:root")) {
-            handler = new RootHandler(genContext, qName, a, parent);
+            handler = new RootHandler(genContext, qName, attributes, parent);
         } else if (qName.equals("sv:block")) {
-            handler = new BlockHandler(genContext, qName, a, parent);
+            handler = new BlockHandler(genContext, qName, attributes, parent);
         } else if (qName.startsWith("sv:def")) {
-            handler = new DefHandler(genContext, qName, a, parent);
+            handler = new DefHandler(genContext, qName, attributes, parent);
         } else if (qName.startsWith("sv:parent")) {
-            handler = new ParentHandler(genContext, qName, a, parent);
-        } else if (qName.startsWith("sv:")) {
-            handler = new FuncHandler(genContext, qName, a, parent);
+            handler = new ParentHandler(genContext, qName, attributes, parent);
+        } else if (qName.startsWith("sv:import")) {
+            handler = new ImportHandler(genContext, qName, attributes, parent);
+        } else if (genContext.getPrefixes().containsKey(qName.split(":")[0])) {
+            handler = new FuncHandler(genContext, qName, attributes, parent);
         } else {
-            handler = new HtmlHandler(genContext, qName, a, parent);
+            handler = new HtmlHandler(genContext, qName, attributes, parent);
         }
         stack.push(handler);
         handler.start();

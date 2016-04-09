@@ -21,7 +21,8 @@ public class Compile {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setNamespaceAware(false);
         XMLReader xmlReader = factory.newSAXParser().getXMLReader();
-        GenContext genContext = new GenContext(null, files, new File("blocks.xml"));
+        GenContext genContext = new GenContext(null, files);
+        genContext.setCurrentFile(new File("blocks.xml"));
         FileHandler fileHandler = new FileHandler(genContext);
         xmlReader.setContentHandler(fileHandler);
         xmlReader.parse("blocks.xml");
