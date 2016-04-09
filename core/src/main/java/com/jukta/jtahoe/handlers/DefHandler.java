@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class DefHandler extends AbstractHandler {
 
-    String body = "new com.jukta.jtahoe.jschema.JBody()";
+    String body = "new JBody()";
     private String name;
 
     public DefHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
@@ -38,9 +38,9 @@ public class DefHandler extends AbstractHandler {
 
         BlockHandler blockHandler = getBlock();
         if (blockHandler instanceof FuncHandler) {
-            blockHandler.addDef("com.jukta.jtahoe.jschema.JElement " + defName + "(com.jukta.jtahoe.Attrs _attrs)", "{return " + body + ";}");
+            blockHandler.addDef("JElement " + defName + "(Attrs _attrs)", "{return " + body + ";}");
         } else {
-            blockHandler.addDef("com.jukta.jtahoe.jschema.JElement " + defName + "(com.jukta.jtahoe.Attrs attrs)", "{return " + body + ";}");
+            blockHandler.addDef("JElement " + defName + "(Attrs attrs)", "{return " + body + ";}");
         }
     }
 }

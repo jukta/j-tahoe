@@ -32,7 +32,7 @@ public abstract class AbstractHandler {
         if (text.equals("")) return;
         text = text.replace("\n", "");
         text = parseExp(text);
-        addElement("new com.jukta.jtahoe.jschema.JText(\"" + text + "\")");
+        addElement("new JText(\"" + text + "\")");
     }
 
     public void end() {

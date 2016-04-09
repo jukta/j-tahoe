@@ -12,7 +12,7 @@ import java.util.*;
  * Created by aleph on 18.02.2016.
  */
 public class BlockHandler extends AbstractHandler {
-    String body = "new com.jukta.jtahoe.jschema.JBody()";
+    String body = "new JBody()";
     Map<String, String> defs = new HashMap<String, String>();
 
     public BlockHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
@@ -39,6 +39,8 @@ public class BlockHandler extends AbstractHandler {
             StringWriter fw = new StringWriter();
             String pack = getCurPackage();
             fw.write("package " + pack + ";");
+            fw.write("import com.jukta.jtahoe.Attrs;");
+            fw.write("import com.jukta.jtahoe.jschema.*;");
             fw.write("public class " + name);
             if (parent == null) {
                 fw.write(" extends com.jukta.jtahoe.Block {");
@@ -50,7 +52,7 @@ public class BlockHandler extends AbstractHandler {
                 fw.write(entry.getValue());
             }
             if (parent == null) {
-                fw.write("public com.jukta.jtahoe.jschema.JElement body(final com.jukta.jtahoe.Attrs attrs) {");
+                fw.write("public JElement body(final Attrs attrs) {");
                 fw.write("return " + body + ";");
                 fw.write("}");
             }

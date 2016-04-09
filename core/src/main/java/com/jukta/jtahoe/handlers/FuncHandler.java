@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class FuncHandler extends BlockHandler {
 
-    String body = "new com.jukta.jtahoe.jschema.JBody()";
+    String body = "new JBody()";
 
     public FuncHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
         super(genContext, name, attrs, parent);
@@ -22,7 +22,7 @@ public class FuncHandler extends BlockHandler {
 
     @Override
     public void end() {
-        String attrs = "new com.jukta.jtahoe.Attrs()";
+        String attrs = "new Attrs()";
         for (String s : getAttrs().keySet()) {
             attrs += ".set(\"" + s + "\", \"" + getAttrs().get(s) + "\")";
         }

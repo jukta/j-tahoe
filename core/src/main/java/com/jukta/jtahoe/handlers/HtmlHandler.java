@@ -15,11 +15,11 @@ public class HtmlHandler extends AbstractHandler {
 
     @Override
     public void end() {
-        String el = "new com.jukta.jtahoe.jschema.JTag(\"" + getName() + "\").setjBody(" + body + ")";
+        String el = "new JTag(\"" + getName() + "\").setjBody(" + body + ")";
         getParent().addElement(el);
     }
 
-    String body = "new com.jukta.jtahoe.jschema.JBody()";
+    String body = "new JBody()";
 
     @Override
     public void addElement(String element) {
