@@ -3,7 +3,6 @@ package com.jukta.jtahoe.handlers;
 import com.jukta.jtahoe.GenContext;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -105,7 +104,7 @@ public abstract class AbstractHandler {
     }
 
     public String getCurPackage() {
-        String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentFile().toURI()).getPath();
+        String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentUri()).getPath();
         String pack = relPath.replaceAll("/", ".");
         if (pack.endsWith(".")) pack = pack.substring(0, pack.length()-1);
         return pack;

@@ -1,5 +1,7 @@
 package com.jukta.jtahoe;
 
+import com.jukta.jtahoe.file.JTahoeFileXml;
+import com.jukta.jtahoe.file.JTahoeXml;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -21,36 +23,32 @@ public class DirHandler {
         this.rootDir = rootDir;
     }
 
-    public DirHandler(String rootPath) {
-        this(new File(rootPath));
-    }
-
-    public List<JavaFileObject> getFiles() throws ParserConfigurationException, SAXException, IOException {
-        List<File> l = new ArrayList<>();
-        scan(rootDir, l, new FileExtensionFilter("xml"));
-        List<JavaFileObject> files = new ArrayList<>();
+    public List<JavaFileObject> getJavaFiles(List<JTahoeXml> xmlList) throws ParserConfigurationException, SAXException, IOException {
+        List<JavaFileObject> javaFiles = new ArrayList<>();
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setNamespaceAware(false);
         XMLReader xmlReader = factory.newSAXParser().getXMLReader();
-        GenContext genContext = new GenContext(rootDir, files);
-        for (File f : l) {
-            genContext.setCurrentFile(f);
+        GenContext genContext = new GenContext(rootDir, javaFiles);
+        for (JTahoeXml xml : xmlList) {
+            genContext.setCurrentFile(xml);
             FileHandler fileHandler = new FileHandler(genContext);
             xmlReader.setContentHandler(fileHandler);
-            xmlReader.parse(f.getAbsolutePath());
+            xmlReader.parse(xml.getInputSource());
         }
-        return files;
+        return javaFiles;
     }
 
     public void generateSources(File targetDir) throws IOException, SAXException, ParserConfigurationException {
-        List<JavaFileObject> files = getFiles();
+        List<JTahoeXml> xmlFilesList = new ArrayList<>();
+        scan(rootDir, xmlFilesList, new FileExtensionFilter("xml"));
+        List<JavaFileObject> files = getJavaFiles(xmlFilesList);
         for (JavaFileObject f : files) {
             System.out.println(f.getName());
             BufferedReader reader = new BufferedReader(f.openReader(false));
             File file = new File(targetDir, f.getName());
             file.getParentFile().mkdirs();
             FileWriter w = new FileWriter(file);
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 w.append(line);
             }
@@ -59,12 +57,12 @@ public class DirHandler {
         }
     }
 
-    private void scan(File file, List<File> list, FileFilter filter) {
+    private void scan(File file, List<JTahoeXml> list, FileFilter filter) {
         for (File f : file.listFiles(filter)) {
             if (f.isDirectory()) {
                 scan(f, list, filter);
             } else {
-                list.add(f);
+                list.add(new JTahoeFileXml(f));
             }
         }
     }

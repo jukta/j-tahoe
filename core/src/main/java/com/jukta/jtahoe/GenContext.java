@@ -1,5 +1,7 @@
 package com.jukta.jtahoe;
 
+import com.jukta.jtahoe.file.JTahoeXml;
+
 import javax.tools.JavaFileObject;
 import java.io.File;
 import java.util.HashMap;
@@ -13,7 +15,7 @@ public class GenContext {
 
     private File rootDir;
     private List<JavaFileObject> files;
-    private File currentFile;
+    private JTahoeXml currentFile;
     private Map<String, String> prefixes = new HashMap<>();
 
     public GenContext(File root, List<JavaFileObject> files) {
@@ -37,11 +39,11 @@ public class GenContext {
         this.files = files;
     }
 
-    public File getCurrentFile() {
+    public JTahoeXml getCurrentFile() {
         return currentFile;
     }
 
-    public void setCurrentFile(File currentFile) {
+    public void setCurrentFile(JTahoeXml currentFile) {
         this.currentFile = currentFile;
     }
 

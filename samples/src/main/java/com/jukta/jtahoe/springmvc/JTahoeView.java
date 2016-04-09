@@ -17,6 +17,10 @@ public class JTahoeView implements View {
     private String viewName;
     private ClassLoader classLoader;
 
+    public JTahoeView(String viewName) {
+        this.viewName = viewName;
+    }
+
     public JTahoeView(String viewName, ClassLoader classLoader) {
         this.viewName = viewName;
         this.classLoader = classLoader;
@@ -29,12 +33,20 @@ public class JTahoeView implements View {
 
     @Override
     public void render(Map<String, ?> map, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) throws Exception {
-        Block block = (Block) Class.forName(viewName, true, classLoader).newInstance();
+        Block block = newBlockInstance();
         Attrs attrs = new Attrs();
         for (Map.Entry<String, ?> entry : map.entrySet()) {
             attrs.set(entry.getKey(), entry.getValue());
         }
         String s = block.body(attrs).toHtml();
         httpservletresponse.getWriter().write(s);
+    }
+
+    private Block newBlockInstance() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        if (classLoader == null) {
+            return (Block) Class.forName(viewName).newInstance();
+        } else {
+            return (Block) Class.forName(viewName, true, classLoader).newInstance();
+        }
     }
 }

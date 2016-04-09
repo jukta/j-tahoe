@@ -5,7 +5,8 @@ import com.jukta.jtahoe.JavaSourceFromString;
 
 import javax.tools.*;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by aleph on 18.02.2016.
@@ -65,7 +66,7 @@ public class BlockHandler extends AbstractHandler {
 
 
             System.out.println(fw.toString());
-            String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentFile().toURI()).getPath();
+            String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentUri()).getPath();
             JavaFileObject file = new JavaSourceFromString(relPath + name, fw.toString());
             genContext.getFiles().add(file);
 

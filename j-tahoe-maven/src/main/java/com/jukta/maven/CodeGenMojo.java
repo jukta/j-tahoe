@@ -34,7 +34,6 @@ public class CodeGenMojo extends AbstractMojo {
     protected BuildPluginManager pluginManager;
 //    protected MojoExecutor.ExecutionEnvironment _pluginEnv;
 
-    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
             DirHandler dirHandler = new DirHandler(new File(blocksDir));

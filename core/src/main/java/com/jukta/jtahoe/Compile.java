@@ -1,6 +1,8 @@
 package com.jukta.jtahoe;
 
-import org.xml.sax.*;
+import com.jukta.jtahoe.file.JTahoeFileXml;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import javax.tools.*;
 import javax.xml.parsers.ParserConfigurationException;
@@ -9,7 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by aleph on 17.02.2016.
@@ -22,7 +25,7 @@ public class Compile {
         factory.setNamespaceAware(false);
         XMLReader xmlReader = factory.newSAXParser().getXMLReader();
         GenContext genContext = new GenContext(null, files);
-        genContext.setCurrentFile(new File("blocks.xml"));
+        genContext.setCurrentFile(new JTahoeFileXml(new File("blocks.xml")));
         FileHandler fileHandler = new FileHandler(genContext);
         xmlReader.setContentHandler(fileHandler);
         xmlReader.parse("blocks.xml");
