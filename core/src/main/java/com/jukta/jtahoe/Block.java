@@ -6,7 +6,6 @@ import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 import org.apache.commons.jexl2.MapContext;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -21,9 +20,9 @@ public abstract class Block {
 
     public Object eval(Attrs attrs, String exp) {
         JexlEngine jexl = new JexlEngine();
-        Expression e = jexl.createExpression( exp );
+        Expression e = jexl.createExpression(exp);
         JexlContext jc = new MapContext();
-        jc.set("attrs", attrs );
+        jc.set("attrs", attrs);
         return e.evaluate(jc);
     }
 

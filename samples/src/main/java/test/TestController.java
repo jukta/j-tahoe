@@ -16,7 +16,8 @@ public class TestController {
         String[] arr = new String[] {"arr1", "arr2"};
         model.addAttribute("name", "my name");
         model.addAttribute("arr", arr);
-        return "test.Main";
+        model.addAttribute("checked", true);
+        return "blocks.test.Main";
     }
 
 }

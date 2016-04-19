@@ -67,6 +67,8 @@ public class FileHandler implements ContentHandler {
             handler = new ImportHandler(genContext, qName, attributes, parent);
         } else if (qName.startsWith("sv:for")) {
             handler = new ForHandler(genContext, qName, attributes, parent);
+        } else if (qName.startsWith("sv:if")) {
+            handler = new IfHandler(genContext, qName, attributes, parent);
         } else if (genContext.getPrefixes().containsKey(qName.split(":")[0])) {
             handler = new FuncHandler(genContext, qName, attributes, parent);
         } else {

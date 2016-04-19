@@ -32,8 +32,11 @@
         <html>
             <body>
                 <sv:for var="i" in="${arr}">
-                    <h1>Hello world  !!! ${i}</h1>
+                    <h1>Hello world !!!! ${i}</h1>
                 </sv:for>
+                <sv:if exp="${checked}">
+                    <h2>${checked}</h2>
+                </sv:if>
             </body>
         </html>
     </sv:block>
