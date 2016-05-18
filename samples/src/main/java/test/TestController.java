@@ -17,7 +17,7 @@ public class TestController {
         model.addAttribute("name", "my name");
         model.addAttribute("arr", arr);
         model.addAttribute("checked", true);
-        return "blocks.test.Main";
+        return "test.Main";
     }
 
 }
