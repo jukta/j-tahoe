@@ -34,6 +34,6 @@ public class IfHandler extends AbstractHandler {
 
     @Override
     public void appendCode(String code) {
-        body += code;
+        super.appendCode(code);
     }
 }

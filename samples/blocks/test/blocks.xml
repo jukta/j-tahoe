@@ -29,6 +29,7 @@
     </sv:block>
 
     <sv:block name="Main">
+        <sv:tag name="!DOCTYPE html"/>
         <html>
             <body>
                 <sv:for var="i" in="${arr}">

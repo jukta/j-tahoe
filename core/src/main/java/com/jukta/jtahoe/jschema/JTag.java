@@ -40,8 +40,10 @@ public class JTag implements JElement {
         String res = "<" + name;
         if (attrs != null) res += " " + attrs.toHtml();
         res += ">\n";
-        if (jBody != null) res += jBody.toHtml();
-        res += "</" + name + ">";
+        if (jBody != null) {
+            res += jBody.toHtml();
+            res += "</" + name + ">";
+        }
         return res;
     }
 }
