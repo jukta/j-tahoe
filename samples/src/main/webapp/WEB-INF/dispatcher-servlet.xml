@@ -12,12 +12,28 @@
     <context:component-scan base-package="test"/>
 
     <mvc:annotation-driven/>
-    <mvc:resources mapping="/resources" location="/resources"/>
+    <mvc:resources mapping="/resources/**"
+                   location="/css/"
+                   cache-period="10000" />
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/resources/all.css"/>
+            <bean class="com.jukta.jtahoe.springmvc.JTahoeCssInterceptor">
+                <property name="blocksFolder" value="blocks"/>
+            </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/resources/all.js"/>
+            <bean class="com.jukta.jtahoe.springmvc.JTahoeJsInterceptor">
+                <property name="blocksFolder" value="blocks"/>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!--<bean id="viewResolver" class="com.jukta.jtahoe.springmvc.JTahoeViewResolver"/>-->
 
-    <bean id="viewResolver" class="com.jukta.jtahoe.springmvc.JTahoeRuntimeViewResolver"
-          init-method="loadClasses">
+    <bean id="viewResolver" class="com.jukta.jtahoe.springmvc.JTahoeRuntimeViewResolver">
         <property name="blocksFolder" value="blocks"/>
     </bean>
 

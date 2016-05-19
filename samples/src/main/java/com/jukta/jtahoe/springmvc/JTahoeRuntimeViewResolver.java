@@ -1,18 +1,15 @@
 package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.DirHandler;
-import com.jukta.jtahoe.file.JTahoeResourceXml;
 import com.jukta.jtahoe.file.JTahoeXml;
 import com.jukta.jtahoe.loader.MemoryClassLoader;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,10 +18,9 @@ import java.util.Locale;
  *
  * @since *.*.*
  */
-public class JTahoeRuntimeViewResolver implements ViewResolver {
+public class JTahoeRuntimeViewResolver implements ViewResolver, InitializingBean {
 
     private String blocksFolder = "blocks";
-
     private ClassLoader classLoader;
 
     @Override
@@ -38,27 +34,15 @@ public class JTahoeRuntimeViewResolver implements ViewResolver {
     }
 
     private List<JTahoeXml> getXmlsFromResources() throws IOException, URISyntaxException {
-        List<JTahoeXml> xmlFilesList = new ArrayList<>();
-        URL url = getClass().getClassLoader().getResource(blocksFolder);
-        getFiles(xmlFilesList, new File(url.getFile()));
-        return xmlFilesList;
-    }
-
-    private void getFiles(List<JTahoeXml> xmlFilesList, File file) throws IOException, URISyntaxException {
-        if (file.isDirectory()) {
-            for (File entry : file.listFiles()) {
-                getFiles(xmlFilesList, entry);
-            }
-        } else {
-            String entryName = file.getName();
-            if (entryName.endsWith(".xml")) {
-                JTahoeXml jTahoeXml = new JTahoeResourceXml(new FileInputStream(file), getClass().getClassLoader().getResource(blocksFolder).toURI().relativize(file.getParentFile().toURI()).toString());
-                xmlFilesList.add(jTahoeXml);
-            }
-        }
+        return new Resources(blocksFolder).getFiles(new Resources.ExtensionFilter("xml"));
     }
 
     public void setBlocksFolder(String blocksFolder) {
         this.blocksFolder = blocksFolder;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        loadClasses();
     }
 }
