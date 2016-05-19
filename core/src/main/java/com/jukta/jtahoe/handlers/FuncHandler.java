@@ -24,7 +24,7 @@ public class FuncHandler extends BlockHandler {
     public void end() {
         String attrs = "new Attrs()";
         for (String s : getAttrs().keySet()) {
-            attrs += ".set(\"" + s + "\", \"" + getAttrs().get(s) + "\")";
+            attrs += ".set(\"" + s + "\", " + parseExp(getAttrs().get(s), true) + ")";
         }
         String name = getName();
         name = processPrefix(name) + "." + name.substring(name.indexOf(":")+1);

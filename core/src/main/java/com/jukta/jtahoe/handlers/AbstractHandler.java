@@ -35,7 +35,7 @@ public abstract class AbstractHandler {
         if (text.equals("")) return;
         text = text.replace("\n", "");
         text = parseExp(text, true);
-        addElement("new JText(\"" + text + "\")");
+        addElement("new JText(" + text + ".toString())");
     }
 
     public void end() {
@@ -67,11 +67,32 @@ public abstract class AbstractHandler {
         Matcher m = pattern.matcher(str);
         if (m.find()) {
             if (wrap) {
-                str = m.replaceFirst("\" + eval(attrs, \"attrs." + m.group(1) + "\") + \"");
+                String match = m.group(1);
+                boolean hitStart = m.start() > 0;
+                boolean hitEnd = m.end() < str.length();
+
+                String rep = "eval(attrs, \"attrs." + match + "\")";
+                if (hitStart) {
+                    rep = "\" + " + rep;
+                }
+                if (hitEnd) {
+                    rep = rep + " + \"";
+                }
+
+                String str1 = m.replaceFirst(rep);
+                if (hitStart) {
+                    str1 = "\"" + str1;
+                }
+                if (hitEnd) {
+                    str1 = str1 + "\"";
+                }
+                str = str1;
             } else {
                 str = m.replaceFirst("eval(attrs, \"attrs." + m.group(1) + "\")");
             }
-//            str = "\"" + str + "\"";
+
+        } else if (wrap) {
+            str = "\"" + str + "\"";
         }
         return str;
     }

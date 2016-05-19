@@ -5,7 +5,7 @@
         <sv:def name="qwe">
             <sv:for var="i" in="${name}">
                 <div>
-                    <span>hello</span>
+                    <span>hello ${i}</span>
                 </div>
             </sv:for>
         </sv:def>
@@ -43,6 +43,7 @@
                 <sv:if exp="${checked}">
                     <h2>${checked}</h2>
                 </sv:if>
+                <lc:blockC x="hey" name="${arr}"/>
             </body>
         </html>
     </sv:block>
