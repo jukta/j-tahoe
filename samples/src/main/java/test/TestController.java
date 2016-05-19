@@ -21,16 +21,9 @@ public class TestController {
         return "test.Main";
     }
 
-    public static void main(String[] args) {
-        Attrs attrs = new Attrs();
-        attrs.set("message", "Hello World!");
-        String[] arr = new String[] {"arr1", "arr2"};
-        attrs.set("name", "my name");
-        attrs.set("arr", arr);
-        attrs.set("checked", true);
-
-//        Main m = new Main();
-//        System.out.println(m.body(attrs).toHtml());
+    @RequestMapping("/index")
+    public String index(Model model) {
+        return "pages.IndexPage";
     }
 
 }

@@ -38,7 +38,10 @@ public class JTahoeView implements View {
         for (Map.Entry<String, ?> entry : map.entrySet()) {
             attrs.set(entry.getKey(), entry.getValue());
         }
+        long st = System.nanoTime();
         String s = block.body(attrs).toHtml();
+        long t = System.nanoTime() - st;
+        System.out.println("Render time: " + t);
         httpservletresponse.getWriter().write(s);
     }
 

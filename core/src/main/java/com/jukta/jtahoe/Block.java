@@ -12,7 +12,6 @@ import java.util.Arrays;
  * Created by aleph on 17.02.2016.
  */
 public abstract class Block {
-
     private String name;
     private String parent;
 

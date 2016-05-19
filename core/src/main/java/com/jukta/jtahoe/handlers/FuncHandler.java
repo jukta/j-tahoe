@@ -27,7 +27,7 @@ public class FuncHandler extends BlockHandler {
             attrs += ".set(\"" + s + "\", " + parseExp(getAttrs().get(s), true) + ")";
         }
         String name = getName();
-        name = processPrefix(name) + "." + name.substring(name.indexOf(":")+1);
+        name = processPrefix(name);
         String el = "new " + name + "()";
         el += "{";
         for (Map.Entry<String, String> entry : defs.entrySet()) {
@@ -38,8 +38,4 @@ public class FuncHandler extends BlockHandler {
         getParent().addElement(el);
     }
 
-    private String processPrefix(String name) {
-        String prefix = name.split(":")[0];
-        return getGenContext().getPrefixes().get(prefix);
-    }
 }

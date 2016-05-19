@@ -1,0 +1,34 @@
+<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" pref="lc">
+
+    <sv:import prefix="wdg" file="widgets"/>
+
+    <sv:block name="abstractPage">
+        <sv:tag name="!DOCTYPE html"/>
+        <html>
+            <head>
+                <sv:def name="head"/>
+            </head>
+            <body>
+                <sv:def name="body"/>
+            </body>
+        </html>
+    </sv:block>
+
+    <sv:block name="IndexPage" parent="lc:abstractPage">
+        <sv:def name="head">
+            <link rel="stylesheet" href="resources/all.css" type="text/css"/>
+            <script src="resources/all.js" type="text/javascript"/>
+        </sv:def>
+        <sv:def name="body">
+            <div class="mainLayout">
+                <div class="leftPanel">
+                    <wdg:FilterPanel/>
+                </div>
+                <div class="rightPanel">
+                    <wdg:ClientPanel title="Arrowfield Trading"/>
+                </div>
+            </div>
+        </sv:def>
+    </sv:block>
+
+</sv:root>

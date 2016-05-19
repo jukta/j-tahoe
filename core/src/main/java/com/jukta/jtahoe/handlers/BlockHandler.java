@@ -45,7 +45,7 @@ public class BlockHandler extends AbstractHandler {
             if (parent == null) {
                 fw.write(" extends com.jukta.jtahoe.Block {");
             } else {
-                fw.write(" extends " + parent + " {");
+                fw.write(" extends " + processPrefix(parent) + " {");
             }
             for (Map.Entry<String, String> entry : defs.entrySet()) {
                 fw.write(entry.getKey());

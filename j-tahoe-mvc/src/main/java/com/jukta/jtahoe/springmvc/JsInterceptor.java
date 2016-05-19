@@ -9,8 +9,14 @@ import java.io.FilenameFilter;
  */
 public class JsInterceptor extends CssInterceptor {
 
+    private String contentType = "text/javascript";
+
     @Override
     protected FilenameFilter getFilter() {
         return new Resources.ExtensionFilter("js");
+    }
+
+    public String getContentType() {
+        return contentType;
     }
 }

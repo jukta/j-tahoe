@@ -18,13 +18,19 @@ public class CssInterceptor extends HandlerInterceptorAdapter implements Initial
 
     private String blocksFolder = "blocks";
     private String content;
+    private String contentType = "text/css";
 
     public void setBlocksFolder(String blocksFolder) {
         this.blocksFolder = blocksFolder;
     }
 
+    protected String getContentType() {
+        return contentType;
+    }
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        response.setContentType(getContentType());
         response.getWriter().write(content);
         return false;
     }

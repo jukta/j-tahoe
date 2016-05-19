@@ -134,4 +134,16 @@ public abstract class AbstractHandler {
     public String getVarName() {
         return varName;
     }
+
+    protected String processPrefix(String name) {
+        String[] sp = name.split(":");
+        if (sp.length < 2) return name;
+        String prefix = sp[0];
+        prefix = getGenContext().getPrefixes().get(prefix);
+        if (prefix != null) {
+            return prefix + "." + sp[1];
+        } else {
+            return sp[1];
+        }
+    }
 }
