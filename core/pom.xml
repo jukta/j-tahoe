@@ -1,8 +1,14 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.jukta</groupId>
     <artifactId>j-tahoe</artifactId>
-    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>com.jukta</groupId>
+        <artifactId>j-tahoe-all</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
     <build>
         <plugins>
             <plugin>

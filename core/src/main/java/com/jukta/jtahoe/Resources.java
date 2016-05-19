@@ -1,4 +1,4 @@
-package com.jukta.jtahoe.springmvc;
+package com.jukta.jtahoe;
 
 import com.jukta.jtahoe.file.JTahoeResourceXml;
 import com.jukta.jtahoe.file.JTahoeXml;

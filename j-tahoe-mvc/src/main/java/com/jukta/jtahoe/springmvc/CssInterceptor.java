@@ -1,5 +1,6 @@
 package com.jukta.jtahoe.springmvc;
 
+import com.jukta.jtahoe.Resources;
 import com.jukta.jtahoe.file.JTahoeXml;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * @author Sergey Sidorov
  */
-public class JTahoeCssInterceptor extends HandlerInterceptorAdapter implements InitializingBean {
+public class CssInterceptor extends HandlerInterceptorAdapter implements InitializingBean {
 
     private String blocksFolder = "blocks";
     private String content;

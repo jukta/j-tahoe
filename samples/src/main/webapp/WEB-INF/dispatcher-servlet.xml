@@ -19,13 +19,13 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/resources/all.css"/>
-            <bean class="com.jukta.jtahoe.springmvc.JTahoeCssInterceptor">
+            <bean class="com.jukta.jtahoe.springmvc.CssInterceptor">
                 <property name="blocksFolder" value="blocks"/>
             </bean>
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/resources/all.js"/>
-            <bean class="com.jukta.jtahoe.springmvc.JTahoeJsInterceptor">
+            <bean class="com.jukta.jtahoe.springmvc.JsInterceptor">
                 <property name="blocksFolder" value="blocks"/>
             </bean>
         </mvc:interceptor>

@@ -1,11 +1,13 @@
 package com.jukta.jtahoe.springmvc;
 
+import com.jukta.jtahoe.Resources;
+
 import java.io.FilenameFilter;
 
 /**
  * @author Sergey Sidorov
  */
-public class JTahoeJsInterceptor extends JTahoeCssInterceptor {
+public class JsInterceptor extends CssInterceptor {
 
     @Override
     protected FilenameFilter getFilter() {

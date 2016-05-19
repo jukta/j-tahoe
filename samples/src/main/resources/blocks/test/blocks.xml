@@ -31,7 +31,12 @@
     <sv:block name="Main">
         <sv:tag name="!DOCTYPE html"/>
         <html>
+            <head>
+                <link rel="stylesheet" href="resources/all.css" type="text/css"/>
+                <script src="resources/all.js" type="text/javascript"/>
+            </head>
             <body>
+                <div class="c1">there are changes?</div>
                 <sv:for var="i" in="${arr}">
                     <h1>Hello world !!!! ${i}</h1>
                 </sv:for>

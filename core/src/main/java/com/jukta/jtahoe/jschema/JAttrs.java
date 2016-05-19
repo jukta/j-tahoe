@@ -16,15 +16,21 @@ public class JAttrs {
         this.attrs = attrs;
     }
 
-    public void addAttr(String name, String value) {
+    public JAttrs addAttr(String name, String value) {
         attrs.put(name, value);
+        return this;
     }
 
     public String toJson() {
+//        todo implement
         return "";
     }
 
     public String toHtml() {
-        return "";
+        String res = "";
+        for (Map.Entry entry : attrs.entrySet()) {
+            res += entry.getKey() + "=\"" + entry.getValue() + "\" ";
+        }
+        return res;
     }
 }

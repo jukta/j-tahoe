@@ -1,6 +1,7 @@
 package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.DirHandler;
+import com.jukta.jtahoe.Resources;
 import com.jukta.jtahoe.file.JTahoeXml;
 import com.jukta.jtahoe.loader.MemoryClassLoader;
 import org.springframework.beans.factory.InitializingBean;

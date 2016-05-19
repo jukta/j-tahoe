@@ -18,7 +18,15 @@ public class HtmlHandler extends AbstractHandler {
         String cd = "JBody " + getVarName() + " = new JBody();\n";
         cd += body;
         appendCode(cd);
-        String el = "new JTag(\"" + getName() + "\").setjBody(" + getVarName() + ")";
+        String el = "new JTag(\"" + getName() + "\")";
+        if (getAttrs().size() > 0) {
+            el += ".setAttrs(new JAttrs()";
+            for (Map.Entry entry : getAttrs().entrySet()) {
+                el += ".addAttr(\"" + entry.getKey() + "\", \"" + entry.getValue() + "\")";
+            }
+            el += ")";
+        }
+        el += ".setjBody(" + getVarName() + ")";
         getParent().addElement(el);
     }
 
