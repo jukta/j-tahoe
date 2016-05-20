@@ -33,6 +33,12 @@
         <div class="statusFilterItem">
             <span>${status}</span>
             <span>${num} blocks</span>
+            <div class="pie">
+                <svg xmlns="http://www.w3.org/2000/svg" baseProfile="full" width="100" version="1.1" height="100">
+                    <circle r="40" cx="50" cy="50" fill="#00BD9C"></circle>
+                    <circle r="25" cx="50" cy="50" fill="white"></circle>
+                </svg>
+            </div>
         </div>
     </sv:block>
 
