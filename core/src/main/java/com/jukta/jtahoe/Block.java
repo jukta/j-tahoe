@@ -1,11 +1,11 @@
 package com.jukta.jtahoe;
 
 import com.jukta.jtahoe.jschema.JElement;
-import org.apache.commons.jexl2.Expression;
-import org.apache.commons.jexl2.JexlContext;
-import org.apache.commons.jexl2.JexlEngine;
-import org.apache.commons.jexl2.MapContext;
+import de.odysseus.el.ExpressionFactoryImpl;
+import de.odysseus.el.util.SimpleContext;
 
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
 import java.util.Arrays;
 
 /**
@@ -14,15 +14,16 @@ import java.util.Arrays;
 public abstract class Block {
     private String name;
     private String parent;
+    private static ExpressionFactory factory = new ExpressionFactoryImpl();
 
     public abstract JElement body(Attrs attrs);
 
     public Object eval(Attrs attrs, String exp) {
-        JexlEngine jexl = new JexlEngine();
-        Expression e = jexl.createExpression(exp);
-        JexlContext jc = new MapContext();
-        jc.set("attrs", attrs);
-        return e.evaluate(jc);
+        SimpleContext context = new SimpleContext(new ElResolver());
+        context.setVariable("attrs", factory.createValueExpression(attrs, Attrs.class));
+        ValueExpression e = factory.createValueExpression(context, "${" + exp + "}", Object.class);
+        Object o = e.getValue(context);
+        return o == null ? "" : o;
     }
 
     public Iterable evalIt(Attrs attrs, String exp) {

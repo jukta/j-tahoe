@@ -1,9 +1,11 @@
 package test;
 
-import com.jukta.jtahoe.Attrs;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Sergey Sidorov
@@ -23,6 +25,24 @@ public class TestController {
 
     @RequestMapping("/index")
     public String index(Model model) {
+        List<TradeModel> list = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            TradeModel m = new TradeModel();
+            m.setAccount("ACC16" + i);
+            m.setSide("BUY");
+            m.setQuantity(20+i);
+            m.setPrice("838.675");
+            m.setPriceType("Average");
+            m.setProduct("2CD");
+            m.setExchange("NYMEX");
+            m.setProductType("FUT");
+            m.setOrder("");
+            m.setExecBroker("DPT");
+            m.setStatus("DPT");
+            m.setType("ALLEGED");
+            list.add(m);
+        }
+        model.addAttribute("list", list);
         return "pages.IndexPage";
     }
 

@@ -20,10 +20,10 @@
             </div>
             <div class="clientBody">
                 <div class="topPanel">
-                    <lc:Grid/>
+                    <lc:Grid list="${list}"/>
                 </div>
                 <div class="bottomPanel">
-                    <lc:Grid/>
+                    <lc:Grid list="${list}"/>
                 </div>
             </div>
         </div>
@@ -60,30 +60,27 @@
                     <th>Type</th>
                     <th>Price type</th>
                 </tr>
-                <lc:GridLine/>
-                <lc:GridLine/>
-                <lc:GridLine/>
-                <lc:GridLine/>
-                <lc:GridLine/>
-                <lc:GridLine/>
+                <sv:for var="i" in="${list}">
+                    <lc:GridLine trade="${i}"/>
+                </sv:for>
             </table>
         </div>
     </sv:block>
 
     <sv:block name="GridLine">
         <tr class="gridLine">
-            <td>ACC163</td>
-            <td>Buy</td>
-            <td>20</td>
-            <td>838.675</td>
-            <td>Average</td>
-            <td>2CD</td>
-            <td>NYMEX</td>
-            <td>FUT</td>
-            <td></td>
-            <td>DPT</td>
-            <td>DPT</td>
-            <td>ALLEGED</td>
+            <td>${trade.account}</td>
+            <td>${trade.side}</td>
+            <td>${trade.quantity}</td>
+            <td>${trade.price}</td>
+            <td>${trade.priceType}</td>
+            <td>${trade.product}</td>
+            <td>${trade.exchange}</td>
+            <td>${trade.productType}</td>
+            <td>${trade.order}</td>
+            <td>${trade.execBroker}</td>
+            <td>${trade.status}</td>
+            <td>${trade.type}</td>
             <td></td>
         </tr>
     </sv:block>

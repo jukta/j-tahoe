@@ -25,7 +25,7 @@
                     <wdg:FilterPanel/>
                 </div>
                 <div class="rightPanel">
-                    <wdg:ClientPanel title="Arrowfield Trading"/>
+                    <wdg:ClientPanel title="Arrowfield Trading" list="${list}"/>
                 </div>
             </div>
         </sv:def>
