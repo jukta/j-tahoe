@@ -17,6 +17,8 @@ public abstract class AbstractHandler {
     protected GenContext genContext;
     private String varName;
     private static int seq = 0;
+    public static final Pattern EL_EXP_PATTERN = Pattern.compile("\\$\\{([^\\}]*)\\}");
+    public static final Pattern VARIABLE_EXP_PATTERN = Pattern.compile("([a-zA-Z_$][a-zA-Z_$0-9]*(\\.[a-zA-Z_$][a-zA-Z_$0-9]*)*)");
 
     protected AbstractHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
         this.name = name;
@@ -63,15 +65,21 @@ public abstract class AbstractHandler {
     }
 
     public String parseExp(String str, boolean wrap) {
-        Pattern pattern = Pattern.compile("\\$\\{([^\\}]*)\\}");
-        Matcher m = pattern.matcher(str);
+        Matcher m = EL_EXP_PATTERN.matcher(str);
         if (m.find()) {
             if (wrap) {
                 String match = m.group(1);
                 boolean hitStart = m.start() > 0;
                 boolean hitEnd = m.end() < str.length();
 
-                String rep = "eval(attrs, \"attrs." + match + "\")";
+                Matcher varMatcher = VARIABLE_EXP_PATTERN.matcher(match);
+                int shift = 0;
+                while (varMatcher.find()) {
+                    match = new StringBuilder(match).insert(varMatcher.start() + shift, "attrs.").toString();
+                    shift += 6;
+                }
+
+                String rep = "eval(attrs, \"" + match + "\")";
                 if (hitStart) {
                     rep = "\" + " + rep;
                 }
@@ -98,8 +106,7 @@ public abstract class AbstractHandler {
     }
 
     public String parseItExp(String str, boolean wrap) {
-        Pattern pattern = Pattern.compile("\\$\\{([^\\}]*)\\}");
-        Matcher m = pattern.matcher(str);
+        Matcher m = EL_EXP_PATTERN.matcher(str);
         if (m.find()) {
             if (wrap) {
                 str = m.replaceFirst("\" + evalIt(attrs, \"attrs." + m.group(1) + "\") + \"");
@@ -127,7 +134,7 @@ public abstract class AbstractHandler {
     public String getCurPackage() {
         String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentUri()).getPath();
         String pack = relPath.replaceAll("/", ".");
-        if (pack.endsWith(".")) pack = pack.substring(0, pack.length()-1);
+        if (pack.endsWith(".")) pack = pack.substring(0, pack.length() - 1);
         return pack;
     }
 
