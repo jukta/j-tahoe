@@ -2,6 +2,7 @@ package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.Attrs;
 import com.jukta.jtahoe.Block;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import java.util.Map;
  */
 public class JTahoeView implements View {
     private String contentType = "text/html;charset=ISO-8859-1";
+    private ApplicationContext applicationContext;
 
     private String viewName;
     private ClassLoader classLoader;
@@ -26,6 +28,10 @@ public class JTahoeView implements View {
         this.classLoader = classLoader;
     }
 
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
     @Override
     public String getContentType() {
         return contentType;
@@ -34,7 +40,9 @@ public class JTahoeView implements View {
     @Override
     public void render(Map<String, ?> map, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) throws Exception {
         Block block = newBlockInstance();
+        MvcDataHandlerProvider handlerProvider = new MvcDataHandlerProvider(applicationContext, httpservletrequest, httpservletresponse);
         Attrs attrs = new Attrs();
+        attrs.setDataHandlerProvider(handlerProvider);
         for (Map.Entry<String, ?> entry : map.entrySet()) {
             attrs.set(entry.getKey(), entry.getValue());
         }

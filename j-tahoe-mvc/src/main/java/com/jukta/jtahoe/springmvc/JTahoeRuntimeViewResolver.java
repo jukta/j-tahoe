@@ -4,7 +4,10 @@ import com.jukta.jtahoe.DirHandler;
 import com.jukta.jtahoe.Resources;
 import com.jukta.jtahoe.file.JTahoeXml;
 import com.jukta.jtahoe.loader.MemoryClassLoader;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
@@ -19,14 +22,17 @@ import java.util.Locale;
  *
  * @since *.*.*
  */
-public class JTahoeRuntimeViewResolver implements ViewResolver, InitializingBean {
+public class JTahoeRuntimeViewResolver implements ViewResolver, InitializingBean, ApplicationContextAware {
 
     private String blocksFolder = "blocks";
     private ClassLoader classLoader;
+    private ApplicationContext applicationContext;
 
     @Override
     public View resolveViewName(String s, Locale locale) throws Exception {
-        return new JTahoeView(s, classLoader);
+        JTahoeView view = new JTahoeView(s, classLoader);
+        view.setApplicationContext(applicationContext);
+        return view;
     }
 
     public void loadClasses() throws Exception {
@@ -45,5 +51,10 @@ public class JTahoeRuntimeViewResolver implements ViewResolver, InitializingBean
     @Override
     public void afterPropertiesSet() throws Exception {
         loadClasses();
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

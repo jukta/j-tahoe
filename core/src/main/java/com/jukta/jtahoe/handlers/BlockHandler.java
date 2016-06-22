@@ -36,6 +36,7 @@ public class BlockHandler extends AbstractHandler {
         try {
             String name = getAttrs().get("name");
             String parent = getAttrs().get("parent");
+            String dataHandler = getAttrs().get("dataHandler");
             StringWriter fw = new StringWriter();
             String pack = getCurPackage();
             fw.write("package " + pack + ";");
@@ -47,13 +48,18 @@ public class BlockHandler extends AbstractHandler {
             } else {
                 fw.write(" extends " + processPrefix(parent) + " {");
             }
+            if (dataHandler != null) {
+                fw.write("public " + name + "() {");
+                fw.write("dataHandler = \"" + dataHandler + "\";");
+                fw.write("}");
+            }
             for (Map.Entry<String, String> entry : defs.entrySet()) {
                 fw.write(entry.getKey());
                 fw.write(entry.getValue());
             }
             if (parent == null) {
                 fw.write("public JElement body(final Attrs attrs) {");
-
+                fw.write("callDataHandler(attrs);\n");
                 fw.write("JBody " + getVarName() + " = new JBody();\n");
 
                 fw.write(body);

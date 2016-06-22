@@ -14,9 +14,17 @@ import java.util.Arrays;
 public abstract class Block {
     private String name;
     private String parent;
+    protected String dataHandler;
     private static ExpressionFactory factory = new ExpressionFactoryImpl();
 
     public abstract JElement body(Attrs attrs);
+
+    public void callDataHandler(Attrs attrs) {
+        if (dataHandler != null) {
+            DataHandlerProvider dataHandlerProvider = attrs.getDataHandlerProvider();
+            attrs.setAll(dataHandlerProvider.getData(dataHandler, attrs));
+        }
+    }
 
     public Object eval(Attrs attrs, String exp) {
         SimpleContext context = new SimpleContext(new ElResolver());

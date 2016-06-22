@@ -37,4 +37,8 @@
         <property name="blocksFolder" value="blocks"/>
     </bean>
 
+    <bean id="filterPanel" class="test.FilterPanel">
+
+    </bean>
+
 </beans>
