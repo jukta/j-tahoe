@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Sergey Sidorov
  */
 public class JTahoeView implements View {
-    private String contentType = "text/html;charset=ISO-8859-1";
+    private String contentType = "text/html;charset=UTF-8";
     private ApplicationContext applicationContext;
 
     private String viewName;
@@ -50,6 +50,7 @@ public class JTahoeView implements View {
         String s = block.body(attrs).toHtml();
         long t = System.nanoTime() - st;
         System.out.println("Render time: " + t);
+        httpservletresponse.setCharacterEncoding("UTF-8");
         httpservletresponse.getWriter().write(s);
     }
 
