@@ -23,6 +23,7 @@
             <div class="mainLayout">
                 <div class="leftPanel">
                     <wdg:FilterPanel a="a1"/>
+                    <sv:include name="widgets.FilterPanel"/>
                 </div>
                 <div class="rightPanel">
                     <wdg:ClientPanel title="Arrowfield Trading" list="${list}"/>

@@ -39,6 +39,7 @@ public class JTahoeView implements View {
 
     @Override
     public void render(Map<String, ?> map, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) throws Exception {
+        Thread.currentThread().setContextClassLoader(classLoader);
         Block block = newBlockInstance();
         MvcDataHandlerProvider handlerProvider = new MvcDataHandlerProvider(applicationContext, httpservletrequest, httpservletresponse);
         Attrs attrs = new Attrs();
