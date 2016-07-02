@@ -22,12 +22,12 @@ public class IncludeHandler extends BlockHandler {
 
     @Override
     public void end() {
-        String attrs = "new Attrs(attrs.getDataHandlerProvider())";
+        String attrs = "new Attrs(attrs)";
         for (String s : getAttrs().keySet()) {
             attrs += ".set(\"" + s + "\", " + parseExp(getAttrs().get(s), true) + ")";
         }
         String name = getAttrs().get("name");
-        String el = "new com.jukta.jtahoe.IncludeBlock(\"" + name + "\", new String[] {";
+        String el = "new com.jukta.jtahoe.IncludeBlock((String)" + parseExp(name, true) + ", new String[] {";
         int i = 0;
         for (Map.Entry<String, String> entry : defs.entrySet()) {
             if (i++ > 0) el += ",";

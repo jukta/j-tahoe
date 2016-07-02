@@ -14,7 +14,11 @@ public class ElResolver extends SimpleResolver {
         if (base instanceof Attrs) {
             Attrs attrs = (Attrs) base;
             context.setPropertyResolved(true);
-            return attrs.get(property.toString());
+            Object val = attrs.get(property.toString());
+            if (val == null) {
+                val = attrs.getAttribute(property.toString());
+            }
+            return val;
         }
         return super.getValue(context, base, property);
     }

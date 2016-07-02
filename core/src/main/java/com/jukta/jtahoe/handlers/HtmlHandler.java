@@ -21,8 +21,8 @@ public class HtmlHandler extends AbstractHandler {
         String el = "new JTag(\"" + getName() + "\")";
         if (getAttrs().size() > 0) {
             el += ".setAttrs(new JAttrs()";
-            for (Map.Entry entry : getAttrs().entrySet()) {
-                el += ".addAttr(\"" + entry.getKey() + "\", \"" + entry.getValue() + "\")";
+            for (Map.Entry<String, String> entry : getAttrs().entrySet()) {
+                el += ".addAttr(\"" + entry.getKey() + "\", (String) " + parseExp(entry.getValue(), true) + ")";
             }
             el += ")";
         }

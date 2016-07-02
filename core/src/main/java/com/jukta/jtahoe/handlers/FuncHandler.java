@@ -22,7 +22,7 @@ public class FuncHandler extends BlockHandler {
 
     @Override
     public void end() {
-        String attrs = "new Attrs(attrs.getDataHandlerProvider())";
+        String attrs = "new Attrs(attrs)";
         for (String s : getAttrs().keySet()) {
             attrs += ".set(\"" + s + "\", " + parseExp(getAttrs().get(s), true) + ")";
         }
