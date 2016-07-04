@@ -21,25 +21,25 @@ public class IncludeBlock extends Block {
 
     @Override
     public JElement body(Attrs attrs) {
-//        String s = "public void def() { super.def();}";
-//
-//        int hash = (s + className).hashCode();
-//        String clName = "Inc_" + hash;
-//        Class aClass = classMap.get(clName);
-        try {
-//            if (aClass == null) {
-//                ClassPool cp = new ClassPool(false);
-//                cp.appendClassPath(new ClassPath());
-//                CtClass ctclass = cp.get(className);
-//                CtClass hello = cp.makeClass(clName);
-//                hello.setSuperclass(ctclass);
-//                CtMethod newmethod = CtNewMethod.make(s, hello);
-//                hello.addMethod(newmethod);
-//                aClass = hello.toClass();
-//                classMap.put(clName, aClass);
-//            }
+        String s = "public void def() { super.def();}";
 
-            Class aClass = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
+        int hash = (s + className).hashCode();
+        String clName = "Inc_" + hash;
+        Class aClass = classMap.get(clName);
+        try {
+            if (aClass == null) {
+                ClassPool cp = new ClassPool(false);
+                cp.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
+                CtClass ctclass = cp.get(className);
+                CtClass hello = cp.makeClass(clName);
+                hello.setSuperclass(ctclass);
+                CtMethod newmethod = CtNewMethod.make(s, hello);
+                hello.addMethod(newmethod);
+                aClass = hello.toClass();
+                classMap.put(clName, aClass);
+            }
+
+//            Class aClass = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
 
             Block b = (Block) aClass.newInstance();
             return b.body(attrs);

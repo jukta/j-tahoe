@@ -3,7 +3,10 @@ package com.jukta.jtahoe.loader;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.ToolProvider;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -26,13 +29,36 @@ public class MemoryClassLoader extends ClassLoader {
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         synchronized (this.manager) {
-            CompiledJavaObject compiledObject = this.manager.map.remove(name);
+            CompiledJavaObject compiledObject = this.manager.map.get(name);
             if (compiledObject != null) {
                 byte[] array = compiledObject.toByteArray();
                 return defineClass(name, array, 0, array.length);
             }
         }
         return super.findClass(name);
+    }
+
+    public URL getResource(String name) {
+        try {
+            if (super.getResource(name) != null) {
+                return super.getResource(name);
+            } else {
+                CompiledJavaObject object = manager.map.get(name.substring(0, name.indexOf(".")).replace("/", "."));
+                return object != null ? object.toUri().toURL() : null;
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public InputStream getResourceAsStream(String name) {
+        if (super.getResourceAsStream(name) != null) {
+            return super.getResourceAsStream(name);
+        } else {
+            CompiledJavaObject object = manager.map.get(name.substring(0, name.indexOf(".")).replace("/", "."));
+            return object != null ? new ByteArrayInputStream(object.openOutputStream().toByteArray()): null;
+        }
     }
 
     private List<String> getClasspathOptions() {

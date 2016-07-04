@@ -13,7 +13,7 @@ public class CompiledJavaObject extends SimpleJavaFileObject {
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     public CompiledJavaObject(String name, Kind kind) {
-        super(URI.create("mem:///" + name.replace('.', '/') + kind.extension), kind);
+        super(URI.create("file:///" + name.replace('.', '/') + kind.extension), kind);
     }
 
     public byte[] toByteArray() {
