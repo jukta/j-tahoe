@@ -22,8 +22,13 @@
         <sv:def name="body">
             <div class="mainLayout">
                 <div class="leftPanel">
-                    <wdg:FilterPanel a="a1"/>
-                    <sv:include name="widgets.FilterPanel"/>
+                    <wdg:FilterPanel a="a1">
+                        <sv:def>
+                            Overridden def
+                        </sv:def>
+                    </wdg:FilterPanel>
+                    <sv:include name="widgets.FilterPanel">
+                    </sv:include>
                 </div>
                 <div class="rightPanel">
                     <wdg:ClientPanel title="Arrowfield Trading" list="${list}"/>

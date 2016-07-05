@@ -11,7 +11,7 @@ import java.util.Map;
  * @since *.*.*
  */
 public class MemoryFileManager extends ForwardingJavaFileManager<JavaFileManager> {
-    public final Map<String, CompiledJavaObject> map = new HashMap<String, CompiledJavaObject>();
+    public final static Map<String, CompiledJavaObject> map = new HashMap<>();
 
     public MemoryFileManager(JavaCompiler compiler) {
         super(compiler.getStandardFileManager(null, null, null));
@@ -20,7 +20,7 @@ public class MemoryFileManager extends ForwardingJavaFileManager<JavaFileManager
     @Override
     public CompiledJavaObject getJavaFileForOutput(Location location, String name, Kind kind, FileObject source) {
         CompiledJavaObject mc = new CompiledJavaObject(name, kind);
-        this.map.put(name, mc);
+        map.put(name, mc);
         return mc;
     }
 }

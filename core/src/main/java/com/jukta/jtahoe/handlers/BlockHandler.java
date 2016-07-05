@@ -2,9 +2,9 @@ package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.GenContext;
 import com.jukta.jtahoe.JavaSourceFromString;
+import com.jukta.jtahoe.definitions.BlockMeta;
 
-import javax.tools.*;
-import java.io.StringWriter;
+import javax.tools.JavaFileObject;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,52 +33,21 @@ public class BlockHandler extends AbstractHandler {
 
     @Override
     public void end() {
-        try {
-            String name = getAttrs().get("name");
-            String parent = getAttrs().get("parent");
-            String dataHandler = getAttrs().get("dataHandler");
-            StringWriter fw = new StringWriter();
-            String pack = getCurPackage();
-            fw.write("package " + pack + ";");
-            fw.write("import com.jukta.jtahoe.Attrs;");
-            fw.write("import com.jukta.jtahoe.jschema.*;");
-            fw.write("public class " + name);
-            if (parent == null) {
-                fw.write(" extends com.jukta.jtahoe.Block {");
-            } else {
-                fw.write(" extends " + processPrefix(parent) + " {");
-            }
-            if (dataHandler != null) {
-                fw.write("public " + name + "() {");
-                fw.write("dataHandler = \"" + dataHandler + "\";");
-                fw.write("}");
-            }
-            for (Map.Entry<String, String> entry : defs.entrySet()) {
-                fw.write(entry.getKey());
-                fw.write(entry.getValue());
-            }
-            if (parent == null) {
-                fw.write("public JElement body(final Attrs attrs) {");
-                fw.write("callDataHandler(attrs);\n");
-                fw.write("JBody " + getVarName() + " = new JBody();\n");
+        String name = getAttrs().get("name");
+        String parent = getAttrs().get("parent");
 
-                fw.write(body);
-                fw.write("return " + getVarName() + ";");
-                fw.write("}");
-            }
+        BlockMeta meta = new BlockMeta(getSeq(), name, getAttrs());
+        meta.setBody(body);
+        if (parent != null)
+            meta.setParentName(processPrefix(parent));
+        meta.setDefs(defs);
+        meta.setPack(getCurPackage());
 
-            fw.write("}");
-            fw.close();
+        String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentUri()).getPath();
+        meta.setRelPath(relPath);
 
-
-            System.out.println(fw.toString());
-            String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentUri()).getPath();
-            JavaFileObject file = new JavaSourceFromString(relPath + name, fw.toString());
-            genContext.getFiles().add(file);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        JavaFileObject file = new JavaSourceFromString(relPath + name, meta.toSource());
+        genContext.getFiles().add(file);
     }
 
 

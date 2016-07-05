@@ -29,7 +29,7 @@ public class MemoryClassLoader extends ClassLoader {
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         synchronized (this.manager) {
-            CompiledJavaObject compiledObject = this.manager.map.get(name);
+            CompiledJavaObject compiledObject = MemoryFileManager.map.get(name);
             if (compiledObject != null) {
                 byte[] array = compiledObject.toByteArray();
                 return defineClass(name, array, 0, array.length);
@@ -38,12 +38,13 @@ public class MemoryClassLoader extends ClassLoader {
         return super.findClass(name);
     }
 
+    @Override
     public URL getResource(String name) {
         try {
             if (super.getResource(name) != null) {
                 return super.getResource(name);
             } else {
-                CompiledJavaObject object = manager.map.get(name.substring(0, name.indexOf(".")).replace("/", "."));
+                CompiledJavaObject object = MemoryFileManager.map.get(name.substring(0, name.indexOf(".")).replace("/", "."));
                 return object != null ? object.toUri().toURL() : null;
             }
         } catch (MalformedURLException e) {
@@ -56,8 +57,8 @@ public class MemoryClassLoader extends ClassLoader {
         if (super.getResourceAsStream(name) != null) {
             return super.getResourceAsStream(name);
         } else {
-            CompiledJavaObject object = manager.map.get(name.substring(0, name.indexOf(".")).replace("/", "."));
-            return object != null ? new ByteArrayInputStream(object.openOutputStream().toByteArray()): null;
+            CompiledJavaObject object = MemoryFileManager.map.get(name.substring(0, name.indexOf(".")).replace("/", "."));
+            return object != null ? new ByteArrayInputStream(object.openOutputStream().toByteArray()) : null;
         }
     }
 

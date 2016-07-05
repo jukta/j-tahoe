@@ -15,8 +15,10 @@ public abstract class AbstractHandler {
     private String name;
     private Map<String, String> attrs;
     protected GenContext genContext;
-    private String varName;
+
     private static int seq = 0;
+    private int $seq = 0;
+
     public static final Pattern EL_EXP_PATTERN = Pattern.compile("\\$\\{([^\\}]*)\\}");
     public static final Pattern VARIABLE_EXP_PATTERN = Pattern.compile("([a-zA-Z_$][a-zA-Z_$0-9]*(\\.[a-zA-Z_$][a-zA-Z_$0-9]*)*)");
 
@@ -25,7 +27,7 @@ public abstract class AbstractHandler {
         this.attrs = attrs;
         this.parent = parent;
         this.genContext = genContext;
-        varName = "__" + seq++;
+        $seq = seq++;
     }
 
     public void start() {
@@ -42,6 +44,10 @@ public abstract class AbstractHandler {
 
     public void end() {
 
+    }
+
+    public int getSeq() {
+        return $seq;
     }
 
     public AbstractHandler getParent() {
@@ -139,7 +145,7 @@ public abstract class AbstractHandler {
     }
 
     public String getVarName() {
-        return varName;
+        return "__" + $seq;
     }
 
     protected String processPrefix(String name) {

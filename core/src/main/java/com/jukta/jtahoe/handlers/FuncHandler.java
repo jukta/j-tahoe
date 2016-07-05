@@ -29,11 +29,13 @@ public class FuncHandler extends BlockHandler {
         String name = getName();
         name = processPrefix(name);
         String el = "new " + name + "()";
-        el += "{";
-        for (Map.Entry<String, String> entry : defs.entrySet()) {
-             el += entry.getKey() + entry.getValue();
+        if (!defs.isEmpty()) {
+            el += "{";
+            for (Map.Entry<String, String> entry : defs.entrySet()) {
+                el += entry.getKey() + entry.getValue();
+            }
+            el += "}";
         }
-        el += "}";
         el += ".body(" + attrs + ")";
         getParent().addElement(el);
     }
