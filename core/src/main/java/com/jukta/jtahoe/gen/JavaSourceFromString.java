@@ -1,4 +1,4 @@
-package com.jukta.jtahoe;
+package com.jukta.jtahoe.gen;
 
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;

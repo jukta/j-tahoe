@@ -1,4 +1,4 @@
-package com.jukta.jtahoe;
+package com.jukta.jtahoe.gen;
 
 import com.jukta.jtahoe.handlers.*;
 import org.xml.sax.Attributes;

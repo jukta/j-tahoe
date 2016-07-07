@@ -1,6 +1,6 @@
 package com.jukta.jtahoe.handlers;
 
-import com.jukta.jtahoe.GenContext;
+import com.jukta.jtahoe.gen.GenContext;
 
 import java.util.Map;
 

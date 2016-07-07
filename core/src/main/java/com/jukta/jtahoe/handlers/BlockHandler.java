@@ -1,7 +1,7 @@
 package com.jukta.jtahoe.handlers;
 
-import com.jukta.jtahoe.GenContext;
-import com.jukta.jtahoe.JavaSourceFromString;
+import com.jukta.jtahoe.gen.GenContext;
+import com.jukta.jtahoe.gen.JavaSourceFromString;
 import com.jukta.jtahoe.definitions.BlockMeta;
 
 import javax.tools.JavaFileObject;

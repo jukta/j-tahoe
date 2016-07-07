@@ -1,6 +1,6 @@
 package com.jukta.maven;
 
-import com.jukta.jtahoe.DirHandler;
+import com.jukta.jtahoe.gen.DirHandler;
 import com.jukta.jtahoe.resource.ResourceType;
 import com.jukta.jtahoe.resource.Resources;
 import com.jukta.jtahoe.file.JTahoeXml;

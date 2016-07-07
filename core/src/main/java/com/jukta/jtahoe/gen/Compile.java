@@ -1,5 +1,7 @@
-package com.jukta.jtahoe;
+package com.jukta.jtahoe.gen;
 
+import com.jukta.jtahoe.Attrs;
+import com.jukta.jtahoe.Block;
 import com.jukta.jtahoe.file.JTahoeFileXml;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
