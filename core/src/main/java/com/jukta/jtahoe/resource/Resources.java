@@ -1,4 +1,4 @@
-package com.jukta.jtahoe;
+package com.jukta.jtahoe.resource;
 
 import com.jukta.jtahoe.file.JTahoeResourceXml;
 import com.jukta.jtahoe.file.JTahoeXml;
@@ -23,7 +23,8 @@ public class Resources {
         this.blocksFolder = blocksFolder;
     }
 
-    public List<JTahoeXml> getFiles(FilenameFilter filter) {
+    public List<JTahoeXml> getFiles(ResourceType resourceType) {
+        FilenameFilter filter = new Resources.ExtensionFilter(resourceType.getExtension());
         URL url = getClass().getClassLoader().getResource(blocksFolder);
         List<JTahoeXml> xmlFilesList = new ArrayList<>();
         try {
@@ -46,7 +47,7 @@ public class Resources {
         }
     }
 
-    public static class ExtensionFilter implements FilenameFilter {
+    private static class ExtensionFilter implements FilenameFilter {
 
         private String extension;
 

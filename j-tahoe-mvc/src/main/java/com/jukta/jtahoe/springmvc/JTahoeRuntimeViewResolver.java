@@ -1,7 +1,8 @@
 package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.DirHandler;
-import com.jukta.jtahoe.Resources;
+import com.jukta.jtahoe.resource.ResourceType;
+import com.jukta.jtahoe.resource.Resources;
 import com.jukta.jtahoe.file.JTahoeXml;
 import com.jukta.jtahoe.loader.MemoryClassLoader;
 import org.springframework.beans.BeansException;
@@ -41,7 +42,7 @@ public class JTahoeRuntimeViewResolver implements ViewResolver, InitializingBean
     }
 
     private List<JTahoeXml> getXmlsFromResources() throws IOException, URISyntaxException {
-        return new Resources(blocksFolder).getFiles(new Resources.ExtensionFilter("xml"));
+        return new Resources(blocksFolder).getFiles(ResourceType.XML);
     }
 
     public void setBlocksFolder(String blocksFolder) {

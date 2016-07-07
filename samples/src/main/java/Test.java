@@ -14,7 +14,8 @@ public class Test {
     public static void main(String[] args) throws URISyntaxException, IOException {
 
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] r = resolver.getResources("classpath*:**/*.xml");
+
+        Resource[] r = resolver.getResources("classpath*:/blocks/**/*.xml");
         for (Resource r1 : r) {
             System.out.println(r1.getURL());
         }

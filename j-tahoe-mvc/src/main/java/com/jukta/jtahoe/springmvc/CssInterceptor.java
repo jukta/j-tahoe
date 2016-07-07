@@ -1,6 +1,7 @@
 package com.jukta.jtahoe.springmvc;
 
-import com.jukta.jtahoe.Resources;
+import com.jukta.jtahoe.resource.ResourceType;
+import com.jukta.jtahoe.resource.Resources;
 import com.jukta.jtahoe.file.JTahoeXml;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -8,7 +9,6 @@ import sun.misc.IOUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FilenameFilter;
 import java.util.List;
 
 /**
@@ -35,8 +35,8 @@ public class CssInterceptor extends HandlerInterceptorAdapter implements Initial
         return false;
     }
 
-    protected FilenameFilter getFilter() {
-        return new Resources.ExtensionFilter("css");
+    protected ResourceType getFilter() {
+        return ResourceType.CSS;
     }
 
     @Override
