@@ -15,7 +15,7 @@ public class Test {
 
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
-        Resource[] r = resolver.getResources("classpath*:/blocks/**/*.xml");
+        Resource[] r = resolver.getResources("classpath*:/**/MANIFEST.MF");
         for (Resource r1 : r) {
             System.out.println(r1.getURL());
         }

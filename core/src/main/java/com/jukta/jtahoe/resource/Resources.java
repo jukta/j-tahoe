@@ -25,7 +25,7 @@ public class Resources {
 
     public List<JTahoeXml> getFiles(ResourceType resourceType) {
         FilenameFilter filter = new Resources.ExtensionFilter(resourceType.getExtension());
-        URL url = getClass().getClassLoader().getResource(blocksFolder);
+        URL url = getRoot();
         List<JTahoeXml> xmlFilesList = new ArrayList<>();
         try {
             getXmlFiles(xmlFilesList, new File(url.getFile()), filter, url);
@@ -33,6 +33,10 @@ public class Resources {
             throw new RuntimeException();
         }
         return xmlFilesList;
+    }
+
+    protected URL getRoot() {
+        return getClass().getClassLoader().getResource(blocksFolder);
     }
 
 

@@ -8,7 +8,7 @@
     <modules>
         <module>core</module>
         <module>j-tahoe-mvc</module>
-        <module>samples</module>
+        <!--<module>samples</module>-->
     </modules>
 
     <build>
