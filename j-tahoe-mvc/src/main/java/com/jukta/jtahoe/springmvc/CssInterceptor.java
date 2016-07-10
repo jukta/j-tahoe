@@ -41,7 +41,9 @@ public class CssInterceptor extends HandlerInterceptorAdapter implements Initial
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        List<JTahoeXml> files = new Resources(blocksFolder).getFiles(getFilter());
+        LibraryResources lr = new LibraryResources();
+        List<JTahoeXml> files = lr.getFiles(getFilter());
+        files.addAll(new Resources(blocksFolder).getFiles(getFilter()));
         StringBuilder sb = new StringBuilder();
         for (JTahoeXml f : files) {
             String cont = new String(IOUtils.readFully(f.getInputSource().getByteStream(), -1, false));

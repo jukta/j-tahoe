@@ -30,7 +30,7 @@ public class Resources {
         try {
             getXmlFiles(xmlFilesList, new File(url.getFile()), filter, url);
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
         return xmlFilesList;
     }
