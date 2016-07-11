@@ -24,9 +24,7 @@
             <div class="mainLayout">
                 <div class="leftPanel">
                     <wdg:FilterPanel a="a1">
-                        <sv:def>
-                            Overridden def
-                        </sv:def>
+                        Overridden def
                     </wdg:FilterPanel>
                     <sv:include name="widgets.FilterPanel">
                     </sv:include>

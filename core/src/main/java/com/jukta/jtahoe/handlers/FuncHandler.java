@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class FuncHandler extends BlockHandler {
 
-    String body = "new JBody()";
+    private String body = "";
 
     public FuncHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
         super(genContext, name, attrs, parent);
@@ -22,6 +22,18 @@ public class FuncHandler extends BlockHandler {
 
     @Override
     public void end() {
+
+        if (body.length() > 0 && defs.size() == 0) {
+            DefHandler defHandler = new DefHandler(getGenContext(), "sv:def", getAttrs(), this) {
+                @Override
+                public String getVarName() {
+                    return FuncHandler.this.getVarName();
+                }
+            };
+            defHandler.setName(null);
+            defHandler.setBody(body);
+            defHandler.end();
+        }
         String attrs = "new Attrs(attrs)";
         for (String s : getAttrs().keySet()) {
             attrs += ".set(\"" + s + "\", " + parseExp(getAttrs().get(s), true) + ")";

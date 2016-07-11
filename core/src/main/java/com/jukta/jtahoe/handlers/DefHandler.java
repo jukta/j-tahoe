@@ -18,6 +18,14 @@ public class DefHandler extends AbstractHandler {
         this.name = getAttrs().get("name");
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
     public String getDefName() {
         return name;
     }

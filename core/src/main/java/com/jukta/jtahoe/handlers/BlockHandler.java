@@ -36,6 +36,18 @@ public class BlockHandler extends AbstractHandler {
         String name = getAttrs().get("name");
         String parent = getAttrs().get("parent");
 
+        if (parent != null && defs.size() == 0) {
+            DefHandler defHandler = new DefHandler(getGenContext(), "sv:def", getAttrs(), this) {
+                @Override
+                public String getVarName() {
+                    return BlockHandler.this.getVarName();
+                }
+            };
+            defHandler.setName(null);
+            defHandler.setBody(body);
+            defHandler.end();
+        }
+
         BlockMeta meta = new BlockMeta(getSeq(), name, getAttrs());
         meta.setBody(body);
         if (parent != null)
