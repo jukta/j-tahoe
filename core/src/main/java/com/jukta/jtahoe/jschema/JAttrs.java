@@ -33,4 +33,20 @@ public class JAttrs {
         }
         return res;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JAttrs jAttrs = (JAttrs) o;
+
+        return attrs != null ? attrs.equals(jAttrs.attrs) : jAttrs.attrs == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return attrs != null ? attrs.hashCode() : 0;
+    }
 }

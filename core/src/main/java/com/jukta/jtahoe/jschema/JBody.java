@@ -32,4 +32,20 @@ public class JBody implements JElement {
         }
         return res;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JBody jBody = (JBody) o;
+
+        return elements != null ? elements.equals(jBody.elements) : jBody.elements == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return elements != null ? elements.hashCode() : 0;
+    }
 }

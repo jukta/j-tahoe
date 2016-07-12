@@ -28,7 +28,9 @@ public class BlockHandler extends AbstractHandler {
     }
 
     public void addDef(String name, String body) {
-        defs.put(name, body);
+        if (defs.put(name, body) != null) {
+            throw new RuntimeException("Duplicate def in block: " + getAttrs().get("name"));
+        }
     }
 
     @Override
