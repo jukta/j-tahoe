@@ -28,7 +28,7 @@
                     </wdg:FilterPanel>
                     <sv:include name="widgets.FilterPanel">
                     </sv:include>
-                    <lb:Button name="hello"/>
+                    <!--<lb:Button name="hello"/>-->
                 </div>
                 <div class="rightPanel">
                     <wdg:ClientPanel title="Arrowfield Trading" list="${list}"/>

@@ -23,6 +23,7 @@
 
     <sv:block name="blockC" parent="blockA">
         <sv:def name="qwe">
+            <sv:set name="x" value="set_x" override="true"/>
             override ${x}
             <sv:parent/>
         </sv:def>

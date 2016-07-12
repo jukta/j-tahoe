@@ -15,11 +15,11 @@
             <artifactId>j-tahoe-mvc</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.jukta</groupId>
-            <artifactId>lib-test</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.jukta</groupId>-->
+            <!--<artifactId>lib-test</artifactId>-->
+            <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>

@@ -73,6 +73,8 @@ public class FileHandler implements ContentHandler {
             handler = new TagHandler(genContext, qName, attributes, parent);
         } else if (qName.startsWith("sv:include")) {
             handler = new IncludeHandler(genContext, qName, attributes, parent);
+        } else if (qName.startsWith("sv:set")) {
+            handler = new SetHandler(genContext, qName, attributes, parent);
         } else if (genContext.getPrefixes().containsKey(qName.split(":")[0])) {
             handler = new FuncHandler(genContext, qName, attributes, parent);
         } else {
