@@ -52,8 +52,14 @@ public class BlockHandler extends AbstractHandler {
 
         BlockMeta meta = new BlockMeta(getSeq(), name, getAttrs());
         meta.setBody(body);
-        if (parent != null)
+        if (parent != null) {
             meta.setParentName(processPrefix(parent));
+        }
+        if (getAttrs().get("dataHandler") != null) {
+            meta.setDataHandler(getAttrs().get("dataHandler"));
+        }
+        meta.setArgs(createArgs(getAttrs()));
+
         meta.setDefs(defs);
         meta.setPack(getCurPackage());
 
@@ -64,6 +70,18 @@ public class BlockHandler extends AbstractHandler {
         genContext.getFiles().add(file);
     }
 
+    private Map<String, String> createArgs(Map<String, String> attrs) {
+        Map<String, String> args = new HashMap<>();
+        for (Map.Entry<String, String> entry : attrs.entrySet()) {
+            if ("name".equals(entry.getKey())
+                    || "parent".equals(entry.getKey())
+                    || "dataHandler".equals(entry.getKey())) {
+                continue;
+            }
+            args.put(entry.getKey(), parseExp(entry.getValue(), true));
+        }
+        return args;
+    }
 
     public Map<String, String> getDefs() {
         return defs;

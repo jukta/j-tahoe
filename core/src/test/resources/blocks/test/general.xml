@@ -112,4 +112,17 @@
         </sv:def>
     </sv:block>
 
+    <sv:block name="BlockConstructionArgs_A">
+        <div>${a}</div>
+        ${b}
+    </sv:block>
+
+    <sv:block name="BlockConstructionArgs_B" parent="BlockConstructionArgs_A" a="A">
+
+    </sv:block>
+
+    <sv:block name="BlockConstructionArgs_C" parent="BlockConstructionArgs_B" b="B">
+
+    </sv:block>
+
 </sv:root>

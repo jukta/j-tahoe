@@ -1,5 +1,6 @@
 package com.jukta.jtahoe;
 
+import com.jukta.jtahoe.jschema.JBody;
 import com.jukta.jtahoe.jschema.JElement;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.util.SimpleContext;
@@ -17,7 +18,12 @@ public abstract class Block {
     protected String dataHandler;
     private static ExpressionFactory factory = new ExpressionFactoryImpl();
 
-    public abstract JElement body(Attrs attrs);
+    public JElement body(Attrs attrs) {
+        init(attrs);
+        return new JBody();
+    }
+
+    public void init(Attrs attrs) {};
 
     public void callDataHandler(Attrs attrs) {
         if (dataHandler != null) {

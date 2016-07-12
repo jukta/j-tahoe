@@ -89,5 +89,16 @@ public class GeneralTest extends AbstractTest {
         assertEquals(expected, el);
     }
 
+    @Test
+    public void blockConstructionArgs() {
+        Block b = newBlockInstance("test.BlockConstructionArgs_C");
+        JElement el = b.body(new Attrs());
+        JBody expected = new JBody()
+                .addElement(new JTag("div").setjBody(new JBody()
+                        .addElement(new JText("A"))))
+                .addElement(new JText("B"));
+        assertEquals(expected, el);
+    }
+
 
 }

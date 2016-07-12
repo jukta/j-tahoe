@@ -10,22 +10,23 @@ import java.util.Map;
  */
 public class BlockMeta {
 
-    int seq;
-    String pack;
-    String name;
-    BlockMeta parent;
-    String parentName;
-    String body;
-    String relPath;
-    Map<String, String> defs;
-    Map<String, String> attrs;
+    private int seq;
+    private String pack;
+    private String name;
+    private BlockMeta parent;
+    private String parentName;
+    private String dataHandler;
+    private String body;
+    private String relPath;
+    private Map<String, String> defs;
+    private Map<String, String> attrs;
+    private Map<String, String> args;
 
     public BlockMeta(int seq, String name, Map<String, String> attrs) {
         this.name = name;
         this.attrs = attrs;
         this.seq = seq;
     }
-
 
     public String toSource() {
         try {
@@ -51,11 +52,19 @@ public class BlockMeta {
             }
             if (parentName == null) {
                 sw.write("public JElement body(final Attrs attrs) {");
+                sw.write("super.body(attrs);\n");
                 sw.write("callDataHandler(attrs);\n");
                 sw.write("JBody " + getVarName() + " = new JBody();\n");
 
                 sw.write(body);
                 sw.write("return " + getVarName() + ";");
+                sw.write("}");
+            } else if (args != null && !args.isEmpty()) {
+                sw.write("public void init(Attrs attrs) {");
+                sw.write("super.init(attrs);");
+                for (Map.Entry<String, String> entry : args.entrySet()) {
+                    sw.write("attrs.set(\"" + entry.getKey() + "\", " + entry.getValue() + ");");
+                }
                 sw.write("}");
             }
 
@@ -87,6 +96,14 @@ public class BlockMeta {
 
     public void setParentName(String parentName) {
         this.parentName = parentName;
+    }
+
+    public void setDataHandler(String dataHandler) {
+        this.dataHandler = dataHandler;
+    }
+
+    public void setArgs(Map<String, String> args) {
+        this.args = args;
     }
 
     public void setBody(String body) {

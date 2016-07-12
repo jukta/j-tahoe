@@ -37,11 +37,7 @@ public class AbstractTest {
 
     protected Block newBlockInstance(String blockName) {
         try {
-            if (classLoader == null) {
-                return (Block) Class.forName(blockName).newInstance();
-            } else {
-                return (Block) Class.forName(blockName, true, classLoader).newInstance();
-            }
+            return (Block) Class.forName(blockName, true, classLoader).newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
