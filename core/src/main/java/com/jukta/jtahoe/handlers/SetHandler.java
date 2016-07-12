@@ -14,18 +14,24 @@ public class SetHandler extends AbstractHandler {
         super(genContext, name, attrs, parent);
     }
 
-    String body = "";
-
     @Override
     public void end() {
         String name = getAttrs().get("name");
         String value = parseExp(getAttrs().get("value"), true);
         String override = getAttrs().get("override");
-        String visibility = getAttrs().get("visibility");
+        boolean isGlobal = "GLOBAL".equalsIgnoreCase(getAttrs().get("visibility"));
 
-        String exp = "attrs.set(\"" + name + "\", " + value + ");";
-        if ("false".equals(override)) {
-            exp = "if (attrs.get(\"" + name + "\") == null) {" + exp + " }";
+        String exp;
+        if (!isGlobal) {
+            exp = "attrs.set(\"" + name + "\", " + value + ");";
+            if ("false".equals(override)) {
+                exp = "if (attrs.get(\"" + name + "\") == null) {" + exp + " }";
+            }
+        } else {
+            exp = "attrs.setAttribute(\"" + name + "\", " + value + ");";
+            if ("false".equals(override)) {
+                exp = "if (attrs.getAttribute(\"" + name + "\") == null) {" + exp + " }";
+            }
         }
         getParent().appendCode(exp);
     }
@@ -34,11 +40,5 @@ public class SetHandler extends AbstractHandler {
     @Override
     public void appendCode(String code) {
         super.appendCode(code);
-    }
-
-    private enum Visibility {
-        GLOBAL,
-        BLOCK,
-        LOCAL
     }
 }
