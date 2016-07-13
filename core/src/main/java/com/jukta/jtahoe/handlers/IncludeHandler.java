@@ -16,7 +16,7 @@ public class IncludeHandler extends SimpleBlockHandler {
     @Override
     public void end() {
         String name = getAttrs().get("name");
-        String ref = parseExp(getAttrs().get("ref"), true);
+        String ref = getAttrs().get("ref");
         String el;
 
         String attrs = "new Attrs(attrs)";
@@ -26,7 +26,7 @@ public class IncludeHandler extends SimpleBlockHandler {
             }
             el = "new com.jukta.jtahoe.IncludeBlock((String)" + parseExp(name, true) + ").body(" + attrs + ")";
         } else if (name == null && ref != null) {
-
+            ref = parseExp(ref, true);
             el = "((JBody)" + ref + ")";
         } else {
             throw new RuntimeException("Name or ref should be defined in include");
