@@ -14,24 +14,45 @@ public class SetHandler extends AbstractHandler {
         super(genContext, name, attrs, parent);
     }
 
+    private String element = null;
+
+    @Override
+    public void addElement(String element) {
+        if (this.element != null) {
+            throw new RuntimeException("Only one element is supported for set");
+        }
+        this.element = element;
+    }
+
     @Override
     public void end() {
         String name = getAttrs().get("name");
-        String value = parseExp(getAttrs().get("value"), true);
+        String value = getAttrs().get("value");
         String override = getAttrs().get("override");
-        boolean isGlobal = "GLOBAL".equalsIgnoreCase(getAttrs().get("visibility"));
 
         String exp;
-        if (!isGlobal) {
-            exp = "attrs.set(\"" + name + "\", " + value + ");";
+        if (element == null && value != null) {
+            value = parseExp(value, true);
+            boolean isGlobal = "GLOBAL".equalsIgnoreCase(getAttrs().get("visibility"));
+
+            if (!isGlobal) {
+                exp = "attrs.set(\"" + name + "\", " + value + ");";
+                if ("false".equals(override)) {
+                    exp = "if (attrs.get(\"" + name + "\") == null) {" + exp + " }";
+                }
+            } else {
+                exp = "attrs.setAttribute(\"" + name + "\", " + value + ");";
+                if ("false".equals(override)) {
+                    exp = "if (attrs.getAttribute(\"" + name + "\") == null) {" + exp + " }";
+                }
+            }
+        } else if (element != null && value == null) {
+            exp = "attrs.set(\"" + name + "\", " + element + ");";
             if ("false".equals(override)) {
                 exp = "if (attrs.get(\"" + name + "\") == null) {" + exp + " }";
             }
         } else {
-            exp = "attrs.setAttribute(\"" + name + "\", " + value + ");";
-            if ("false".equals(override)) {
-                exp = "if (attrs.getAttribute(\"" + name + "\") == null) {" + exp + " }";
-            }
+            throw new RuntimeException("Value or element should be defined in set");
         }
         getParent().appendCode(exp);
     }

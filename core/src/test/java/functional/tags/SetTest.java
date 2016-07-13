@@ -57,4 +57,16 @@ public class SetTest extends AbstractTest {
         assertEquals(expected, el);
     }
 
+    @Test
+    public void SetBlockRef() {
+        Block b = newBlockInstance("test.tags.SetBlockRef_B");
+        JElement el = b.body(new Attrs());
+        JBody expected = new JBody()
+                .addElement(new JBody()
+                        .addElement(new JBody()
+                                .addElement(new JText("B"))));
+        assertEquals(expected, el);
+    }
+
+
 }

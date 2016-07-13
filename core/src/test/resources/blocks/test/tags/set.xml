@@ -24,4 +24,19 @@
         ${b}
     </sv:block>
 
+    <sv:block name="SetBlockRef_A">
+        <sv:def>
+            A
+        </sv:def>
+    </sv:block>
+
+    <sv:block name="SetBlockRef_B">
+        <sv:set name="b">
+            <lc:SetBlockRef_A>
+               B
+            </lc:SetBlockRef_A>
+        </sv:set>
+        <sv:include ref="${b}"/>
+    </sv:block>
+
 </sv:root>

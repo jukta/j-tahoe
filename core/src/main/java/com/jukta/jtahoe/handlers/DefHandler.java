@@ -52,10 +52,10 @@ public class DefHandler extends AbstractHandler {
         BlockHandler blockHandler = getBlock();
         String def;
         if (blockHandler instanceof FuncHandler) {
-            def = "public JElement " + defName + "(Attrs _attrs)";
+            def = "public JElement " + defName + "(final Attrs _attrs)";
 
         } else {
-            def = "public JElement " + defName + "(Attrs attrs)";
+            def = "public JElement " + defName + "(final Attrs attrs)";
         }
         StringWriter fw = new StringWriter();
         fw.write("{");

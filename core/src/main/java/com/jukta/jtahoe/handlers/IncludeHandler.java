@@ -15,12 +15,22 @@ public class IncludeHandler extends SimpleBlockHandler {
 
     @Override
     public void end() {
-        String attrs = "new Attrs(attrs)";
-        for (String s : getAttrs().keySet()) {
-            attrs += ".set(\"" + s + "\", " + parseExp(getAttrs().get(s), true) + ")";
-        }
         String name = getAttrs().get("name");
-        String el = "new com.jukta.jtahoe.IncludeBlock((String)" + parseExp(name, true) + ").body(" + attrs + ")";
+        String ref = parseExp(getAttrs().get("ref"), true);
+        String el;
+
+        String attrs = "new Attrs(attrs)";
+        if (name != null && ref == null) {
+            for (String s : getAttrs().keySet()) {
+                attrs += ".set(\"" + s + "\", " + parseExp(getAttrs().get(s), true) + ")";
+            }
+            el = "new com.jukta.jtahoe.IncludeBlock((String)" + parseExp(name, true) + ").body(" + attrs + ")";
+        } else if (name == null && ref != null) {
+
+            el = "((JBody)" + ref + ")";
+        } else {
+            throw new RuntimeException("Name or ref should be defined in include");
+        }
         getParent().addElement(el);
     }
 
