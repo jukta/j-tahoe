@@ -2,7 +2,7 @@
 
     <sv:block name="SetLocal_A">
         <sv:set name="a" value="A"/>
-        ${a}
+        abc${a} ${a} def
     </sv:block>
 
     <sv:block name="SetLocalOverride_A">

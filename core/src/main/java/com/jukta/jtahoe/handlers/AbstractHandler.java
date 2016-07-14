@@ -73,38 +73,44 @@ public abstract class AbstractHandler {
     public String parseExp(String str, boolean wrap) {
         Matcher m = EL_EXP_PATTERN.matcher(str);
         if (m.find()) {
-            if (wrap) {
-                String match = m.group(1);
-                boolean hitStart = m.start() > 0;
-                boolean hitEnd = m.end() < str.length();
+            int minSt = Integer.MAX_VALUE;
+            int maxEnd = Integer.MIN_VALUE;
+            boolean hMinSt = true;
+            boolean hMaxEnd = true;
+            do {
+                if (wrap) {
+                    String match = m.group(1);
+                    minSt = Math.min(minSt, m.start());
+                    maxEnd = Math.max(maxEnd, m.end());
+                    hMinSt = minSt > 0;
+                    hMaxEnd = maxEnd < str.length();
 
-                Matcher varMatcher = VARIABLE_EXP_PATTERN.matcher(match);
-                int shift = 0;
-                while (varMatcher.find()) {
-                    match = new StringBuilder(match).insert(varMatcher.start() + shift, "attrs.").toString();
-                    shift += 6;
-                }
+                    Matcher varMatcher = VARIABLE_EXP_PATTERN.matcher(match);
+                    int shift = 0;
+                    while (varMatcher.find()) {
+                        match = new StringBuilder(match).insert(varMatcher.start() + shift, "attrs.").toString();
+                        shift += 6;
+                    }
 
-                String rep = "eval(attrs, \"" + match + "\")";
-                if (hitStart) {
-                    rep = "\" + " + rep;
+                    String rep = "eval(attrs, \"" + match + "\")";
+                    if (m.start() > 0) {
+                        rep = "\" + " + rep;
+                    }
+                    if (m.end() < str.length()) {
+                        rep = rep + " + \"";
+                    }
+                    str = m.replaceFirst(rep);
+                } else {
+                    str = m.replaceFirst("eval(attrs, \"attrs." + m.group(1) + "\")");
                 }
-                if (hitEnd) {
-                    rep = rep + " + \"";
-                }
-
-                String str1 = m.replaceFirst(rep);
-                if (hitStart) {
-                    str1 = "\"" + str1;
-                }
-                if (hitEnd) {
-                    str1 = str1 + "\"";
-                }
-                str = str1;
-            } else {
-                str = m.replaceFirst("eval(attrs, \"attrs." + m.group(1) + "\")");
+                m = EL_EXP_PATTERN.matcher(str);
+            } while (m.find());
+            if (hMinSt) {
+                str = "\"" + str;
             }
-
+            if (hMaxEnd) {
+                str = str + "\"";
+            }
         } else if (wrap) {
             str = "\"" + str + "\"";
         }

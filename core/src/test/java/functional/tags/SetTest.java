@@ -17,7 +17,7 @@ public class SetTest extends AbstractTest {
     public void SetLocal() {
         Block b = newBlockInstance("test.tags.SetLocal_A");
         JElement el = b.body(new Attrs());
-        JBody expected = new JBody().addElement(new JText("A"));
+        JBody expected = new JBody().addElement(new JText("abcA A def"));
         assertEquals(expected, el);
     }
 
