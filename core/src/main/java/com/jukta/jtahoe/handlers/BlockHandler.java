@@ -14,17 +14,28 @@ import java.util.Map;
 public class BlockHandler extends AbstractHandler {
     private String body = "";
     protected Map<String, String> defs = new HashMap<String, String>();
+    private DefHandler defHandler;
 
     public BlockHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
         super(genContext, name, attrs, parent);
+        if (attrs.get("parent") != null)
+            defHandler = new DefHandler(genContext, "sv:def", new HashMap<String, String>(), this);
     }
 
     public void appendCode(String code) {
-        body += code;
+        if (defHandler != null) {
+            defHandler.appendCode(code);
+        } else {
+            body += code;
+        }
     }
 
     public void addElement(String element) {
-        body += getVarName() + ".addElement(" + element + ");\n";
+        if (defHandler != null) {
+            defHandler.addElement(element);
+        } else {
+            body += getVarName() + ".addElement(" + element + ");\n";
+        }
     }
 
     public void addDef(String name, String body) {
@@ -38,17 +49,9 @@ public class BlockHandler extends AbstractHandler {
         String name = getAttrs().get("name");
         String parent = getAttrs().get("parent");
 
-        if (parent != null && defs.size() == 0) {
-            DefHandler defHandler = new DefHandler(getGenContext(), "sv:def", getAttrs(), this) {
-                @Override
-                public String getVarName() {
-                    return BlockHandler.this.getVarName();
-                }
-            };
-            defHandler.setName(null);
-            defHandler.setBody(body);
-            defHandler.end();
-        }
+        DefHandler dh = defHandler;
+        defHandler = null;
+        if (defs.size() == 0 && dh != null && dh.body.length() > 0) dh.end();
 
         BlockMeta meta = new BlockMeta(getSeq(), name, getAttrs());
         meta.setBody(body);

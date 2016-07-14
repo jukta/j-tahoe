@@ -2,6 +2,7 @@ package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.gen.GenContext;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -10,30 +11,31 @@ import java.util.Map;
 public class FuncHandler extends BlockHandler {
 
     private String body = "";
+    private DefHandler defHandler;
 
     public FuncHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
         super(genContext, name, attrs, parent);
+        defHandler = new DefHandler(genContext, "sv:def", new HashMap<String, String>(), this);
+
     }
 
     @Override
     public void addElement(String element) {
-        body += getVarName() + ".addElement(" + element + ");";
+        if (defHandler != null)
+            defHandler.addElement(element);
+    }
+
+    @Override
+    public void appendCode(String code) {
+        if (defHandler != null)
+            defHandler.appendCode(code);
     }
 
     @Override
     public void end() {
-
-        if (body.length() > 0 && defs.size() == 0) {
-            DefHandler defHandler = new DefHandler(getGenContext(), "sv:def", getAttrs(), this) {
-                @Override
-                public String getVarName() {
-                    return FuncHandler.this.getVarName();
-                }
-            };
-            defHandler.setName(null);
-            defHandler.setBody(body);
-            defHandler.end();
-        }
+        DefHandler dh = defHandler;
+        defHandler = null;
+        if (defs.size() == 0 && dh.body.length() > 0) dh.end();
         String attrs = "new Attrs(attrs)";
         for (String s : getAttrs().keySet()) {
             attrs += ".set(\"" + s + "\", " + parseExp(getAttrs().get(s), true) + ")";

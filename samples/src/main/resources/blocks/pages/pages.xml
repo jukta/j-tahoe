@@ -2,6 +2,7 @@
 
     <sv:import prefix="wdg" file="widgets"/>
     <sv:import prefix="lb" file="test"/>
+    <sv:import prefix="lt" file="layout"/>
 
     <sv:block name="abstractPage">
         <sv:tag name="!DOCTYPE html"/>
@@ -24,7 +25,10 @@
             <div class="mainLayout">
                 <div class="leftPanel">
                     <wdg:FilterPanel a="a1">
-                        Overridden def
+                        <lt:horizontalLayout padding="padding" spacing="spacing">
+                                <span>Overridden</span>
+                                <span>def</span>
+                        </lt:horizontalLayout>
                     </wdg:FilterPanel>
                     <sv:include name="widgets.FilterPanel">
                     </sv:include>

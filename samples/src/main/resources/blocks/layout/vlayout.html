@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .verticalLayout.spacing > * {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .verticalLayout.spacing > *:last-child {
+            margin-bottom: 0;
+        }
+        .verticalLayout.padding, .horizontalLayout.padding {
+            padding: 10px;
+        }
+        .horizontalLayout > * {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .horizontalLayout.spacing > *:last-child {
+            margin-right: 0;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="verticalLayout spacing padding">
+    <div><span>hello</span><span>hello</span></div>
+    <div><span>hello</span></div>
+    <div><span>hello</span></div>
+</div>
+
+<div class="horizontalLayout spacing padding">
+    <div><span>hello</span><span>hello</span></div>
+    <div><span>hello</span></div>
+    <div><span>hello</span></div>
+</div>
+
+</body>
+</html>
