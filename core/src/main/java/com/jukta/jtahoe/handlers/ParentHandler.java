@@ -21,8 +21,16 @@ public class ParentHandler extends AbstractHandler {
     }
 
     private String getPar(AbstractHandler handler) {
-        if (handler instanceof BlockHandler) return "body";
-        if (handler instanceof DefHandler) return "def_" + ((DefHandler) handler).getDefName();
+        if (handler instanceof BlockHandler) {
+            if (handler.getAttrs().get("parent") != null) {
+                return "def";
+            }
+        }
+        if (handler instanceof DefHandler) {
+            String defName = ((DefHandler) handler).getDefName();
+            if (defName == null) return "def";
+            return "def_" + defName;
+        }
         else return getPar(handler.getParent());
     }
 
