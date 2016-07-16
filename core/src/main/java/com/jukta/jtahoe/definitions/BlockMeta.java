@@ -29,6 +29,9 @@ public class BlockMeta {
     }
 
     public String toSource() {
+        if (pack == null || "".equals(pack)) {
+            throw new RuntimeException("Package is empty for block " + getFullName());
+        }
         try {
             String dataHandler = attrs.get("dataHandler");
             StringWriter sw = new StringWriter();

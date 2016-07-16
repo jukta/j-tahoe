@@ -1,8 +1,10 @@
-<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" pref="lc">
+<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" pref="lc"
+         xmlns:frm="http://www.w3.org/1999/xhtml" xmlns:fm="http://www.w3.org/1999/xhtml">
 
     <sv:import prefix="wdg" file="widgets"/>
     <sv:import prefix="lb" file="test"/>
     <sv:import prefix="lt" file="layout"/>
+    <sv:import prefix="fm" file="form"/>
 
     <sv:block name="abstractPage">
         <sv:tag name="!DOCTYPE html"/>
@@ -24,11 +26,20 @@
         <sv:def name="body">
             <div class="mainLayout">
                 <div class="leftPanel">
+
                     <wdg:FilterPanel a="a1">
-                        <lt:horizontalLayout padding="padding" spacing="spacing">
-                                <span>Overridden</span>
-                                <span>def</span>
-                        </lt:horizontalLayout>
+                        <lt:verticalLayout padding="padding" spacing="spacing">
+                            <fm:textField fieldName="hello1" label="Field 1" value="hello 1" error="true"/>
+                            <fm:textField fieldName="hello2" label="Field 2" value="hello 2"/>
+                            <hr/>
+                            <span>Overridden</span>
+                            <span>def</span>
+                            <lt:horizontalLayout spacing="spacing">
+                                <fm:button label="Ok"/>
+                                <fm:button label="Cancel"/>
+                            </lt:horizontalLayout>
+                        </lt:verticalLayout>
+
                     </wdg:FilterPanel>
                     <sv:include name="widgets.FilterPanel">
                     </sv:include>

@@ -75,8 +75,8 @@ public abstract class AbstractHandler {
         if (m.find()) {
             int minSt = Integer.MAX_VALUE;
             int maxEnd = Integer.MIN_VALUE;
-            boolean hMinSt = true;
-            boolean hMaxEnd = true;
+            boolean hMinSt = false;
+            boolean hMaxEnd = false;
             do {
                 if (wrap) {
                     String match = m.group(1);
