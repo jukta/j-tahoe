@@ -20,7 +20,7 @@ public abstract class AbstractHandler {
     private int $seq = 0;
 
     public static final Pattern EL_EXP_PATTERN = Pattern.compile("\\$\\{([^\\}]*)\\}");
-    public static final Pattern VARIABLE_EXP_PATTERN = Pattern.compile("([a-zA-Z_$][a-zA-Z_$0-9]*(\\.[a-zA-Z_$][a-zA-Z_$0-9]*)*)");
+    public static final Pattern VARIABLE_EXP_PATTERN = Pattern.compile("[a-zA-Z_$][a-zA-Z_$0-9]*(\\.[a-zA-Z_$][a-zA-Z_$0-9]*)*\\s*(?=([^\']*'[^\']*')*[^\']*$)");
 
     protected AbstractHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
         this.name = name;

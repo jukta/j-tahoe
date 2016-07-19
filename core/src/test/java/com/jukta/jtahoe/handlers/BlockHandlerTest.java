@@ -27,4 +27,12 @@ public class BlockHandlerTest {
         assertEquals("eval(attrs, \"attrs.name\")", exp);
     }
 
+    @Test
+    public void test3() {
+        BlockHandler bh = new BlockHandler(null, null, new HashMap<String, String>(), null);
+        String ex = "${name ' name ' 'name '  ' name' }";
+        String exp = bh.parseExp(ex, true);
+        assertEquals("eval(attrs, \"attrs.name ' name ' 'name '  ' name' \")", exp);
+    }
+
 }
