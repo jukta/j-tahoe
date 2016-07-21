@@ -14,8 +14,9 @@ import java.util.*;
  */
 public class FileHandler implements ContentHandler {
 
-    private Stack<AbstractHandler> stack = new Stack<AbstractHandler>();
-    private List<JavaFileObject> files = new ArrayList<JavaFileObject>();
+    public static final String JTAHOE_CORE_URI = "http://svsoft.net/tahoe/schema";
+    private Stack<AbstractHandler> stack = new Stack<>();
+    private List<JavaFileObject> files = new ArrayList<>();
     private GenContext genContext;
 
 
@@ -55,30 +56,35 @@ public class FileHandler implements ContentHandler {
         for (int i = 0; i < attrs.getLength(); i++) {
             attributes.put(attrs.getLocalName(i), attrs.getValue(i));
         }
-        if (qName.equals("sv:root")) {
-            handler = new RootHandler(genContext, qName, attributes, parent);
-        } else if (qName.equals("sv:block")) {
-            handler = new BlockHandler(genContext, qName, attributes, parent);
-        } else if (qName.startsWith("sv:def")) {
-            handler = new DefHandler(genContext, qName, attributes, parent);
-        } else if (qName.startsWith("sv:parent")) {
-            handler = new ParentHandler(genContext, qName, attributes, parent);
-        } else if (qName.startsWith("sv:import")) {
-            handler = new ImportHandler(genContext, qName, attributes, parent);
-        } else if (qName.startsWith("sv:for")) {
-            handler = new ForHandler(genContext, qName, attributes, parent);
-        } else if (qName.startsWith("sv:if")) {
-            handler = new IfHandler(genContext, qName, attributes, parent);
-        } else if (qName.startsWith("sv:tag")) {
-            handler = new TagHandler(genContext, qName, attributes, parent);
-        } else if (qName.startsWith("sv:include")) {
-            handler = new IncludeHandler(genContext, qName, attributes, parent);
-        } else if (qName.startsWith("sv:set")) {
-            handler = new SetHandler(genContext, qName, attributes, parent);
-        } else if (genContext.getPrefixes().containsKey(qName.split(":")[0])) {
-            handler = new FuncHandler(genContext, qName, attributes, parent);
+
+        if (JTAHOE_CORE_URI.equals(uri)) {
+            if (localName.equals("root")) {
+                handler = new RootHandler(genContext, qName, attributes, parent);
+            } else if (localName.equals("block")) {
+                handler = new BlockHandler(genContext, qName, attributes, parent);
+            } else if (localName.startsWith("def")) {
+                handler = new DefHandler(genContext, qName, attributes, parent);
+            } else if (localName.startsWith("parent")) {
+                handler = new ParentHandler(genContext, qName, attributes, parent);
+            } else if (localName.startsWith("import")) {
+                handler = new ImportHandler(genContext, qName, attributes, parent);
+            } else if (localName.startsWith("for")) {
+                handler = new ForHandler(genContext, qName, attributes, parent);
+            } else if (localName.startsWith("if")) {
+                handler = new IfHandler(genContext, qName, attributes, parent);
+            } else if (localName.startsWith("tag")) {
+                handler = new TagHandler(genContext, qName, attributes, parent);
+            } else if (localName.startsWith("include")) {
+                handler = new IncludeHandler(genContext, qName, attributes, parent);
+            } else if (localName.startsWith("set")) {
+                handler = new SetHandler(genContext, qName, attributes, parent);
+            }
         } else {
-            handler = new HtmlHandler(genContext, qName, attributes, parent);
+            if (genContext.getPrefixes().containsKey(qName.split(":")[0])) {
+                handler = new FuncHandler(genContext, qName, attributes, parent);
+            } else {
+                handler = new HtmlHandler(genContext, qName, attributes, parent);
+            }
         }
         stack.push(handler);
         handler.start();

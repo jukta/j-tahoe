@@ -25,7 +25,7 @@ public class DirHandler {
     public List<JavaFileObject> getJavaFiles(List<JTahoeXml> xmlList) throws ParserConfigurationException, SAXException, IOException {
         List<JavaFileObject> javaFiles = new ArrayList<>();
         SAXParserFactory factory = SAXParserFactory.newInstance();
-        factory.setNamespaceAware(false);
+        factory.setNamespaceAware(true);
         XMLReader xmlReader = factory.newSAXParser().getXMLReader();
         GenContext genContext = new GenContext(rootDir, javaFiles);
         for (JTahoeXml xml : xmlList) {

@@ -1,5 +1,9 @@
-<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" pref="lc"
-         xmlns:frm="http://www.w3.org/1999/xhtml" xmlns:fm="http://www.w3.org/1999/xhtml">
+<sv:root xmlns:sv="http://svsoft.net/tahoe/schema"
+         xmlns="http://www.w3.org/1999/xhtml"
+         pref="lc"
+         xmlns:fm="form"
+         xmlns:wdg="widgets"
+         xmlns:lt="layout">
 
     <sv:import prefix="wdg" file="widgets"/>
     <sv:import prefix="lb" file="test"/>
