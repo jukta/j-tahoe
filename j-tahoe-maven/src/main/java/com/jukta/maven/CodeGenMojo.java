@@ -1,10 +1,10 @@
 package com.jukta.maven;
 
-import com.jukta.jtahoe.gen.DirHandler;
+import com.jukta.jtahoe.gen.xml.XmlBlockModelProvider;
+import com.jukta.jtahoe.model.NodeProcessor;
 import com.jukta.jtahoe.resource.ResourceAppender;
 import com.jukta.jtahoe.resource.ResourceType;
 import com.jukta.jtahoe.resource.Resources;
-import com.jukta.jtahoe.file.JTahoeXml;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -92,9 +92,8 @@ public class CodeGenMojo extends AbstractMojo {
             id = UUID.randomUUID().toString();
             File targetDir = new File(outputDir);
             Resources resources = new FileSystemResources(blocksDir);
-            List<JTahoeXml> list =  resources.getFiles(ResourceType.XML);
-            DirHandler dirHandler = new DirHandler(new File(blocksDir));
-            List<JavaFileObject> javaFileObjects = dirHandler.getJavaFiles(list);
+            NodeProcessor nodeProcessor = new NodeProcessor();
+            List<JavaFileObject> javaFileObjects = nodeProcessor.process(new XmlBlockModelProvider(blocksDir));
             generateSources(targetDir, javaFileObjects);
             mavenProject.addCompileSourceRoot(outputDir);
             generateJS(targetDir, resources);

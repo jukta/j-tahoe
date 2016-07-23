@@ -1,14 +1,13 @@
 package functional;
 
 import com.jukta.jtahoe.Block;
-import com.jukta.jtahoe.file.JTahoeXml;
-import com.jukta.jtahoe.gen.DirHandler;
+import com.jukta.jtahoe.BlockFactory;
+import com.jukta.jtahoe.gen.xml.XmlBlockModelProvider;
 import com.jukta.jtahoe.loader.MemoryClassLoader;
-import com.jukta.jtahoe.resource.ResourceType;
-import com.jukta.jtahoe.resource.Resources;
+import com.jukta.jtahoe.model.NodeProcessor;
 import org.junit.Before;
 
-import java.io.File;
+import javax.tools.JavaFileObject;
 import java.util.List;
 
 /**
@@ -17,13 +16,15 @@ import java.util.List;
 public class AbstractTest {
     private String blocksFolder = "blocks";
     protected static ClassLoader classLoader;
+    protected static BlockFactory blockFactory;
 
     @Before
     public void setUp() {
         if (classLoader == null) {
-            List<JTahoeXml> xmlFilesList = new Resources(blocksFolder).getFiles(ResourceType.XML);
             try {
-                classLoader = new MemoryClassLoader(new DirHandler(new File("/")).getJavaFiles(xmlFilesList));
+                List<JavaFileObject> javaFileObjects = new NodeProcessor().process(new XmlBlockModelProvider(blocksFolder));
+                classLoader = new MemoryClassLoader(javaFileObjects);
+                blockFactory = new BlockFactory(classLoader);
                 Thread.currentThread().setContextClassLoader(classLoader);
             } catch (RuntimeException e) {
                 throw e;
@@ -37,7 +38,7 @@ public class AbstractTest {
 
     protected Block newBlockInstance(String blockName) {
         try {
-            return (Block) Class.forName(blockName, true, classLoader).newInstance();
+            return blockFactory.create(blockName);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

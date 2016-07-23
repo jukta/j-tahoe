@@ -1,16 +1,15 @@
 package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.gen.GenContext;
-
-import java.util.Map;
+import com.jukta.jtahoe.model.NamedNode;
 
 /**
  * Created by aleph on 18.02.2016.
  */
 public class ParentHandler extends AbstractHandler {
 
-    public ParentHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
-        super(genContext, name, attrs, parent);
+    public ParentHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
+        super(genContext, node, parent);
     }
 
     @Override

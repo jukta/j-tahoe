@@ -1,7 +1,10 @@
 package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.gen.GenContext;
+import com.jukta.jtahoe.model.NamedNode;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,9 +15,9 @@ import java.util.regex.Pattern;
 public abstract class AbstractHandler {
 
     private AbstractHandler parent;
-    private String name;
-    private Map<String, String> attrs;
     protected GenContext genContext;
+
+    private NamedNode node;
 
     private static int seq = 0;
     private int $seq = 0;
@@ -22,11 +25,10 @@ public abstract class AbstractHandler {
     public static final Pattern EL_EXP_PATTERN = Pattern.compile("\\$\\{([^\\}]*)\\}");
     public static final Pattern VARIABLE_EXP_PATTERN = Pattern.compile("[a-zA-Z_$][a-zA-Z_$0-9]*(\\.[a-zA-Z_$][a-zA-Z_$0-9]*)*\\s*(?=([^\']*'[^\']*')*[^\']*$)");
 
-    protected AbstractHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
-        this.name = name;
-        this.attrs = attrs;
+    protected AbstractHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         this.parent = parent;
         this.genContext = genContext;
+        this.node = node;
         $seq = seq++;
     }
 
@@ -55,11 +57,15 @@ public abstract class AbstractHandler {
     }
 
     public String getName() {
-        return name;
+        return node.getName();
     }
 
     public Map<String, String> getAttrs() {
-        return attrs;
+        return node.getAttributes();
+    }
+
+    public NamedNode getNode() {
+        return node;
     }
 
     public void appendCode(String code) {
@@ -144,8 +150,24 @@ public abstract class AbstractHandler {
     }
 
     public String getCurPackage() {
-        String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentUri()).getPath();
+
+//        String relPath = node.getNamespace().replaceAll("/", ".");
+        return getPackage(genContext.getCurrentNamespace());
+    }
+
+    public String getPackage(String namespace) {
+        if (".".equals(namespace)) {
+            namespace = genContext.getCurrentNamespace();
+        }
+
+        String relPath = null;
+        try {
+            relPath = new URI(namespace).getRawPath();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         String pack = relPath.replaceAll("/", ".");
+        if (pack.startsWith(".")) pack = pack.substring(1);
         if (pack.endsWith(".")) pack = pack.substring(0, pack.length() - 1);
         return pack;
     }
@@ -160,7 +182,7 @@ public abstract class AbstractHandler {
         String prefix = sp[0];
         prefix = getGenContext().getPrefixes().get(prefix);
         if (prefix != null) {
-            return prefix + "." + sp[1];
+            return getPackage(prefix) + "." + sp[1];
         } else {
             return sp[1];
         }

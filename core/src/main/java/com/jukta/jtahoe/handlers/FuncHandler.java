@@ -1,6 +1,7 @@
 package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.gen.GenContext;
+import com.jukta.jtahoe.model.NamedNode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +14,10 @@ public class FuncHandler extends BlockHandler {
     private String body = "";
     private DefHandler defHandler;
 
-    public FuncHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
-        super(genContext, name, attrs, parent);
-        defHandler = new DefHandler(genContext, "sv:def", new HashMap<String, String>(), this);
+    public FuncHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
+        super(genContext, node, parent);
+        NamedNode defNode = new NamedNode("", "def", new HashMap<String, String>(), getNode());
+        defHandler = new DefHandler(genContext, defNode, this);
 
     }
 
@@ -41,7 +43,7 @@ public class FuncHandler extends BlockHandler {
             attrs += ".set(\"" + s + "\", " + parseExp(getAttrs().get(s), true) + ")";
         }
         String name = getName();
-        name = processPrefix(name);
+        name = getPackage(getNode().getNamespace()) + "." + name;
         String el = "new " + name + "()";
         if (!defs.isEmpty()) {
             el += "{";

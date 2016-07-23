@@ -1,8 +1,7 @@
 package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.gen.GenContext;
-
-import java.util.Map;
+import com.jukta.jtahoe.model.NamedNode;
 
 /**
  * Created by Dmitriy Dobrovolskiy on 26.04.2016.
@@ -10,8 +9,8 @@ import java.util.Map;
  * @since *.*.*
  */
 public class TagHandler extends AbstractHandler {
-    public TagHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
-        super(genContext, name, attrs, parent);
+    public TagHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
+        super(genContext, node, parent);
     }
 
     @Override

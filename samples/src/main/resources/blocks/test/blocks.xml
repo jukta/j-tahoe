@@ -1,5 +1,7 @@
-<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" pref="lc"
-         xmlns:lc="." >
+<sv:root xmlns:sv="http://svsoft.net/tahoe/schema"
+         xmlns="http://www.w3.org/1999/xhtml"
+         namespace="test"
+         xmlns:lc=".">
 
     <sv:block name="blockA">
         <input></input>

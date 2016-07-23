@@ -1,6 +1,7 @@
 package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.gen.GenContext;
+import com.jukta.jtahoe.model.NamedNode;
 
 import java.util.Map;
 
@@ -9,22 +10,27 @@ import java.util.Map;
  */
 public class RootHandler extends AbstractHandler {
 
-    public RootHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
-        super(genContext, name, attrs, parent);
+    public RootHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
+        super(genContext, node, parent);
     }
 
     @Override
     public void start() {
-        String pref = getAttrs().get("pref");
-        if (pref == null) {
-            pref = "lc";
+        for (Map.Entry<String, String> entry : getNode().getPrefixes().entrySet()) {
+            getGenContext().getPrefixes().put(entry.getKey(), entry.getValue());
         }
-        getGenContext().getPrefixes().put(pref, getCurPackage());
+
+        for (Map.Entry<String, String> pr : getGenContext().getPrefixes().entrySet()) {
+            if (".".equals(pr.getValue())) {
+                getGenContext().getPrefixes().put(pr.getKey(), getAttrs().get("namespace"));
+            }
+        }
+        getGenContext().setCurrentNamespace(getAttrs().get("namespace"));
     }
 
     @Override
     public void end() {
-//        super.end();
+
     }
 
 

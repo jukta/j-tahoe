@@ -1,9 +1,9 @@
 package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.gen.GenContext;
+import com.jukta.jtahoe.model.NamedNode;
 
 import java.io.StringWriter;
-import java.util.Map;
 
 /**
  * Created by aleph on 20.02.2016.
@@ -13,8 +13,8 @@ public class DefHandler extends AbstractHandler {
     String body = "";
     private String name;
 
-    public DefHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
-        super(genContext, name, attrs, parent);
+    public DefHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
+        super(genContext, node, parent);
         this.name = getAttrs().get("name");
     }
 

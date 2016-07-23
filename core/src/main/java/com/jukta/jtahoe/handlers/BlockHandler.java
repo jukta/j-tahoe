@@ -3,6 +3,7 @@ package com.jukta.jtahoe.handlers;
 import com.jukta.jtahoe.gen.GenContext;
 import com.jukta.jtahoe.gen.JavaSourceFromString;
 import com.jukta.jtahoe.definitions.BlockMeta;
+import com.jukta.jtahoe.model.NamedNode;
 
 import javax.tools.JavaFileObject;
 import java.util.HashMap;
@@ -16,10 +17,13 @@ public class BlockHandler extends AbstractHandler {
     protected Map<String, String> defs = new HashMap<String, String>();
     private DefHandler defHandler;
 
-    public BlockHandler(GenContext genContext, String name, Map<String, String> attrs, AbstractHandler parent) {
-        super(genContext, name, attrs, parent);
-        if (attrs.get("parent") != null)
-            defHandler = new DefHandler(genContext, "sv:def", new HashMap<String, String>(), this);
+    public BlockHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
+        super(genContext, node, parent);
+        if (getAttrs().get("parent") != null) {
+            NamedNode defNode = new NamedNode("", "def", new HashMap<String, String>(), getNode());
+            defHandler = new DefHandler(genContext, defNode, this);
+        }
+
     }
 
     public void appendCode(String code) {
@@ -39,6 +43,9 @@ public class BlockHandler extends AbstractHandler {
     }
 
     public void addDef(String name, String body) {
+        if (defs.containsKey(name)) {
+            System.out.println();
+        }
         if (defs.put(name, body) != null) {
             throw new RuntimeException("Duplicate def in block: " + getAttrs().get("name"));
         }
@@ -66,10 +73,10 @@ public class BlockHandler extends AbstractHandler {
         meta.setDefs(defs);
         meta.setPack(getCurPackage());
 
-        String relPath = genContext.getRootDir().toURI().relativize(genContext.getCurrentFile().getParentUri()).getPath();
+        String relPath = getCurPackage();
         meta.setRelPath(relPath);
 
-        JavaFileObject file = new JavaSourceFromString(relPath + name, meta.toSource());
+        JavaFileObject file = new JavaSourceFromString(relPath + "/" + name, meta.toSource());
         genContext.getFiles().add(file);
     }
 

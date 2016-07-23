@@ -2,6 +2,7 @@ package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.Attrs;
 import com.jukta.jtahoe.Block;
+import com.jukta.jtahoe.BlockFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.View;
 
@@ -18,13 +19,15 @@ public class JTahoeView implements View {
 
     private String viewName;
     private ClassLoader classLoader;
+    private  BlockFactory blockFactory;
 
     public JTahoeView(String viewName) {
         this.viewName = viewName;
     }
 
-    public JTahoeView(String viewName, ClassLoader classLoader) {
+    public JTahoeView(String viewName, BlockFactory blockFactory, ClassLoader classLoader) {
         this.viewName = viewName;
+        this.blockFactory = blockFactory;
         this.classLoader = classLoader;
     }
 
@@ -40,7 +43,7 @@ public class JTahoeView implements View {
     @Override
     public void render(Map<String, ?> map, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) throws Exception {
         Thread.currentThread().setContextClassLoader(classLoader);
-        Block block = newBlockInstance();
+        Block block = blockFactory.create(viewName);
         MvcDataHandlerProvider handlerProvider = new MvcDataHandlerProvider(applicationContext, httpservletrequest, httpservletresponse);
         Attrs attrs = new Attrs();
         attrs.setDataHandlerProvider(handlerProvider);
@@ -60,11 +63,4 @@ public class JTahoeView implements View {
         httpservletresponse.getWriter().write(s);
     }
 
-    private Block newBlockInstance() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        if (classLoader == null) {
-            return (Block) Class.forName(viewName).newInstance();
-        } else {
-            return (Block) Class.forName(viewName, true, classLoader).newInstance();
-        }
-    }
 }

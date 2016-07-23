@@ -1,4 +1,4 @@
-<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" pref="lc">
+<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test/tags">
 
     <sv:block name="Parent_A">
         <sv:def>
