@@ -1,7 +1,7 @@
 package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.gen.GenContext;
-import com.jukta.jtahoe.model.NamedNode;
+import com.jukta.jtahoe.gen.model.NamedNode;
 
 /**
  * Created by aleph on 18.02.2016.

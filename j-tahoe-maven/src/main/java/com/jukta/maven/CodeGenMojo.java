@@ -1,7 +1,7 @@
 package com.jukta.maven;
 
 import com.jukta.jtahoe.gen.xml.XmlBlockModelProvider;
-import com.jukta.jtahoe.model.NodeProcessor;
+import com.jukta.jtahoe.gen.NodeProcessor;
 import com.jukta.jtahoe.resource.ResourceAppender;
 import com.jukta.jtahoe.resource.ResourceType;
 import com.jukta.jtahoe.resource.Resources;

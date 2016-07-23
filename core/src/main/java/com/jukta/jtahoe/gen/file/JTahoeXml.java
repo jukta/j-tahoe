@@ -1,4 +1,4 @@
-package com.jukta.jtahoe.file;
+package com.jukta.jtahoe.gen.file;
 
 import org.xml.sax.InputSource;
 

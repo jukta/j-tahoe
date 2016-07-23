@@ -1,7 +1,7 @@
 package com.jukta.jtahoe.gen.xml;
 
-import com.jukta.jtahoe.model.NamedNode;
-import com.jukta.jtahoe.model.TextNode;
+import com.jukta.jtahoe.gen.model.NamedNode;
+import com.jukta.jtahoe.gen.model.TextNode;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;

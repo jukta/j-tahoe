@@ -1,7 +1,7 @@
 package com.jukta.jtahoe.springmvc;
 
-import com.jukta.jtahoe.file.JTahoeResourceXml;
-import com.jukta.jtahoe.file.JTahoeXml;
+import com.jukta.jtahoe.gen.file.JTahoeResourceXml;
+import com.jukta.jtahoe.gen.file.JTahoeXml;
 import com.jukta.jtahoe.resource.ResourceType;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;

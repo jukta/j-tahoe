@@ -1,9 +1,8 @@
 package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.BlockFactory;
+import com.jukta.jtahoe.RuntimeBlockFactory;
 import com.jukta.jtahoe.gen.xml.XmlBlockModelProvider;
-import com.jukta.jtahoe.model.NodeProcessor;
-import com.jukta.jtahoe.loader.MemoryClassLoader;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -11,8 +10,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
-import javax.tools.JavaFileObject;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -23,21 +20,14 @@ import java.util.Locale;
 public class JTahoeRuntimeViewResolver implements ViewResolver, InitializingBean, ApplicationContextAware {
 
     private String blocksFolder = "blocks";
-    private ClassLoader classLoader;
     private ApplicationContext applicationContext;
     private BlockFactory blockFactory;
 
     @Override
     public View resolveViewName(String s, Locale locale) throws Exception {
-        JTahoeView view = new JTahoeView(s, blockFactory, classLoader);
+        JTahoeView view = new JTahoeView(s, blockFactory);
         view.setApplicationContext(applicationContext);
         return view;
-    }
-
-    public void loadClasses() throws Exception {
-        List<JavaFileObject> javaFileObjects = new NodeProcessor().process(new XmlBlockModelProvider(blocksFolder));
-        classLoader = new MemoryClassLoader(javaFileObjects);
-        blockFactory = new BlockFactory(classLoader);
     }
 
     public void setBlocksFolder(String blocksFolder) {
@@ -46,7 +36,7 @@ public class JTahoeRuntimeViewResolver implements ViewResolver, InitializingBean
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        loadClasses();
+        blockFactory = new RuntimeBlockFactory(new XmlBlockModelProvider(blocksFolder));
     }
 
     @Override

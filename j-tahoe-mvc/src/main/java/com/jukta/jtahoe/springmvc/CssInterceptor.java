@@ -2,7 +2,7 @@ package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.resource.ResourceType;
 import com.jukta.jtahoe.resource.Resources;
-import com.jukta.jtahoe.file.JTahoeXml;
+import com.jukta.jtahoe.gen.file.JTahoeXml;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import sun.misc.IOUtils;

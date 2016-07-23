@@ -4,10 +4,17 @@ package com.jukta.jtahoe;
  * @since 1.0
  */
 public class BlockFactory {
-    private ClassLoader classLoader;
+    protected ClassLoader classLoader;
+
+    public BlockFactory() {
+    }
 
     public BlockFactory(ClassLoader classLoader) {
         this.classLoader = classLoader;
+    }
+
+    public ClassLoader getClassLoader() {
+        return classLoader;
     }
 
     public Block create(String blockName) throws ClassNotFoundException, IllegalAccessException, InstantiationException {

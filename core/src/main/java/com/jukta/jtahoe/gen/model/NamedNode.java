@@ -1,4 +1,4 @@
-package com.jukta.jtahoe.model;
+package com.jukta.jtahoe.gen.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;

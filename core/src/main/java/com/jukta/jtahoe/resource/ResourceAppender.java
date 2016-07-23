@@ -1,6 +1,6 @@
 package com.jukta.jtahoe.resource;
 
-import com.jukta.jtahoe.file.JTahoeXml;
+import com.jukta.jtahoe.gen.file.JTahoeXml;
 import sun.misc.IOUtils;
 
 import java.io.IOException;

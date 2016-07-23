@@ -18,17 +18,11 @@ public class JTahoeView implements View {
     private ApplicationContext applicationContext;
 
     private String viewName;
-    private ClassLoader classLoader;
     private  BlockFactory blockFactory;
 
-    public JTahoeView(String viewName) {
-        this.viewName = viewName;
-    }
-
-    public JTahoeView(String viewName, BlockFactory blockFactory, ClassLoader classLoader) {
+    public JTahoeView(String viewName, BlockFactory blockFactory) {
         this.viewName = viewName;
         this.blockFactory = blockFactory;
-        this.classLoader = classLoader;
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -42,7 +36,7 @@ public class JTahoeView implements View {
 
     @Override
     public void render(Map<String, ?> map, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) throws Exception {
-        Thread.currentThread().setContextClassLoader(classLoader);
+        Thread.currentThread().setContextClassLoader(blockFactory.getClassLoader());
         Block block = blockFactory.create(viewName);
         MvcDataHandlerProvider handlerProvider = new MvcDataHandlerProvider(applicationContext, httpservletrequest, httpservletresponse);
         Attrs attrs = new Attrs();

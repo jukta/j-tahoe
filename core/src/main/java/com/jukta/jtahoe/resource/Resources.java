@@ -1,7 +1,7 @@
 package com.jukta.jtahoe.resource;
 
-import com.jukta.jtahoe.file.JTahoeResourceXml;
-import com.jukta.jtahoe.file.JTahoeXml;
+import com.jukta.jtahoe.gen.file.JTahoeResourceXml;
+import com.jukta.jtahoe.gen.file.JTahoeXml;
 
 import java.io.File;
 import java.io.FileInputStream;

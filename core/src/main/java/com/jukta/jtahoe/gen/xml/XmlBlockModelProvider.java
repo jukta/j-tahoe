@@ -1,8 +1,8 @@
 package com.jukta.jtahoe.gen.xml;
 
 import com.jukta.jtahoe.BlockModelProvider;
-import com.jukta.jtahoe.file.JTahoeXml;
-import com.jukta.jtahoe.model.NamedNode;
+import com.jukta.jtahoe.gen.file.JTahoeXml;
+import com.jukta.jtahoe.gen.model.NamedNode;
 import com.jukta.jtahoe.resource.ResourceType;
 import com.jukta.jtahoe.resource.Resources;
 import org.xml.sax.SAXException;

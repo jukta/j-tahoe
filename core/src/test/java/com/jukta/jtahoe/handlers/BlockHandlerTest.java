@@ -1,6 +1,6 @@
 package com.jukta.jtahoe.handlers;
 
-import com.jukta.jtahoe.model.NamedNode;
+import com.jukta.jtahoe.gen.model.NamedNode;
 import org.junit.Test;
 
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package com.jukta.jtahoe;
 
-import com.jukta.jtahoe.model.NamedNode;
+import com.jukta.jtahoe.gen.model.NamedNode;
 
 import java.util.Iterator;
 
