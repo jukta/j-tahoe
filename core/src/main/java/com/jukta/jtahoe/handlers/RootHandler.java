@@ -16,16 +16,15 @@ public class RootHandler extends AbstractHandler {
 
     @Override
     public void start() {
-        for (Map.Entry<String, String> entry : getNode().getPrefixes().entrySet()) {
-            getGenContext().getPrefixes().put(entry.getKey(), entry.getValue());
-        }
+        getGenContext().getPrefixes().putAll(getNode().getPrefixes());
+        String namespace = getAttrs().get("namespace");
 
         for (Map.Entry<String, String> pr : getGenContext().getPrefixes().entrySet()) {
             if (".".equals(pr.getValue())) {
-                getGenContext().getPrefixes().put(pr.getKey(), getAttrs().get("namespace"));
+                getGenContext().getPrefixes().put(pr.getKey(), namespace);
             }
         }
-        getGenContext().setCurrentNamespace(getAttrs().get("namespace"));
+        getGenContext().setCurrentNamespace(namespace);
     }
 
     @Override

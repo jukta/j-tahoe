@@ -1,7 +1,6 @@
 package com.jukta.jtahoe.gen;
 
 import com.jukta.jtahoe.BlockModelProvider;
-import com.jukta.jtahoe.gen.GenContext;
 import com.jukta.jtahoe.gen.model.NamedNode;
 import com.jukta.jtahoe.gen.model.Node;
 import com.jukta.jtahoe.gen.model.TextNode;

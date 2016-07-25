@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class BlockHandler extends AbstractHandler {
     private String body = "";
-    protected Map<String, String> defs = new HashMap<String, String>();
+    protected Map<String, String> defs = new HashMap<>();
     private DefHandler defHandler;
 
     public BlockHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {

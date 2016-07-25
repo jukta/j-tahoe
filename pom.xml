@@ -5,6 +5,24 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
+    <name>jTahoe</name>
+    <description>The object oriented template engine</description>
+    <url>https://github.com/jukta/j-tahoe/wiki</url>
+
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://git@github.com:jukta/j-tahoe.git</connection>
+        <developerConnection>scm:git:ssh://github.com:jukta/j-tahoe.git</developerConnection>
+        <url>https://github.com/jukta/j-tahoe</url>
+    </scm>
+
     <modules>
         <module>core</module>
         <module>j-tahoe-mvc</module>
