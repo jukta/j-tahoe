@@ -103,11 +103,11 @@
         <xs:attribute name="in" type="xs:string" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="Script">
-        <xs:simpleContent>
-            <xs:extension base="xs:string"/>
-        </xs:simpleContent>
-    </xs:complexType>
+    <!--<xs:complexType name="Script">-->
+        <!--<xs:simpleContent>-->
+            <!--<xs:extension base="xs:string"/>-->
+        <!--</xs:simpleContent>-->
+    <!--</xs:complexType>-->
 
     <xs:simpleType name="Parent">
     </xs:simpleType>
