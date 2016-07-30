@@ -93,7 +93,8 @@ public class CodeGenMojo extends AbstractMojo {
             File targetDir = new File(outputDir);
             Resources resources = new FileSystemResources(blocksDir);
             NodeProcessor nodeProcessor = new NodeProcessor();
-            List<JavaFileObject> javaFileObjects = nodeProcessor.process(new XmlBlockModelProvider(blocksDir));
+            XmlBlockModelProvider provider = new XmlBlockModelProvider(resources);
+            List<JavaFileObject> javaFileObjects = nodeProcessor.process(provider);
             generateSources(targetDir, javaFileObjects);
             mavenProject.addCompileSourceRoot(outputDir);
             generateJS(targetDir, resources);

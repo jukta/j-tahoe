@@ -18,16 +18,20 @@ import java.util.List;
  */
 public class XmlBlockModelProvider implements BlockModelProvider {
 
-    private String blocksFolder;
+    private Resources resources;
+
+    public XmlBlockModelProvider(Resources resources) {
+        this.resources = resources;
+    }
 
     public XmlBlockModelProvider(String blocksFolder) {
-        this.blocksFolder = blocksFolder;
+        this.resources = new Resources(blocksFolder);
     }
 
     @Override
     public Iterator<NamedNode> iterator() {
         try {
-            List<JTahoeXml> xmlList = new Resources(blocksFolder).getFiles(ResourceType.XML);
+            List<JTahoeXml> xmlList = resources.getFiles(ResourceType.XML);
             return new BlockModelIterator(xmlList.iterator());
         } catch (Exception e) {
             throw new RuntimeException(e);
