@@ -1,42 +1,42 @@
-<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test/tags">
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test/tags">
 
-    <sv:block name="SetLocal_A">
-        <sv:set name="a" value="A"/>
+    <th:block name="SetLocal_A">
+        <th:set name="a" value="A"/>
         abc${a} ${a} def
-    </sv:block>
+    </th:block>
 
-    <sv:block name="SetLocalOverride_A">
-        <sv:set name="a" value="A" override="false"/>
+    <th:block name="SetLocalOverride_A">
+        <th:set name="a" value="A" override="false"/>
         ${a}
-        <sv:set name="b" value="B"/>
+        <th:set name="b" value="B"/>
         ${b}
-    </sv:block>
+    </th:block>
 
-    <sv:block name="SetGlobal_A">
-        <sv:set name="a" value="A" visibility="GLOBAL"/>
+    <th:block name="SetGlobal_A">
+        <th:set name="a" value="A" visibility="GLOBAL"/>
         ${a}
-    </sv:block>
+    </th:block>
 
-    <sv:block name="SetGlobalOverride_A">
-        <sv:set name="a" value="A" visibility="GLOBAL" override="false"/>
+    <th:block name="SetGlobalOverride_A">
+        <th:set name="a" value="A" visibility="GLOBAL" override="false"/>
         ${a}
-        <sv:set name="b" value="B" visibility="GLOBAL"/>
+        <th:set name="b" value="B" visibility="GLOBAL"/>
         ${b}
-    </sv:block>
+    </th:block>
 
-    <sv:block name="SetBlockRef_A">
-        <sv:def>
+    <th:block name="SetBlockRef_A">
+        <th:def>
             A
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="SetBlockRef_B">
-        <sv:set name="b">
+    <th:block name="SetBlockRef_B">
+        <th:set name="b">
             <lc:SetBlockRef_A>
                B
             </lc:SetBlockRef_A>
-        </sv:set>
-        <sv:include ref="${b}"/>
-    </sv:block>
+        </th:set>
+        <th:include ref="${b}"/>
+    </th:block>
 
-</sv:root>
+</th:root>

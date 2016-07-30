@@ -1,53 +1,53 @@
-<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test/tags">
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test/tags">
 
-    <sv:block name="Parent_A">
-        <sv:def>
+    <th:block name="Parent_A">
+        <th:def>
             A
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="Parent_B" parent="Parent_A">
-        <sv:parent/>
-    </sv:block>
+    <th:block name="Parent_B" parent="Parent_A">
+        <th:parent/>
+    </th:block>
 
-    <sv:block name="ParentDefaultDef_A">
-        <sv:def>
+    <th:block name="ParentDefaultDef_A">
+        <th:def>
             A
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="ParentDefaultDef_B" parent="ParentDefaultDef_A">
-        <sv:def>
-            <sv:parent/>
-        </sv:def>
-    </sv:block>
+    <th:block name="ParentDefaultDef_B" parent="ParentDefaultDef_A">
+        <th:def>
+            <th:parent/>
+        </th:def>
+    </th:block>
 
-    <sv:block name="ParentNamed_A">
-        <sv:def name="d">
+    <th:block name="ParentNamed_A">
+        <th:def name="d">
             A
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="ParentNamed_B" parent="ParentNamed_A">
-        <sv:def name="d">
-            <sv:parent/>
-        </sv:def>
-    </sv:block>
+    <th:block name="ParentNamed_B" parent="ParentNamed_A">
+        <th:def name="d">
+            <th:parent/>
+        </th:def>
+    </th:block>
 
-    <sv:block name="ParentHierarchy_A">
-        <sv:def>
+    <th:block name="ParentHierarchy_A">
+        <th:def>
             A
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="ParentHierarchy_B" parent="ParentHierarchy_A">
-        <sv:parent/>
+    <th:block name="ParentHierarchy_B" parent="ParentHierarchy_A">
+        <th:parent/>
         B
-    </sv:block>
+    </th:block>
 
-    <sv:block name="ParentHierarchy_C" parent="ParentHierarchy_B">
-        <sv:parent/>
+    <th:block name="ParentHierarchy_C" parent="ParentHierarchy_B">
+        <th:parent/>
         C
-    </sv:block>
+    </th:block>
 
-</sv:root>
+</th:root>

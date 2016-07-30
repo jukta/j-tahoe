@@ -1,9 +1,9 @@
-<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test/tags">
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test/tags">
 
-    <sv:block name="For_A">
-        <sv:for var="i" in="${a}">
+    <th:block name="For_A">
+        <th:for var="i" in="${a}">
             ${i}
-        </sv:for>
-    </sv:block>
+        </th:for>
+    </th:block>
 
-</sv:root>
+</th:root>

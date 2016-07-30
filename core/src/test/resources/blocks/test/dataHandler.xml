@@ -1,34 +1,34 @@
-<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test">
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test">
 
-    <sv:block name="DataHandler_A" dataHandler="D">
-    ${b}
-</sv:block>
-
-    <sv:block name="InheritanceDataHandler_A" dataHandler="D">
+    <th:block name="DataHandler_A" dataHandler="D">
         ${b}
-        <sv:def>
+    </th:block>
+
+    <th:block name="InheritanceDataHandler_A" dataHandler="D">
+        ${b}
+        <th:def>
             ${c}
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="InheritanceDataHandler_B" parent="InheritanceDataHandler_A">
-        <sv:parent/>
+    <th:block name="InheritanceDataHandler_B" parent="InheritanceDataHandler_A">
+        <th:parent/>
         ${d}
-    </sv:block>
+    </th:block>
 
-    <sv:block name="CompositionDataHandler_A" dataHandler="D">
+    <th:block name="CompositionDataHandler_A" dataHandler="D">
         ${b}
-    </sv:block>
+    </th:block>
 
-    <sv:block name="CompositionDataHandler_B">
+    <th:block name="CompositionDataHandler_B">
         <lc:CompositionDataHandler_A/>
-    </sv:block>
+    </th:block>
 
-    <sv:block name="DataHandlerOverride_A" dataHandler="D">
+    <th:block name="DataHandlerOverride_A" dataHandler="D">
         ${b}
-    </sv:block>
+    </th:block>
 
-    <sv:block name="DataHandlerOverride_B" parent="DataHandlerOverride_A" dataHandler="D1">
-    </sv:block>
+    <th:block name="DataHandlerOverride_B" parent="DataHandlerOverride_A" dataHandler="D1">
+    </th:block>
 
-</sv:root>
+</th:root>

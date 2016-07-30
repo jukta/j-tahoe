@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class NodeProcessor {
 
-    public static final String JTAHOE_CORE_URI = "http://svsoft.net/tahoe/schema";
+    public static final String JTAHOE_CORE_URI = "http://jukta.com/tahoe/schema";
 
     private void process(Node node, GenContext context, AbstractHandler pHandler) {
         if (node instanceof TextNode) {

@@ -1,20 +1,14 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://svsoft.net/tahoe/schema" xmlns="http://svsoft.net/tahoe/schema" >
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://jukta.com/tahoe/schema" xmlns="http://jukta.com/tahoe/schema" >
 
     <xs:element name="root" type="Root"/>
 
     <xs:complexType name="Root">
         <xs:sequence>
-            <xs:element name="import" type="Import" minOccurs="0"/>
             <xs:element name="block" type="Block" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute name="pref" type="xs:string"/>
+        <xs:attribute name="namespace" type="xs:string"/>
     </xs:complexType>
-
-    <xs:simpleType name="Import">
-        <xs:attribute name="file" type="xs:string" use="required"/>
-        <xs:attribute name="prefix" type="xs:string" use="required"/>
-    </xs:simpleType>
 
     <xs:simpleType name="TagAttr">
         <xs:attribute name="name" type="xs:string" use="required"/>
@@ -40,7 +34,7 @@
             <xs:sequence>
                 <xs:element name="if" type="If" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="for" type="For" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="script" type="Script" minOccurs="0" maxOccurs="unbounded"/>
+                <!--<xs:element name="script" type="Script" minOccurs="0" maxOccurs="unbounded"/>-->
                 <xs:element name="include" type="Include" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="tag" type="Tag" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="closeTag" type="Tag" minOccurs="0" maxOccurs="unbounded"/>
@@ -69,7 +63,8 @@
                 <xs:element name="parent" type="Parent" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:choice>
-        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="name" type="xs:string" use="optional"/>
+        <xs:attribute name="ref" type="xs:string" use="optional"/>
         <xs:anyAttribute namespace="##any" processContents="lax"/>
     </xs:complexType>
 
@@ -114,8 +109,9 @@
 
     <xs:simpleType name="Set">
         <xs:attribute name="name" type="xs:string" use="required"/>
-        <xs:attribute name="value" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="optional"/>
         <xs:attribute name="override" type="xs:string" use="optional"/>
+        <xs:attribute name="visibility" type="xs:string" use="optional"/>
     </xs:simpleType>
 
 </xs:schema>

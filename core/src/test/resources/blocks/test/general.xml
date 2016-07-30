@@ -1,128 +1,128 @@
-<sv:root xmlns:sv="http://svsoft.net/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test">
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test">
 
-    <sv:block name="SimpleBlock">
+    <th:block name="SimpleBlock">
         A
-    </sv:block>
+    </th:block>
 
-    <sv:block name="SimpleHtmlBlock">
+    <th:block name="SimpleHtmlBlock">
         <div class="a">
             <span id="b">A</span>
         </div>
-    </sv:block>
+    </th:block>
 
-    <sv:block name="Inheritance_A">
+    <th:block name="Inheritance_A">
         A
-    </sv:block>
+    </th:block>
 
-    <sv:block name="Inheritance_B" parent="Inheritance_A"/>
+    <th:block name="Inheritance_B" parent="Inheritance_A"/>
 
-    <sv:block name="DefBlock">
+    <th:block name="DefBlock">
         A1
-        <sv:def>
+        <th:def>
             A2
-        </sv:def>
+        </th:def>
         A3
-    </sv:block>
+    </th:block>
 
-    <sv:block name="DefInheritance_A">
+    <th:block name="DefInheritance_A">
         A1
-        <sv:def>
+        <th:def>
             A2
-        </sv:def>
+        </th:def>
         A3
-    </sv:block>
+    </th:block>
 
-    <sv:block name="DefInheritance_B" parent="DefInheritance_A">
+    <th:block name="DefInheritance_B" parent="DefInheritance_A">
         B2
-    </sv:block>
+    </th:block>
 
-    <sv:block name="NamedDefInheritance_A">
+    <th:block name="NamedDefInheritance_A">
         A1
-        <sv:def name="def1">
+        <th:def name="def1">
             A2
-        </sv:def>
+        </th:def>
         A3
-        <sv:def name="def2">
+        <th:def name="def2">
             A4
-        </sv:def>
+        </th:def>
         A5
-    </sv:block>
+    </th:block>
 
-    <sv:block name="NamedDefInheritance_B" parent="NamedDefInheritance_A">
-        <sv:def name="def1">
+    <th:block name="NamedDefInheritance_B" parent="NamedDefInheritance_A">
+        <th:def name="def1">
             B2
-        </sv:def>
-        <sv:def name="def2">
+        </th:def>
+        <th:def name="def2">
             B4
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="InheritanceLevel_A">
+    <th:block name="InheritanceLevel_A">
         A1
-        <sv:def name="def1">
+        <th:def name="def1">
             A2
-        </sv:def>
+        </th:def>
         A3
-    </sv:block>
+    </th:block>
 
-    <sv:block name="InheritanceLevel_B" parent="InheritanceLevel_A">
-        <sv:def name="def1">
+    <th:block name="InheritanceLevel_B" parent="InheritanceLevel_A">
+        <th:def name="def1">
             B2_1
-            <sv:def name="def2"/>
+            <th:def name="def2"/>
             B2_2
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="InheritanceLevel_C" parent="InheritanceLevel_B">
-        <sv:def name="def2">
+    <th:block name="InheritanceLevel_C" parent="InheritanceLevel_B">
+        <th:def name="def2">
             C2
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
 
-    <sv:block name="InheritanceComposition_A1">
+    <th:block name="InheritanceComposition_A1">
         A_1
-        <sv:def name="def1">
+        <th:def name="def1">
             A1_2
-        </sv:def>
+        </th:def>
         A1_3
-    </sv:block>
+    </th:block>
 
-    <sv:block name="InheritanceComposition_A2" parent="InheritanceComposition_A1">
-        <sv:def name="def1">
+    <th:block name="InheritanceComposition_A2" parent="InheritanceComposition_A1">
+        <th:def name="def1">
             A2_2
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="InheritanceComposition_B1">
-        <sv:def name="def1">
+    <th:block name="InheritanceComposition_B1">
+        <th:def name="def1">
             B1
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="InheritanceComposition_B2" parent="InheritanceComposition_B1">
-        <sv:def name="def1">
-            <sv:parent/>
+    <th:block name="InheritanceComposition_B2" parent="InheritanceComposition_B1">
+        <th:def name="def1">
+            <th:parent/>
             <lc:InheritanceComposition_A2>
-                <sv:def name="def1">
-                    <sv:parent/>
+                <th:def name="def1">
+                    <th:parent/>
                     B2
-                </sv:def>
+                </th:def>
             </lc:InheritanceComposition_A2>
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="BlockConstructionArgs_A">
+    <th:block name="BlockConstructionArgs_A">
         <div>${a}</div>
         ${b}
-    </sv:block>
+    </th:block>
 
-    <sv:block name="BlockConstructionArgs_B" parent="BlockConstructionArgs_A" a="A">
+    <th:block name="BlockConstructionArgs_B" parent="BlockConstructionArgs_A" a="A">
 
-    </sv:block>
+    </th:block>
 
-    <sv:block name="BlockConstructionArgs_C" parent="BlockConstructionArgs_B" b="B">
+    <th:block name="BlockConstructionArgs_C" parent="BlockConstructionArgs_B" b="B">
 
-    </sv:block>
+    </th:block>
 
-</sv:root>
+</th:root>
