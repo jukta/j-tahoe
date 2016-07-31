@@ -34,6 +34,11 @@
             <artifactId>j-tahoe</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.jukta</groupId>
+            <artifactId>j-tahoe-mvc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

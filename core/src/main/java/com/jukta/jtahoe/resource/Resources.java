@@ -40,7 +40,7 @@ public class Resources {
     }
 
 
-    private void getXmlFiles(List<JTahoeXml> xmlFilesList, File file, FilenameFilter filter, URL root) throws IOException, URISyntaxException {
+    protected void getXmlFiles(List<JTahoeXml> xmlFilesList, File file, FilenameFilter filter, URL root) throws IOException, URISyntaxException {
         if (file.isDirectory()) {
             for (File entry : file.listFiles(filter)) {
                 getXmlFiles(xmlFilesList, entry, filter, root);
@@ -51,7 +51,7 @@ public class Resources {
         }
     }
 
-    private static class ExtensionFilter implements FilenameFilter {
+    protected static class ExtensionFilter implements FilenameFilter {
 
         private String extension;
 

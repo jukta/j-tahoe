@@ -11,8 +11,7 @@ import java.util.List;
  */
 public class ResourceAppender {
 
-    public static StringBuilder append(Resources resources, ResourceType resourceType) throws IOException {
-        List<JTahoeXml> files = resources.getFiles(resourceType);
+    public static StringBuilder append(List<JTahoeXml> files) throws IOException {
         StringBuilder sb = new StringBuilder();
         for (JTahoeXml f : files) {
             String cont = new String(IOUtils.readFully(f.getInputSource().getByteStream(), -1, false));

@@ -1,10 +1,12 @@
 package com.jukta.maven;
 
+import com.jukta.jtahoe.gen.file.JTahoeXml;
 import com.jukta.jtahoe.gen.xml.XmlBlockModelProvider;
 import com.jukta.jtahoe.gen.NodeProcessor;
 import com.jukta.jtahoe.resource.ResourceAppender;
 import com.jukta.jtahoe.resource.ResourceType;
 import com.jukta.jtahoe.resource.Resources;
+import com.jukta.jtahoe.springmvc.LibraryResources;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -21,6 +23,7 @@ import org.xml.sax.SAXException;
 import javax.tools.JavaFileObject;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,17 +65,19 @@ public class CodeGenMojo extends AbstractMojo {
         }
     }
 
-    private void generateJS(File targetDir, Resources resources) throws IOException {
-        StringBuilder stringBuilder = ResourceAppender.append(resources, ResourceType.JS);
-        File file = new File(targetDir, id + ".js");
-        FileWriter w = new FileWriter(file);
-        w.append(stringBuilder.toString());
-        w.close();
-    }
+    private void generateResourceFile(File targetDir, Resources resources, ResourceType type, boolean includeLibs) throws IOException {
+        List<JTahoeXml> files = new ArrayList<>();
+        if (includeLibs) {
+            DependenciesResources lr = new DependenciesResources(mavenSession);
+            files.addAll(lr.getFiles(type));
+        }
 
-    private void generateCSS(File targetDir, Resources resources) throws IOException {
-        StringBuilder stringBuilder = ResourceAppender.append(resources, ResourceType.CSS);
-        File file = new File(targetDir, id + ".css");
+
+
+        files.addAll(resources.getFiles(type));
+
+        StringBuilder stringBuilder = ResourceAppender.append(files);
+        File file = new File(targetDir, id + "." + type.getExtension());
         FileWriter w = new FileWriter(file);
         w.append(stringBuilder.toString());
         w.close();
@@ -89,7 +94,12 @@ public class CodeGenMojo extends AbstractMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            id = UUID.randomUUID().toString();
+            boolean jar = "jar".equalsIgnoreCase(mavenProject.getPackaging());
+            if (jar) {
+                id = UUID.randomUUID().toString();
+            } else {
+                id = mavenProject.getArtifactId();
+            }
             File targetDir = new File(outputDir);
             Resources resources = new FileSystemResources(blocksDir);
             NodeProcessor nodeProcessor = new NodeProcessor();
@@ -97,17 +107,18 @@ public class CodeGenMojo extends AbstractMojo {
             List<JavaFileObject> javaFileObjects = nodeProcessor.process(provider);
             generateSources(targetDir, javaFileObjects);
             mavenProject.addCompileSourceRoot(outputDir);
-            generateJS(targetDir, resources);
-            generateCSS(targetDir, resources);
-            generateProps(targetDir);
+            generateResourceFile(targetDir, resources, ResourceType.JS, !jar);
+            generateResourceFile(targetDir, resources, ResourceType.CSS, !jar);
 
             Resource resource = new Resource();
             resource.setDirectory(outputDir);
             resource.addInclude(id + ".js");
             resource.addInclude(id + ".css");
-            resource.addInclude("jtahoe.properties");
+            if (jar) {
+                generateProps(targetDir);
+                resource.addInclude("jtahoe.properties");
+            }
             mavenProject.addResource(resource);
-
         } catch (Exception e) {
             throw new MojoFailureException("Source generator error", e);
         }
