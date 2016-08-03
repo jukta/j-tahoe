@@ -13,13 +13,19 @@
         <dependency>
             <groupId>com.jukta</groupId>
             <artifactId>j-tahoe-mvc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jukta</groupId>
+            <artifactId>lib-test</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.jukta</groupId>-->
-            <!--<artifactId>lib-test</artifactId>-->
-            <!--<version>1.0.0</version>-->
-        <!--</dependency>-->
     </dependencies>
 
     <build>
