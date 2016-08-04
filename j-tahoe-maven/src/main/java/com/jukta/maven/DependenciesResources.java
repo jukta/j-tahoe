@@ -1,19 +1,13 @@
 package com.jukta.maven;
 
-import com.jukta.jtahoe.gen.file.JTahoeResourceXml;
-import com.jukta.jtahoe.gen.file.JTahoeXml;
-import com.jukta.jtahoe.resource.ResourceType;
-import com.jukta.jtahoe.resource.Resources;
-import org.apache.maven.artifact.Artifact;
+import com.jukta.jtahoe.resource.*;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.handler.DefaultArtifactHandler;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.jar.JarEntry;
@@ -22,17 +16,16 @@ import java.util.jar.JarFile;
 /**
  * @since 1.0
  */
-public class DependenciesResources extends Resources {
+public class DependenciesResources {
 
     private MavenSession session;
 
     public DependenciesResources(MavenSession session) {
-        super("");
         this.session = session;
     }
 
-    public List<JTahoeXml> getFiles(ResourceType resourceType) {
-        List<JTahoeXml> res = new ArrayList<>();
+    public List<Resource> getFiles(ResourceType resourceType) {
+        List<Resource> res = new ArrayList<>();
         try {
             List<Dependency> dependencies = session.getCurrentProject().getDependencies();
             for (Dependency dependency : dependencies) {
@@ -45,8 +38,7 @@ public class DependenciesResources extends Resources {
                         p.load(jarFile.getInputStream(o));
                         String id = p.getProperty("lib.id");
                         o = jarFile.getJarEntry(id + "." + resourceType.getExtension());
-                        InputStream inputStream = jarFile.getInputStream(o);
-                        JTahoeXml jTahoeXml = new JTahoeResourceXml(inputStream, o.getName());
+                        Resource jTahoeXml = new JarResource(jarFile, o);
                         res.add(jTahoeXml);
                     }
 

@@ -1,10 +1,9 @@
 package com.jukta.jtahoe.gen.xml;
 
 import com.jukta.jtahoe.BlockModelProvider;
-import com.jukta.jtahoe.gen.file.JTahoeXml;
 import com.jukta.jtahoe.gen.model.NamedNode;
-import com.jukta.jtahoe.resource.ResourceType;
-import com.jukta.jtahoe.resource.Resources;
+import com.jukta.jtahoe.resource.*;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -18,9 +17,9 @@ import java.util.List;
  */
 public class XmlBlockModelProvider implements BlockModelProvider {
 
-    private Resources resources;
+    private ResourceResolver resources;
 
-    public XmlBlockModelProvider(Resources resources) {
+    public XmlBlockModelProvider(ResourceResolver resources) {
         this.resources = resources;
     }
 
@@ -31,7 +30,7 @@ public class XmlBlockModelProvider implements BlockModelProvider {
     @Override
     public Iterator<NamedNode> iterator() {
         try {
-            List<JTahoeXml> xmlList = resources.getFiles(ResourceType.XML);
+            List<Resource> xmlList = resources.getResources(new ResourceExtensionFilter(ResourceType.XML));
             return new BlockModelIterator(xmlList.iterator());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -40,10 +39,10 @@ public class XmlBlockModelProvider implements BlockModelProvider {
 
     private class BlockModelIterator implements Iterator<NamedNode> {
 
-        private Iterator<JTahoeXml> iterator;
+        private Iterator<Resource> iterator;
         private XMLReader xmlReader;
 
-        private BlockModelIterator(Iterator<JTahoeXml> iterator) throws ParserConfigurationException, SAXException {
+        private BlockModelIterator(Iterator<Resource> iterator) throws ParserConfigurationException, SAXException {
             this.iterator = iterator;
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -58,10 +57,10 @@ public class XmlBlockModelProvider implements BlockModelProvider {
         @Override
         public NamedNode next() {
             try {
-                JTahoeXml xml = iterator.next();
+                Resource xml = iterator.next();
                 FileHandler fileHandler = new FileHandler();
                 xmlReader.setContentHandler(fileHandler);
-                xmlReader.parse(xml.getInputSource());
+                xmlReader.parse(new InputSource(xml.getInputStream()));
                 return fileHandler.getNode();
             } catch (Exception e) {
                 throw new RuntimeException(e);

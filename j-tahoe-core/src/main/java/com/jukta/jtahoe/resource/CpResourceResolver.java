@@ -12,7 +12,7 @@ import java.util.jar.JarFile;
 /**
  * @since 1.0
  */
-public class Res {
+public class CpResourceResolver implements ResourceResolver{
 
     public List<Resource> getResources(ResourceFilter resourceFilter) {
         try {
@@ -58,27 +58,23 @@ public class Res {
 
                 }
             } else {
-                List<File> files = new ArrayList<>();
-                scanDir(new File(file).getAbsoluteFile(), files);
-                for (File f : files) {
-                    Resource r = new FSResource(f);
-                    if (resourceFilter.accept(r)) {
-                        resources.add(r);
-                    }
-                }
+                scanDir(new File(file).getAbsoluteFile(), resources, resourceFilter);
             }
         }
 
         return resources;
     }
 
-    private void scanDir(File f, List<File> files) {
+    protected void scanDir(File f, List<Resource> resources, ResourceFilter resourceFilter) {
         if (f.isDirectory()) {
             for (File f1 : f.listFiles()) {
-                scanDir(f1, files);
+                scanDir(f1, resources, resourceFilter);
             }
         } else {
-            files.add(f);
+            Resource r = new FSResource(f);
+            if (resourceFilter.accept(r)) {
+                resources.add(r);
+            }
         }
     }
 
@@ -93,17 +89,6 @@ public class Res {
         if (classLoader != null) {
             addAllUrls(classLoader.getParent(), result);
         }
-    }
-
-    public static void main(String[] args) throws IOException, URISyntaxException {
-        Res res = new Res();
-        List<Resource> q = res.getResources(new ResourceFilter() {
-            @Override
-            public boolean accept(Resource resource) {
-                return resource.getName().endsWith(".xml");
-            }
-        });
-        System.out.println(q);
     }
 
 }

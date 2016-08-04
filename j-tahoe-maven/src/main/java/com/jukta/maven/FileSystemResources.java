@@ -1,29 +1,29 @@
 package com.jukta.maven;
 
-import com.jukta.jtahoe.resource.Resources;
+import com.jukta.jtahoe.resource.CpResourceResolver;
+import com.jukta.jtahoe.resource.Resource;
+import com.jukta.jtahoe.resource.ResourceFilter;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @since 1.0
  */
-public class FileSystemResources extends Resources {
+public class FileSystemResources extends CpResourceResolver {
 
     private String blocksFolder;
 
     public FileSystemResources(String blocksFolder) {
-        super(blocksFolder);
         this.blocksFolder = blocksFolder;
     }
 
     @Override
-    protected URL getRoot() {
-        try {
-            return new File(blocksFolder).toURI().toURL();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+    public List<Resource> getResources(ResourceFilter resourceFilter) {
+        File root = new File(blocksFolder);
+        List<Resource> resources = new ArrayList<>();
+        scanDir(root, resources, resourceFilter);
+        return resources;
     }
 }

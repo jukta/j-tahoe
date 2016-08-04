@@ -1,12 +1,8 @@
 package com.jukta.maven;
 
-import com.jukta.jtahoe.gen.file.JTahoeXml;
 import com.jukta.jtahoe.gen.xml.XmlBlockModelProvider;
 import com.jukta.jtahoe.gen.NodeProcessor;
-import com.jukta.jtahoe.resource.ResourceAppender;
-import com.jukta.jtahoe.resource.ResourceType;
-import com.jukta.jtahoe.resource.Resources;
-import com.jukta.jtahoe.springmvc.LibraryResources;
+import com.jukta.jtahoe.resource.*;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -65,8 +61,8 @@ public class CodeGenMojo extends AbstractMojo {
         }
     }
 
-    private void generateResourceFile(File targetDir, Resources resources, ResourceType type, boolean includeLibs) throws IOException {
-        List<JTahoeXml> files = new ArrayList<>();
+    private void generateResourceFile(File targetDir, ResourceResolver resources, ResourceType type, boolean includeLibs) throws IOException {
+        List<com.jukta.jtahoe.resource.Resource> files = new ArrayList<>();
         if (includeLibs) {
             DependenciesResources lr = new DependenciesResources(mavenSession);
             files.addAll(lr.getFiles(type));
@@ -74,7 +70,7 @@ public class CodeGenMojo extends AbstractMojo {
 
 
 
-        files.addAll(resources.getFiles(type));
+        files.addAll(resources.getResources(new ResourceExtensionFilter(type)));
 
         StringBuilder stringBuilder = ResourceAppender.append(files);
         File file = new File(targetDir, id + "." + type.getExtension());
@@ -101,14 +97,14 @@ public class CodeGenMojo extends AbstractMojo {
                 id = mavenProject.getArtifactId();
             }
             File targetDir = new File(outputDir);
-            Resources resources = new FileSystemResources(blocksDir);
+            ResourceResolver resolver = new FileSystemResources(blocksDir);
             NodeProcessor nodeProcessor = new NodeProcessor();
-            XmlBlockModelProvider provider = new XmlBlockModelProvider(resources);
+            XmlBlockModelProvider provider = new XmlBlockModelProvider(resolver);
             List<JavaFileObject> javaFileObjects = nodeProcessor.process(provider);
             generateSources(targetDir, javaFileObjects);
             mavenProject.addCompileSourceRoot(outputDir);
-            generateResourceFile(targetDir, resources, ResourceType.JS, !jar);
-            generateResourceFile(targetDir, resources, ResourceType.CSS, !jar);
+            generateResourceFile(targetDir, resolver, ResourceType.JS, !jar);
+            generateResourceFile(targetDir, resolver, ResourceType.CSS, !jar);
 
             Resource resource = new Resource();
             resource.setDirectory(outputDir);

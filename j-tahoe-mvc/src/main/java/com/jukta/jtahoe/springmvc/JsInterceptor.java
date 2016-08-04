@@ -1,9 +1,6 @@
 package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.resource.ResourceType;
-import com.jukta.jtahoe.resource.Resources;
-
-import java.io.FilenameFilter;
 
 /**
  * @author Sergey Sidorov
