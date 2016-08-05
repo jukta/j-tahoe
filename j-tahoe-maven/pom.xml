@@ -10,7 +10,7 @@
     <parent>
         <groupId>com.jukta</groupId>
         <artifactId>j-tahoe</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
