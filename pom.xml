@@ -111,6 +111,7 @@
                 <version>1.6</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
                     <serverId>oss.sonatype.org</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <description>${project.version}</description>
