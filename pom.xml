@@ -17,6 +17,19 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <name>alephspb</name>
+            <organization>Jukta</organization>
+            <organizationUrl>http://www.jukta.com</organizationUrl>
+        </developer>
+            <developer>
+                <name>dobrovolskiy</name>
+                <organization>Jukta</organization>
+                <organizationUrl>http://www.jukta.com</organizationUrl>
+            </developer>
+    </developers>
+
     <scm>
         <connection>scm:git:git://git@github.com:jukta/j-tahoe.git</connection>
         <developerConnection>scm:git:ssh://github.com:jukta/j-tahoe.git</developerConnection>
