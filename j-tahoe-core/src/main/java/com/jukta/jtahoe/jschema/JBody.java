@@ -34,6 +34,11 @@ public class JBody implements JElement {
     }
 
     @Override
+    public String toString() {
+        return toJson();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

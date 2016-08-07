@@ -29,7 +29,9 @@ public class JAttrs {
     public String toHtml() {
         String res = "";
         for (Map.Entry entry : attrs.entrySet()) {
-            res += entry.getKey() + "=\"" + entry.getValue() + "\" ";
+            res += entry.getKey();
+            if (entry.getValue() != null) res += "=\"" + entry.getValue() + "\"";
+            res += " ";
         }
         return res;
     }

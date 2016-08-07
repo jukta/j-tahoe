@@ -38,8 +38,4 @@ public class HtmlHandler extends AbstractHandler {
         body += getVarName()+".addElement(" + element + ");\n";
     }
 
-    @Override
-    public void appendCode(String code) {
-        super.appendCode(code);
-    }
 }

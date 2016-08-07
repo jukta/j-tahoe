@@ -51,19 +51,21 @@ public class NodeProcessor {
                 handler = new RootHandler(genContext, node, parent);
             } else if (node.getName().equals("block")) {
                 handler = new BlockHandler(genContext, node, parent);
-            } else if (node.getName().startsWith("def")) {
+            } else if (node.getName().equals("def")) {
                 handler = new DefHandler(genContext, node, parent);
-            } else if (node.getName().startsWith("parent")) {
+            } else if (node.getName().equals("parent")) {
                 handler = new ParentHandler(genContext, node, parent);
-            } else if (node.getName().startsWith("for")) {
+            } else if (node.getName().equals("for")) {
                 handler = new ForHandler(genContext, node, parent);
-            } else if (node.getName().startsWith("if")) {
+            } else if (node.getName().equals("if")) {
                 handler = new IfHandler(genContext, node, parent);
-            } else if (node.getName().startsWith("tag")) {
+            } else if (node.getName().equals("tag")) {
                 handler = new TagHandler(genContext, node, parent);
-            } else if (node.getName().startsWith("include")) {
+            } else if (node.getName().equals("tagAttr")) {
+                handler = new TagAttrHandler(genContext, node, parent);
+            } else if (node.getName().equals("include")) {
                 handler = new IncludeHandler(genContext, node, parent);
-            } else if (node.getName().startsWith("set")) {
+            } else if (node.getName().equals("set")) {
                 handler = new SetHandler(genContext, node, parent);
             }
         } else {
