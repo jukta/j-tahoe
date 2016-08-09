@@ -31,12 +31,7 @@
         </dependency>
         <dependency>
             <groupId>com.jukta</groupId>
-            <artifactId>j-tahoe-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.jukta</groupId>
-            <artifactId>j-tahoe-mvc</artifactId>
+            <artifactId>j-tahoe-compiler</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
