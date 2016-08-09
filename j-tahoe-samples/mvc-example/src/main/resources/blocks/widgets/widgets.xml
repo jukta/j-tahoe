@@ -1,0 +1,93 @@
+<sv:root xmlns:sv="http://jukta.com/tahoe/schema"
+         xmlns="http://www.w3.org/1999/xhtml"
+         namespace="widgets"
+         xmlns:lc=".">
+
+    <sv:block name="FilterPanel" dataHandler="filterPanel">
+        <sv:def>
+            <div class="filterPanel">
+                Filter Panel ${b}
+            </div>
+        </sv:def>
+    </sv:block>
+
+    <sv:block name="ClientPanel">
+        <div class="clientPanel">
+            <div class="clientHeader">
+                <div>
+                    <div class="title">${title}</div>
+                    <span>Trade Date: 25 Apr 2016</span>
+                </div>
+                <lc:StatusFilterItem status="WORKING" num="3"/>
+                <lc:StatusFilterItem status="DONE" num="3"/>
+                <lc:StatusFilterItem status="ALLOCATED" num="3"/>
+                <lc:StatusFilterItem status="ERROR" num="3"/>
+            </div>
+            <div class="clientBody">
+                <div class="topPanel">
+                    <lc:Grid list="${list}"/>
+                </div>
+                <div class="bottomPanel">
+                    <lc:Grid list="${list}"/>
+                </div>
+            </div>
+        </div>
+    </sv:block>
+
+    <sv:block name="StatusFilterItem">
+        <div class="statusFilterItem">
+            <span>${status}</span>
+            <span>${num} blocks</span>
+            <div class="pie">
+                <svg baseProfile="full" width="100" version="1.1" height="100">
+                    <circle r="40" cx="50" cy="50" fill="#00BD9C"></circle>
+                    <circle r="25" cx="50" cy="50" fill="white"></circle>
+                </svg>
+            </div>
+        </div>
+    </sv:block>
+
+    <sv:block name="Grid">
+        <div class="grid">
+            <table>
+                <tr>
+                    <th>Account</th>
+                    <th>Side</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Price type</th>
+                    <th>Product</th>
+                    <th>Exchange</th>
+                    <th>Product type</th>
+                    <th>Order</th>
+                    <th>Exec broker</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                    <th>Price type</th>
+                </tr>
+                <sv:for var="i" in="${list}">
+                    <lc:GridLine trade="${i}"/>
+                </sv:for>
+            </table>
+        </div>
+    </sv:block>
+
+    <sv:block name="GridLine">
+        <tr class="gridLine">
+            <td>${trade.account}</td>
+            <td>${trade.side}</td>
+            <td>${trade.quantity}</td>
+            <td>${trade.price}</td>
+            <td>${trade.priceType}</td>
+            <td>${trade.product}</td>
+            <td>${trade.exchange}</td>
+            <td>${trade.productType}</td>
+            <td>${trade.order}</td>
+            <td>${trade.execBroker}</td>
+            <td>${trade.status}</td>
+            <td>${trade.type}</td>
+            <td></td>
+        </tr>
+    </sv:block>
+
+</sv:root>

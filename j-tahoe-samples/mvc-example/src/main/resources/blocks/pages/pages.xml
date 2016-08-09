@@ -1,0 +1,56 @@
+<sv:root xmlns:sv="http://jukta.com/tahoe/schema"
+         xmlns="http://www.w3.org/1999/xhtml"
+         namespace="pages"
+         xmlns:lc="."
+         xmlns:lb="test"
+         xmlns:fm="form"
+         xmlns:wdg="widgets"
+         xmlns:lt="layout">
+
+    <sv:block name="abstractPage">
+        <sv:tag name="!DOCTYPE html"/>
+        <html>
+            <head>
+                <sv:def name="head"/>
+            </head>
+            <body>
+                <sv:def name="body"/>
+            </body>
+        </html>
+    </sv:block>
+
+    <sv:block name="IndexPage" parent="lc:abstractPage">
+        <sv:def name="head">
+            <link rel="stylesheet" href="resources/all.css" type="text/css"/>
+            <script src="resources/all.js" type="text/javascript"/>
+        </sv:def>
+        <sv:def name="body">
+            <div class="mainLayout">
+                <div class="leftPanel">
+
+                    <wdg:FilterPanel a="a1">
+                        <lt:verticalLayout padding="true" spacing="true">
+                            <fm:textField fieldName="hello1" label="Field 1" value="hello 1" error="true"/>
+                            <fm:textField fieldName="hello2" label="Field 2" value="hello 2"/>
+                            <hr/>
+                            <span>Overridden</span>
+                            <span>def</span>
+                            <lt:horizontalLayout spacing="true">
+                                <fm:button label="Ok"/>
+                                <fm:button label="Cancel"/>
+                            </lt:horizontalLayout>
+                        </lt:verticalLayout>
+
+                    </wdg:FilterPanel>
+                    <sv:include name="widgets.FilterPanel">
+                    </sv:include>
+                    <!--<lb:Button name="hello"/>-->
+                </div>
+                <div class="rightPanel">
+                    <wdg:ClientPanel title="Arrowfield Trading" list="${list}"/>
+                </div>
+            </div>
+        </sv:def>
+    </sv:block>
+
+</sv:root>

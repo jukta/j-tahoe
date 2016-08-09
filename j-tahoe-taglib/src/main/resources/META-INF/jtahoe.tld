@@ -2,6 +2,8 @@
     <tlib-version>1.0</tlib-version>
     <jsp-version>2.0</jsp-version>
     <short-name>JTahoe TLD</short-name>
+    <uri>http://jukta.com/tahoe/taglib</uri>
+
     <tag>
         <name>block</name>
         <tag-class>com.jukta.jtahoe.taglib.BlockTag</tag-class>

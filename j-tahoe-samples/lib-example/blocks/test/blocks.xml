@@ -1,0 +1,48 @@
+<th:root xmlns:th="http://jukta.com/tahoe/schema"
+         xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:lc="." namespace="test">
+
+    <th:block name="blockA">
+        <input></input>
+        <th:def name="qwe">
+            <th:for var="i" in="${name}">
+                <div>
+                    <span>hello</span>
+                </div>
+            </th:for>
+        </th:def>
+
+    </th:block>
+
+    <th:block name="blockB">
+        <lc:blockA>
+            <th:def name="qwe">
+                override ${x}
+                <th:parent/>
+            </th:def>
+        </lc:blockA>
+    </th:block>
+
+    <th:block name="blockC" parent="blockA">
+        <th:def name="qwe">
+            override ${x}
+            <th:parent/>
+        </th:def>
+    </th:block>
+
+    <th:block name="Main">
+        <html>
+            <body>
+                <th:for var="i" in="${arr}">
+                    <h1>Hello world  !!! ${i}</h1>
+                </th:for>
+            </body>
+        </html>
+    </th:block>
+
+    <th:block name="Button">
+        this is button from library
+        <button class="button">${name}</button>
+    </th:block>
+
+</th:root>
