@@ -1,7 +1,0 @@
-.textField {
-    display: inline-block;
-}
-
-.textField.error input {
-    border: 1px solid red;
-}
