@@ -64,12 +64,15 @@ public class MemoryClassLoader extends ClassLoader {
 
     private List<String> getClasspathOptions() {
         List<String> options = new ArrayList<String>();
-        options.add("-classpath");
-        StringBuilder sb = new StringBuilder();
-        URLClassLoader urlClassLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
-        for (URL url : urlClassLoader.getURLs())
-            sb.append(url.getFile()).append(File.pathSeparator);
-        options.add(sb.toString());
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if (classLoader instanceof URLClassLoader) {
+            options.add("-classpath");
+            StringBuilder sb = new StringBuilder();
+            URLClassLoader urlClassLoader = (URLClassLoader) classLoader;
+            for (URL url : urlClassLoader.getURLs())
+                sb.append(url.getFile()).append(File.pathSeparator);
+            options.add(sb.toString());
+        }
         return options;
     }
 }
