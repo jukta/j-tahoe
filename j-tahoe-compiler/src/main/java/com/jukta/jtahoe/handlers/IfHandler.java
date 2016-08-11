@@ -33,6 +33,6 @@ public class IfHandler extends AbstractHandler {
 
     @Override
     public void appendCode(String code) {
-        super.appendCode(code);
+        body += code;
     }
 }
