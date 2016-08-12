@@ -1,0 +1,17 @@
+.verticalLayout.spacing > * {
+    display: block;
+    margin-bottom: 10px;
+}
+.verticalLayout.spacing > *:last-child {
+    margin-bottom: 0;
+}
+.verticalLayout.padding, .horizontalLayout.padding {
+    padding: 10px;
+}
+.horizontalLayout > * {
+    display: inline-block;
+    margin-right: 10px;
+}
+.horizontalLayout.spacing > *:last-child {
+    margin-right: 0;
+}
