@@ -5,11 +5,15 @@ import javax.tools.JavaFileObject;
 import javax.tools.ToolProvider;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -63,7 +67,7 @@ public class MemoryClassLoader extends ClassLoader {
     }
 
     private List<String> getClasspathOptions() {
-        List<String> options = new ArrayList<String>();
+        List<String> options = new ArrayList<>();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if (classLoader instanceof URLClassLoader) {
             options.add("-classpath");
@@ -72,6 +76,26 @@ public class MemoryClassLoader extends ClassLoader {
             for (URL url : urlClassLoader.getURLs())
                 sb.append(url.getFile()).append(File.pathSeparator);
             options.add(sb.toString());
+        } else if (classLoader != null && "org.jboss.modules.ModuleClassLoader".equals(classLoader.getClass().getName())) {
+            try {
+                options.add("-classpath");
+                StringBuilder sb = new StringBuilder();
+                Enumeration<URL> resources = classLoader.getResources("");
+                while (resources.hasMoreElements()) {
+                    URL url = resources.nextElement();
+                    Object virtualFile = url.getContent();
+                    if (("org.jboss.vfs.VirtualFile").equals(virtualFile.getClass().getName())) {
+                        Method getPhysicalFile = virtualFile.getClass().getMethod("getPhysicalFile");
+                        File vfile = (File) getPhysicalFile.invoke(virtualFile);
+                        for (File file : vfile.getParentFile().listFiles()) {
+                            sb.append(file).append(File.pathSeparator);
+                        }
+                    }
+                }
+                options.add(sb.toString());
+            } catch (IOException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
         }
         return options;
     }

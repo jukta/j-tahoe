@@ -2,6 +2,8 @@ package com.jukta.jtahoe.resource;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -12,7 +14,7 @@ import java.util.jar.JarFile;
 /**
  * @since 1.0
  */
-public class CpResourceResolver implements ResourceResolver{
+public class CpResourceResolver implements ResourceResolver {
 
     public List<Resource> getResources(ResourceFilter resourceFilter) {
         try {
@@ -55,7 +57,6 @@ public class CpResourceResolver implements ResourceResolver{
                     if (resourceFilter.accept(r)) {
                         resources.add(r);
                     }
-
                 }
             } else {
                 scanDir(new File(file).getAbsoluteFile(), resources, resourceFilter);
@@ -85,9 +86,30 @@ public class CpResourceResolver implements ResourceResolver{
                     result.add(url);
                 }
             }
+        } else if (classLoader != null && "org.jboss.modules.ModuleClassLoader".equals(classLoader.getClass().getName())) {
+            addVfsUrls(classLoader, result);
         }
         if (classLoader != null) {
             addAllUrls(classLoader.getParent(), result);
+        }
+    }
+
+    private void addVfsUrls(ClassLoader classLoader, List<URL> result) {
+        try {
+            Enumeration<URL> resourceUrls = classLoader.getResources("");
+            while (resourceUrls.hasMoreElements()) {
+                URL url = resourceUrls.nextElement();
+                Object virtualFile = url.getContent();
+                if (("org.jboss.vfs.VirtualFile").equals(virtualFile.getClass().getName())) {
+                    Method getPhysicalFile = virtualFile.getClass().getMethod("getPhysicalFile");
+                    File vfile = (File) getPhysicalFile.invoke(virtualFile);
+                    for (File file : vfile.getParentFile().listFiles()) {
+                        result.add(file.toURI().toURL());
+                    }
+                }
+            }
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
