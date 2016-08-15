@@ -16,6 +16,11 @@
             <artifactId>j-tahoe-taglib</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.jukta</groupId>
+            <artifactId>lib-example</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

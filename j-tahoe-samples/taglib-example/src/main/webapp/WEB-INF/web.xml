@@ -16,6 +16,15 @@
         <url-pattern>*/all.css</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>cpResources</filter-name>
+        <filter-class>com.jukta.jtahoe.servlet.CpResourceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>cpResources</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
     <context-param>
         <param-name>blocksDir</param-name>
         <param-value>blocks</param-value>
