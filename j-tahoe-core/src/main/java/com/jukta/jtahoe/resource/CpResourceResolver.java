@@ -2,8 +2,6 @@ package com.jukta.jtahoe.resource;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -99,16 +97,12 @@ public class CpResourceResolver implements ResourceResolver {
             Enumeration<URL> resourceUrls = classLoader.getResources("");
             while (resourceUrls.hasMoreElements()) {
                 URL url = resourceUrls.nextElement();
-                Object virtualFile = url.getContent();
-                if (("org.jboss.vfs.VirtualFile").equals(virtualFile.getClass().getName())) {
-                    Method getPhysicalFile = virtualFile.getClass().getMethod("getPhysicalFile");
-                    File vfile = (File) getPhysicalFile.invoke(virtualFile);
-                    for (File file : vfile.getParentFile().listFiles()) {
-                        result.add(file.toURI().toURL());
-                    }
+                File vfile = VfsUtils.getFile(url);
+                for (File file : vfile.getParentFile().listFiles()) {
+                    result.add(file.toURI().toURL());
                 }
             }
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

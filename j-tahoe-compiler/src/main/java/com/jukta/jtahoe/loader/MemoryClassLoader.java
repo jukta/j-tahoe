@@ -1,5 +1,7 @@
 package com.jukta.jtahoe.loader;
 
+import com.jukta.jtahoe.resource.VfsUtils;
+
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.ToolProvider;
@@ -7,8 +9,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -66,37 +66,25 @@ public class MemoryClassLoader extends ClassLoader {
         }
     }
 
-    private List<String> getClasspathOptions() {
+    private List<String> getClasspathOptions() throws IOException {
         List<String> options = new ArrayList<>();
+        options.add("-classpath");
+        StringBuilder sb = new StringBuilder();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if (classLoader instanceof URLClassLoader) {
-            options.add("-classpath");
-            StringBuilder sb = new StringBuilder();
             URLClassLoader urlClassLoader = (URLClassLoader) classLoader;
             for (URL url : urlClassLoader.getURLs())
                 sb.append(url.getFile()).append(File.pathSeparator);
-            options.add(sb.toString());
         } else if (classLoader != null && "org.jboss.modules.ModuleClassLoader".equals(classLoader.getClass().getName())) {
-            try {
-                options.add("-classpath");
-                StringBuilder sb = new StringBuilder();
-                Enumeration<URL> resources = classLoader.getResources("");
-                while (resources.hasMoreElements()) {
-                    URL url = resources.nextElement();
-                    Object virtualFile = url.getContent();
-                    if (("org.jboss.vfs.VirtualFile").equals(virtualFile.getClass().getName())) {
-                        Method getPhysicalFile = virtualFile.getClass().getMethod("getPhysicalFile");
-                        File vfile = (File) getPhysicalFile.invoke(virtualFile);
-                        for (File file : vfile.getParentFile().listFiles()) {
-                            sb.append(file).append(File.pathSeparator);
-                        }
-                    }
-                }
-                options.add(sb.toString());
-            } catch (IOException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
+            Enumeration<URL> resources = classLoader.getResources("");
+            while (resources.hasMoreElements()) {
+                URL url = resources.nextElement();
+                File vfile = VfsUtils.getFile(url);
+                for (File file : vfile.getParentFile().listFiles())
+                    sb.append(file).append(File.pathSeparator);
             }
         }
+        options.add(sb.toString());
         return options;
     }
 }
