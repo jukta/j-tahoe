@@ -20,14 +20,16 @@
     <developers>
         <developer>
             <name>alephspb</name>
+            <email>jtahoe@jukta.com</email>
             <organization>Jukta</organization>
             <organizationUrl>http://www.jukta.com</organizationUrl>
         </developer>
-            <developer>
-                <name>dobrovolskiy</name>
-                <organization>Jukta</organization>
-                <organizationUrl>http://www.jukta.com</organizationUrl>
-            </developer>
+        <developer>
+            <name>dobrovolskiy</name>
+            <email>jtahoe@jukta.com</email>
+            <organization>Jukta</organization>
+            <organizationUrl>http://www.jukta.com</organizationUrl>
+        </developer>
     </developers>
 
     <scm>
