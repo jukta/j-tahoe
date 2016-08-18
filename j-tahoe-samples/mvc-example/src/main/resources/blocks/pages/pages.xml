@@ -1,4 +1,4 @@
-<sv:root xmlns:sv="http://jukta.com/tahoe/schema"
+<th:root xmlns:th="http://jukta.com/tahoe/schema"
          xmlns="http://www.w3.org/1999/xhtml"
          namespace="pages"
          xmlns:lc="."
@@ -7,24 +7,24 @@
          xmlns:wdg="widgets"
          xmlns:lt="layout">
 
-    <sv:block name="abstractPage">
-        <sv:tag name="!DOCTYPE html"/>
+    <th:block name="abstractPage">
+        <th:tag name="!DOCTYPE html"/>
         <html>
             <head>
-                <sv:def name="head"/>
+                <th:def name="head"/>
             </head>
             <body>
-                <sv:def name="body"/>
+                <th:def name="body"/>
             </body>
         </html>
-    </sv:block>
+    </th:block>
 
-    <sv:block name="IndexPage" parent="lc:abstractPage">
-        <sv:def name="head">
+    <th:block name="IndexPage" parent="lc:abstractPage">
+        <th:def name="head">
             <link rel="stylesheet" href="resources/all.css" type="text/css"/>
             <script src="resources/all.js" type="text/javascript"/>
-        </sv:def>
-        <sv:def name="body">
+        </th:def>
+        <th:def name="body">
             <div class="mainLayout">
                 <div class="leftPanel">
 
@@ -42,15 +42,15 @@
                         </lt:verticalLayout>
 
                     </wdg:FilterPanel>
-                    <sv:include name="widgets.FilterPanel">
-                    </sv:include>
+                    <th:include name="widgets.FilterPanel">
+                    </th:include>
                     <!--<lb:Button name="hello"/>-->
                 </div>
                 <div class="rightPanel">
                     <wdg:ClientPanel title="Arrowfield Trading" list="${list}"/>
                 </div>
             </div>
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-</sv:root>
+</th:root>

@@ -22,16 +22,23 @@ public class JAttrs {
     }
 
     public String toJson() {
-//        todo implement
-        return "";
+        String res = "_attrs: {";
+        int i = 0;
+        for (Map.Entry<String, String> entry : attrs.entrySet()) {
+            if (i++ > 0) res += ",";
+            res += entry.getKey() + ":\"" + entry.getValue() + "\"";
+        }
+        res += "}";
+        return res;
     }
 
     public String toHtml() {
         String res = "";
+        int i = 0;
         for (Map.Entry entry : attrs.entrySet()) {
+            if (i++ > 0) res += " ";
             res += entry.getKey();
             if (entry.getValue() != null) res += "=\"" + entry.getValue() + "\"";
-            res += " ";
         }
         return res;
     }

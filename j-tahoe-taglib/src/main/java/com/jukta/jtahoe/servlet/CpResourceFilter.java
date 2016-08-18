@@ -12,8 +12,6 @@ import java.io.InputStream;
  */
 public class CpResourceFilter implements Filter {
 
-    private String content;
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 

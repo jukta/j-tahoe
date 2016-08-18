@@ -1,17 +1,17 @@
-<sv:root xmlns:sv="http://jukta.com/tahoe/schema"
+<th:root xmlns:th="http://jukta.com/tahoe/schema"
          xmlns="http://www.w3.org/1999/xhtml"
          namespace="widgets"
          xmlns:lc=".">
 
-    <sv:block name="FilterPanel" dataHandler="filterPanel">
-        <sv:def>
+    <th:block name="FilterPanel" dataHandler="filterPanel">
+        <th:def>
             <div class="filterPanel">
                 Filter Panel ${b}
             </div>
-        </sv:def>
-    </sv:block>
+        </th:def>
+    </th:block>
 
-    <sv:block name="ClientPanel">
+    <th:block name="ClientPanel">
         <div class="clientPanel">
             <div class="clientHeader">
                 <div>
@@ -32,9 +32,9 @@
                 </div>
             </div>
         </div>
-    </sv:block>
+    </th:block>
 
-    <sv:block name="StatusFilterItem">
+    <th:block name="StatusFilterItem">
         <div class="statusFilterItem">
             <span>${status}</span>
             <span>${num} blocks</span>
@@ -45,9 +45,9 @@
                 </svg>
             </div>
         </div>
-    </sv:block>
+    </th:block>
 
-    <sv:block name="Grid">
+    <th:block name="Grid">
         <div class="grid">
             <table>
                 <tr>
@@ -65,14 +65,14 @@
                     <th>Type</th>
                     <th>Price type</th>
                 </tr>
-                <sv:for var="i" in="${list}">
+                <th:for var="i" in="${list}">
                     <lc:GridLine trade="${i}"/>
-                </sv:for>
+                </th:for>
             </table>
         </div>
-    </sv:block>
+    </th:block>
 
-    <sv:block name="GridLine">
+    <th:block name="GridLine">
         <tr class="gridLine">
             <td>${trade.account}</td>
             <td>${trade.side}</td>
@@ -88,6 +88,6 @@
             <td>${trade.type}</td>
             <td></td>
         </tr>
-    </sv:block>
+    </th:block>
 
-</sv:root>
+</th:root>

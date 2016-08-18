@@ -16,9 +16,11 @@ public class JBody implements JElement {
 
     @Override
     public String toJson() {
-        String res = "{_: [";
+        String res = "_: [";
+        int i = 0;
         for (JElement element : elements) {
-            res += "," + element.toJson();
+            if (i++ > 0) res += ",";
+            res += element.toJson();
         }
         res += "]";
         return res;
