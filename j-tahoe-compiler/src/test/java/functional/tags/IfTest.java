@@ -35,6 +35,16 @@ public class IfTest extends AbstractTest {
     }
 
     @Test
+    public void IfPositiveEmpty() {
+        Block b = newBlockInstance("test.tags.If_Empty_A");
+        JElement el = b.body(new Attrs().set("str", ""));
+        JBody expected = new JBody()
+                .addElement(new JBody()
+                        .addElement(new JText("A")));
+        assertEquals(expected, el);
+    }
+
+    @Test
     public void IfSetPositive() {
         Block b = newBlockInstance("test.tags.If_Set");
         JElement el = b.body(new Attrs().set("str", "_"));
@@ -53,5 +63,26 @@ public class IfTest extends AbstractTest {
                 .addElement(new JText(""));
         assertEquals(expected, el);
     }
+
+    @Test
+    public void If_With_Bool_Positive1() {
+        Block b = newBlockInstance("test.tags.If_A_with_Bool_in_if1");
+        JElement el = b.body(new Attrs().set("str", false));
+        JBody expected = new JBody()
+                .addElement(new JBody()
+                        .addElement(new JText("A")));
+        assertEquals(expected, el);
+    }
+
+    @Test
+    public void If_With_Bool_Positive2() {
+        Block b = newBlockInstance("test.tags.If_A_with_Bool_in_if2");
+        JElement el = b.body(new Attrs().set("str", false));
+        JBody expected = new JBody()
+                .addElement(new JBody()
+                        .addElement(new JText("A")));
+        assertEquals(expected, el);
+    }
+
 
 }

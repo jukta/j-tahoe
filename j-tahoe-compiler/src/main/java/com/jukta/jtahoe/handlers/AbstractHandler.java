@@ -5,6 +5,8 @@ import com.jukta.jtahoe.gen.model.NamedNode;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,6 +26,7 @@ public abstract class AbstractHandler {
 
     public static final Pattern EL_EXP_PATTERN = Pattern.compile("\\$\\{([^\\}]*)\\}");
     public static final Pattern VARIABLE_EXP_PATTERN = Pattern.compile("[a-zA-Z_$][a-zA-Z_$0-9]*(\\.[a-zA-Z_$][a-zA-Z_$0-9]*)*\\s*(?=([^\']*'[^\']*')*[^\']*$)");
+    public static final List<String> EL_KEY_WORDS = Arrays.asList("null", "true", "false", "div", "mod", "and", "or", "not", "eq", "ne", "lt", "gt", "ge", "le", "empty");
 
     protected AbstractHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         this.parent = parent;
@@ -94,8 +97,11 @@ public abstract class AbstractHandler {
                     Matcher varMatcher = VARIABLE_EXP_PATTERN.matcher(match);
                     int shift = 0;
                     while (varMatcher.find()) {
-                        match = new StringBuilder(match).insert(varMatcher.start() + shift, "attrs.").toString();
-                        shift += 6;
+                        StringBuilder sb = new StringBuilder(match);
+                        if (!isElKeyWord(varMatcher.start() + shift, varMatcher.end() + shift, sb)) {
+                            match = sb.insert(varMatcher.start() + shift, "attrs.").toString();
+                            shift += 6;
+                        }
                     }
 
                     String rep = "eval(attrs, \"" + match + "\")";
@@ -121,6 +127,10 @@ public abstract class AbstractHandler {
             str = "\"" + str + "\"";
         }
         return str;
+    }
+
+    private boolean isElKeyWord(int start, int end, StringBuilder sb) {
+        return EL_KEY_WORDS.contains(sb.substring(start, end).trim().toLowerCase());
     }
 
     public String parseItExp(String str, boolean wrap) {

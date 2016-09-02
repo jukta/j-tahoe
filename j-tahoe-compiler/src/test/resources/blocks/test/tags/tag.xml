@@ -1,4 +1,5 @@
-<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test/tags">
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="."
+         namespace="test/tags">
 
     <th:block name="SimpleTag_A">
         <th:tag name="sometag"/>
@@ -16,6 +17,15 @@
             <th:tagAttr name="attr1" value="val1"/>
             <th:tagAttr name="attr2"/>
             <div>hello</div>
+        </th:tag>
+    </th:block>
+
+    <th:block name="AttrTag_WithIf">
+        <th:tag name="sometag">
+            <th:if exp="${str!=null}">
+                <th:tagAttr name="attr1" value="val1"/>
+            </th:if>
+            <th:tagAttr name="attr2"/>
         </th:tag>
     </th:block>
 

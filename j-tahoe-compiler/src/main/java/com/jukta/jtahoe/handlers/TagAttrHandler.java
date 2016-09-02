@@ -17,8 +17,22 @@ public class TagAttrHandler extends AbstractHandler {
     public void end() {
         String name = getAttrs().get("name");
         String value = getAttrs().get("value");
-        if (getParent() instanceof TagHandler) {
-            ((TagHandler) getParent()).addAttribute(name, value);
+//        TagHandler parentTag = getParentTag(getParent());
+        AbstractHandler parentTag = getParent();
+        if (parentTag != null && parentTag instanceof TagHandler) {
+            ((TagHandler)parentTag).addAttribute(name, value);
+        } else {
+            throw new RuntimeException("tagAttr must be child of tag element");
+        }
+    }
+
+    private TagHandler getParentTag(AbstractHandler parent) {
+        if (parent != null) {
+            if (parent instanceof TagHandler) {
+                return (TagHandler) parent;
+            } else {
+                return getParentTag(parent.getParent());
+            }
         } else {
             throw new RuntimeException("tagAttr must be child of tag element");
         }

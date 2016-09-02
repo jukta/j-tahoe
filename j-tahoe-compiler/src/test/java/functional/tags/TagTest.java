@@ -42,4 +42,15 @@ public class TagTest extends AbstractTest {
 
         assertEquals(expected, el);
     }
+
+//    @Test
+//    public void attrTagWithIf() {
+//        Block b = newBlockInstance("test.tags.AttrTag_WithIf");
+//        JElement el = b.body(new Attrs().set("str", "_"));
+//        JBody expected = new JBody().addElement(new JTag("sometag")
+//                .setAttrs(new JAttrs().addAttr("attr1", "val1").addAttr("attr2", null))
+//                .setjBody(new JBody()));
+//
+//        assertEquals(expected, el);
+//    }
 }

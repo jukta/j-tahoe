@@ -44,4 +44,27 @@ public class BlockHandlerTest {
         assertEquals("eval(attrs, \"attrs.a\") + \" \" + eval(attrs, \"attrs.b\") + \" \" + eval(attrs, \"'c'\")", exp);
     }
 
+    @Test
+    public void test5() {
+        BlockHandler bh = new BlockHandler(null, new NamedNode(null, null, new HashMap<String, String>(), null), null);
+        String ex = "${!name}";
+        String exp = bh.parseExp(ex, true);
+        assertEquals("eval(attrs, \"!attrs.name\")", exp);
+    }
+
+    @Test
+    public void test6() {
+        BlockHandler bh = new BlockHandler(null, new NamedNode(null, null, new HashMap<String, String>(), null), null);
+        String ex = "${empty name}";
+        String exp = bh.parseExp(ex, true);
+        assertEquals("eval(attrs, \"empty attrs.name\")", exp);
+    }
+
+    @Test
+    public void test7() {
+        BlockHandler bh = new BlockHandler(null, new NamedNode(null, null, new HashMap<String, String>(), null), null);
+        String ex = "${name ne 'Test'}";
+        String exp = bh.parseExp(ex, true);
+        assertEquals("eval(attrs, \"attrs.name ne 'Test'\")", exp);
+    }
 }

@@ -1,7 +1,14 @@
-<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test/tags">
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="."
+         namespace="test/tags">
 
     <th:block name="If_A">
         <th:if exp="${str!=null}">
+            A
+        </th:if>
+    </th:block>
+
+    <th:block name="If_Empty_A">
+        <th:if exp="${empty str}">
             A
         </th:if>
     </th:block>
@@ -11,6 +18,17 @@
             <th:set name="res" value="B"/>
         </th:if>
         ${res}
+    </th:block>
+
+    <th:block name="If_A_with_Bool_in_if1">
+        <th:if exp="${str!=true}">
+            A
+        </th:if>
+    </th:block>
+    <th:block name="If_A_with_Bool_in_if2">
+        <th:if exp="${!str}">
+            A
+        </th:if>
     </th:block>
 
 </th:root>

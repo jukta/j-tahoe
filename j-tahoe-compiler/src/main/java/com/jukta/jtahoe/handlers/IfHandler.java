@@ -15,7 +15,7 @@ public class IfHandler extends AbstractHandler {
 
     @Override
     public void end() {
-        String exp = parseExp(getAttrs().get("exp"), false);
+        String exp = parseExp(getAttrs().get("exp"), true);
         String cd = "JBody " + getVarName() + " = new JBody();\n";
         cd += "if ( ((boolean)" + exp + ") ) {\n";
         cd += body;
