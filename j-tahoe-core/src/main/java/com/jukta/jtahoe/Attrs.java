@@ -24,8 +24,18 @@ public class Attrs {
         return this;
     }
 
+    public Attrs unset(String name) {
+        properties.remove(name);
+        return this;
+    }
+
     public Attrs setAttribute(String name, Object value) {
         attributes.put(name, value);
+        return this;
+    }
+
+    public Attrs unsetAttribute(String name) {
+        attributes.remove(name);
         return this;
     }
 

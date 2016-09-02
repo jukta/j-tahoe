@@ -6,6 +6,7 @@ import com.jukta.jtahoe.jschema.*;
 import functional.AbstractTest;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -18,6 +19,14 @@ public class SetTest extends AbstractTest {
         Block b = newBlockInstance("test.tags.SetLocal_A");
         JElement el = b.body(new Attrs());
         JBody expected = new JBody().addElement(new JText("abcA A def"));
+        assertEquals(expected, el);
+    }
+
+    @Test
+    public void UnsetLocal() {
+        Block b = newBlockInstance("test.tags.UnsetLocal_A");
+        JElement el = b.body(new Attrs());
+        JBody expected = new JBody().addElement(new JText("abc  def"));
         assertEquals(expected, el);
     }
 
@@ -39,6 +48,14 @@ public class SetTest extends AbstractTest {
         Attrs attrs = new Attrs();
         b.body(attrs);
         assertEquals("A", attrs.getAttribute("a"));
+    }
+
+    @Test
+    public void UnsetGlobal() {
+        Block b = newBlockInstance("test.tags.UnsetGlobal_A");
+        Attrs attrs = new Attrs();
+        b.body(attrs);
+        assertNull(attrs.getAttribute("a"));
     }
 
     @Test

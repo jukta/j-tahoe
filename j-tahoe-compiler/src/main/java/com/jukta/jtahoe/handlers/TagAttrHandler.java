@@ -17,8 +17,8 @@ public class TagAttrHandler extends AbstractHandler {
     public void end() {
         String name = getAttrs().get("name");
         String value = getAttrs().get("value");
-//        TagHandler parentTag = getParentTag(getParent());
-        AbstractHandler parentTag = getParent();
+        TagHandler parentTag = getParentTag(getParent());
+//        AbstractHandler parentTag = getParent();
         if (parentTag != null && parentTag instanceof TagHandler) {
             ((TagHandler)parentTag).addAttribute(name, value);
         } else {

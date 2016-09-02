@@ -1,7 +1,14 @@
-<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test/tags">
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="."
+         namespace="test/tags">
 
     <th:block name="SetLocal_A">
         <th:set name="a" value="A"/>
+        abc${a} ${a} def
+    </th:block>
+
+    <th:block name="UnsetLocal_A">
+        <th:set name="a" value="A"/>
+        <th:unset name="a"/>
         abc${a} ${a} def
     </th:block>
 
@@ -14,6 +21,12 @@
 
     <th:block name="SetGlobal_A">
         <th:set name="a" value="A" visibility="GLOBAL"/>
+        ${a}
+    </th:block>
+
+    <th:block name="UnsetGlobal_A">
+        <th:set name="a" value="A" visibility="GLOBAL"/>
+        <th:unset name="a" visibility="GLOBAL"/>
         ${a}
     </th:block>
 
@@ -33,7 +46,7 @@
     <th:block name="SetBlockRef_B">
         <th:set name="b">
             <lc:SetBlockRef_A>
-               B
+                B
             </lc:SetBlockRef_A>
         </th:set>
         <th:include ref="${b}"/>
