@@ -29,7 +29,7 @@ public class JTag implements JElement {
     @Override
     public String toJson() {
         String res = "{_name:\"" + name + "\"";
-        if (attrs != null) res += "," + attrs.toJson();
+        if (attrs != null && !attrs.isEmpty()) res += "," + attrs.toJson();
         if (jBody != null) res += "," + jBody.toJson();
         res += "}";
         return res;
@@ -38,7 +38,7 @@ public class JTag implements JElement {
     @Override
     public String toHtml() {
         String res = "<" + name;
-        if (attrs != null) res += " " + attrs.toHtml();
+        if (attrs != null && !attrs.isEmpty()) res += " " + attrs.toHtml();
         res += ">\n";
         if (jBody != null) {
             res += jBody.toHtml();

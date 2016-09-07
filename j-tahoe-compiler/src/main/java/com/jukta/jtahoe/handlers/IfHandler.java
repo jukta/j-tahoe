@@ -19,7 +19,7 @@ public class IfHandler extends AbstractHandler {
         String cd = "JBody " + getVarName() + " = new JBody();\n";
         cd += "if ( ((boolean)" + exp + ") ) {\n";
         cd += body;
-        cd += "}";
+        cd += "}\n";
         getParent().appendCode(cd);
         getParent().addElement(getVarName());
     }

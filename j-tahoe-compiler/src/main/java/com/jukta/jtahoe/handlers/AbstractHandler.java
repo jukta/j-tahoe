@@ -80,51 +80,53 @@ public abstract class AbstractHandler {
     }
 
     public String parseExp(String str, boolean wrap) {
-        Matcher m = EL_EXP_PATTERN.matcher(str);
-        if (m.find()) {
-            int minSt = Integer.MAX_VALUE;
-            int maxEnd = Integer.MIN_VALUE;
-            boolean hMinSt = false;
-            boolean hMaxEnd = false;
-            do {
-                if (wrap) {
-                    String match = m.group(1);
-                    minSt = Math.min(minSt, m.start());
-                    maxEnd = Math.max(maxEnd, m.end());
-                    hMinSt = minSt > 0;
-                    hMaxEnd = maxEnd < str.length();
+        if (str != null) {
+            Matcher m = EL_EXP_PATTERN.matcher(str);
+            if (m.find()) {
+                int minSt = Integer.MAX_VALUE;
+                int maxEnd = Integer.MIN_VALUE;
+                boolean hMinSt = false;
+                boolean hMaxEnd = false;
+                do {
+                    if (wrap) {
+                        String match = m.group(1);
+                        minSt = Math.min(minSt, m.start());
+                        maxEnd = Math.max(maxEnd, m.end());
+                        hMinSt = minSt > 0;
+                        hMaxEnd = maxEnd < str.length();
 
-                    Matcher varMatcher = VARIABLE_EXP_PATTERN.matcher(match);
-                    int shift = 0;
-                    while (varMatcher.find()) {
-                        StringBuilder sb = new StringBuilder(match);
-                        if (!isElKeyWord(varMatcher.start() + shift, varMatcher.end() + shift, sb)) {
-                            match = sb.insert(varMatcher.start() + shift, "attrs.").toString();
-                            shift += 6;
+                        Matcher varMatcher = VARIABLE_EXP_PATTERN.matcher(match);
+                        int shift = 0;
+                        while (varMatcher.find()) {
+                            StringBuilder sb = new StringBuilder(match);
+                            if (!isElKeyWord(varMatcher.start() + shift, varMatcher.end() + shift, sb)) {
+                                match = sb.insert(varMatcher.start() + shift, "attrs.").toString();
+                                shift += 6;
+                            }
                         }
-                    }
 
-                    String rep = "eval(attrs, \"" + match + "\")";
-                    if (m.start() > 0) {
-                        rep = "\" + " + rep;
+                        String rep = "eval(attrs, \"" + match + "\")";
+                        if (m.start() > 0) {
+                            rep = "\" + " + rep;
+                        }
+                        if (m.end() < str.length()) {
+                            rep = rep + " + \"";
+                        }
+                        str = m.replaceFirst(rep);
+                    } else {
+                        str = m.replaceFirst("eval(attrs, \"attrs." + m.group(1) + "\")");
                     }
-                    if (m.end() < str.length()) {
-                        rep = rep + " + \"";
-                    }
-                    str = m.replaceFirst(rep);
-                } else {
-                    str = m.replaceFirst("eval(attrs, \"attrs." + m.group(1) + "\")");
+                    m = EL_EXP_PATTERN.matcher(str);
+                } while (m.find());
+                if (hMinSt) {
+                    str = "\"" + str;
                 }
-                m = EL_EXP_PATTERN.matcher(str);
-            } while (m.find());
-            if (hMinSt) {
-                str = "\"" + str;
+                if (hMaxEnd) {
+                    str = str + "\"";
+                }
+            } else if (wrap) {
+                str = "\"" + str + "\"";
             }
-            if (hMaxEnd) {
-                str = str + "\"";
-            }
-        } else if (wrap) {
-            str = "\"" + str + "\"";
         }
         return str;
     }

@@ -22,6 +22,9 @@ public class JAttrs {
     }
 
     public String toJson() {
+        if (isEmpty()) {
+            return "";
+        }
         String res = "_attrs: {";
         int i = 0;
         for (Map.Entry<String, String> entry : attrs.entrySet()) {
@@ -34,13 +37,19 @@ public class JAttrs {
 
     public String toHtml() {
         String res = "";
-        int i = 0;
-        for (Map.Entry entry : attrs.entrySet()) {
-            if (i++ > 0) res += " ";
-            res += entry.getKey();
-            if (entry.getValue() != null) res += "=\"" + entry.getValue() + "\"";
+        if (!isEmpty()) {
+            int i = 0;
+            for (Map.Entry entry : attrs.entrySet()) {
+                if (i++ > 0) res += " ";
+                res += entry.getKey();
+                if (entry.getValue() != null) res += "=\"" + entry.getValue() + "\"";
+            }
         }
         return res;
+    }
+
+    public boolean isEmpty() {
+        return attrs.isEmpty();
     }
 
     @Override

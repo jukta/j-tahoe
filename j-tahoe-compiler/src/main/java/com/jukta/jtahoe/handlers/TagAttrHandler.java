@@ -15,14 +15,13 @@ public class TagAttrHandler extends AbstractHandler {
 
     @Override
     public void end() {
-        String name = getAttrs().get("name");
-        String value = getAttrs().get("value");
+        String name = parseExp(getAttrs().get("name"), true);
+        String value = parseExp(getAttrs().get("value"), true);
         TagHandler parentTag = getParentTag(getParent());
-//        AbstractHandler parentTag = getParent();
-        if (parentTag != null && parentTag instanceof TagHandler) {
-            ((TagHandler)parentTag).addAttribute(name, value);
+        if (value == null) {
+            getParent().appendCode("attrs" + parentTag.getVarName() + ".addAttr((String)" + name + ", null);\n");
         } else {
-            throw new RuntimeException("tagAttr must be child of tag element");
+            getParent().appendCode("attrs" + parentTag.getVarName() + ".addAttr((String)" + name + ", (String)" + value + ");\n");
         }
     }
 

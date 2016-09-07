@@ -29,4 +29,13 @@
         </th:tag>
     </th:block>
 
+    <th:block name="AttrTag_WithFor">
+        <th:tag name="${tag_name}">
+            <th:for var="i" in="${a}">
+                <th:tagAttr name="${i}" value="${i}"/>
+            </th:for>
+            <th:tagAttr name="attr2"/>
+        </th:tag>
+    </th:block>
+
 </th:root>
