@@ -85,5 +85,4 @@ public class SetTest extends AbstractTest {
         assertEquals(expected, el);
     }
 
-
 }

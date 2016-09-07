@@ -48,10 +48,7 @@ public class JTahoeView implements View {
         attrs.setAttribute("session", httpservletrequest.getSession());
         attrs.setAttribute("request", httpservletrequest);
 
-        long st = System.nanoTime();
         String s = block.body(attrs).toHtml();
-        long t = System.nanoTime() - st;
-        System.out.println("Render time: " + t);
         httpservletresponse.setCharacterEncoding("UTF-8");
         httpservletresponse.setContentType(getContentType());
         httpservletresponse.getWriter().write(s);

@@ -74,7 +74,9 @@ public class BlockMeta {
             sw.write("}");
             sw.close();
             String res = sw.toString();
-//            System.out.println(res);
+            if (System.getProperty("debug") != null) {
+                System.out.println(res);
+            }
             return res;
         } catch (Exception e) {
             throw new RuntimeException(e);
