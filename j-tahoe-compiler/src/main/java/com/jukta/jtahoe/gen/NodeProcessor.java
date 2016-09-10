@@ -23,6 +23,9 @@ public class NodeProcessor {
         } else {
             NamedNode namedNode = (NamedNode) node;
             AbstractHandler handler = createHandler(namedNode, context, pHandler);
+            if (handler == null) {
+                throw new RuntimeException("Unknown tag \"" + namedNode.getName() + "\" in namespace \"" + namedNode.getNamespace() + "\"");
+            }
             handler.start();
             for (Node cNode : namedNode.getChildren()) {
                 process(cNode, context, handler);

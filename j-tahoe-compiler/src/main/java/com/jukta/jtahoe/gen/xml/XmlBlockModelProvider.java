@@ -56,14 +56,14 @@ public class XmlBlockModelProvider implements BlockModelProvider {
 
         @Override
         public NamedNode next() {
+            Resource xml = iterator.next();
             try {
-                Resource xml = iterator.next();
                 FileHandler fileHandler = new FileHandler();
                 xmlReader.setContentHandler(fileHandler);
                 xmlReader.parse(new InputSource(xml.getInputStream()));
                 return fileHandler.getNode();
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Error parsing file \"" + xml.getName() + "\"", e);
             }
         }
 

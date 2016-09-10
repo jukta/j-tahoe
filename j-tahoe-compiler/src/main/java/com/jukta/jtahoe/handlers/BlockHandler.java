@@ -54,6 +54,9 @@ public class BlockHandler extends AbstractHandler {
     @Override
     public void end() {
         String name = getAttrs().get("name");
+        if (name == null) {
+            throw new RuntimeException("Undefined block name in namespace \"" + getGenContext().getCurrentNamespace() + "\"");
+        }
         String parent = getAttrs().get("parent");
 
         DefHandler dh = defHandler;

@@ -36,8 +36,12 @@ public abstract class Block {
         SimpleContext context = new SimpleContext(new ElResolver());
         context.setVariable("attrs", factory.createValueExpression(attrs, Attrs.class));
         ValueExpression e = factory.createValueExpression(context, "${" + exp + "}", Object.class);
-        Object o = e.getValue(context);
-        return o == null ? "" : o;
+        try {
+            Object o = e.getValue(context);
+            return o == null ? "" : o;
+        } catch (Exception ex) {
+            throw new RuntimeException("Evaluation error ${" + exp + "} in block \"" + this.getClass().getName() + "\"", ex);
+        }
     }
 
     public Iterable evalIt(Attrs attrs, String exp) {
