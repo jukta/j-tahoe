@@ -17,12 +17,16 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         try {
             ServletContext context = sce.getServletContext();
+
             String blocksDir = context.getInitParameter("blocksDir");
-            String dataHandlerProviderClass = context.getInitParameter("dataHandlerProviderClass");
-            DataHandlerProvider dataHandlerProvider = (DataHandlerProvider) Class.forName(dataHandlerProviderClass).newInstance();
             BlockFactory blockFactory = new RuntimeBlockFactory(new XmlBlockModelProvider(blocksDir));
             context.setAttribute("_jTahoe_blockFactory", blockFactory);
-            context.setAttribute("_jTahoe_dataHandlerProvider", dataHandlerProvider);
+
+            String dataHandlerProviderClass = context.getInitParameter("dataHandlerProviderClass");
+            if (dataHandlerProviderClass != null) {
+                DataHandlerProvider dataHandlerProvider = (DataHandlerProvider) Class.forName(dataHandlerProviderClass).newInstance();
+                context.setAttribute("_jTahoe_dataHandlerProvider", dataHandlerProvider);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
