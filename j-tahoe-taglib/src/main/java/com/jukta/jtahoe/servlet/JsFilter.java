@@ -8,7 +8,7 @@ import com.jukta.jtahoe.resource.ResourceType;
 public class JsFilter extends CssFilter {
 
     protected ResourceType getFilter() {
-        return ResourceType.CSS;
+        return ResourceType.JS;
     }
 
 }
