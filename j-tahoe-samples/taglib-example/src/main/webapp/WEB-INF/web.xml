@@ -8,21 +8,18 @@
     </listener>
 
     <filter>
-        <filter-name>css</filter-name>
-        <filter-class>com.jukta.jtahoe.servlet.CssFilter</filter-class>
+        <filter-name>res</filter-name>
+        <filter-class>com.jukta.jtahoe.servlet.LibraryResourcesFilter</filter-class>
+        <init-param>
+            <param-name>name</param-name>
+            <param-value>all</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>css</filter-name>
-        <url-pattern>*/all.css</url-pattern>
-    </filter-mapping>
-
-    <filter>
-        <filter-name>cpResources</filter-name>
-        <filter-class>com.jukta.jtahoe.servlet.CpResourceFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>cpResources</filter-name>
-        <url-pattern>*</url-pattern>
+        <filter-name>res</filter-name>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>*.txt</url-pattern>
     </filter-mapping>
 
     <context-param>

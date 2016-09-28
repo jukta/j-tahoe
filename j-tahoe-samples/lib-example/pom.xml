@@ -19,22 +19,22 @@
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>block</directory>
-                <excludes>
-                    <exclude>**</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>resources</directory>
-            </resource>
-        </resources>
+        <!--<resources>-->
+            <!--<resource>-->
+                <!--<directory>block</directory>-->
+                <!--<excludes>-->
+                    <!--<exclude>**</exclude>-->
+                <!--</excludes>-->
+            <!--</resource>-->
+            <!--<resource>-->
+                <!--<directory>resources</directory>-->
+            <!--</resource>-->
+        <!--</resources>-->
         <plugins>
             <plugin>
                 <groupId>com.jukta</groupId>
                 <artifactId>j-tahoe-maven</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.2-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>code-gen</id>
@@ -44,7 +44,8 @@
                         </goals>
                         <configuration>
                             <blocksDir>${project.basedir}/blocks</blocksDir>
-                            <outputDir>${project.basedir}/gen/java</outputDir>
+                            <resourcesDir>${project.basedir}/public</resourcesDir>
+                            <outputDir>${project.basedir}/gen</outputDir>
                         </configuration>
                     </execution>
                 </executions>
@@ -56,16 +57,17 @@
                     <filesets>
                         <fileset>
                             <directory>${project.basedir}/gen/java</directory>
+                            <directory>${project.basedir}/gen/resources</directory>
                         </fileset>
                     </filesets>
                 </configuration>
             </plugin>
             <!--<plugin>-->
-            <!--<artifactId>maven-compiler-plugin</artifactId>-->
-            <!--<version>3.5.1</version>-->
-            <!--<configuration>-->
-            <!--<generatedSourcesDirectory>${project.basedir}/gen/java</generatedSourcesDirectory>-->
-            <!--</configuration>-->
+                <!--<artifactId>maven-compiler-plugin</artifactId>-->
+                <!--<version>3.5.1</version>-->
+                <!--<configuration>-->
+                    <!--<generatedSourcesDirectory>${project.basedir}/gen/java</generatedSourcesDirectory>-->
+                <!--</configuration>-->
             <!--</plugin>-->
         </plugins>
     </build>

@@ -1,7 +1,10 @@
 package com.jukta.jtahoe.resource;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
@@ -12,18 +15,13 @@ public class LibraryResources {
     private List<String> libs = new ArrayList<>();
 
     public LibraryResources() {
-
-        CpResourceResolver res = new CpResourceResolver();
-        List<Resource> r  = res.getResources(new ResourceFilter() {
-            @Override
-            public boolean accept(com.jukta.jtahoe.resource.Resource resource) {
-                return resource.getName().endsWith("jtahoe.properties");
-            }
-        });
+        ClassLoader cl = this.getClass().getClassLoader();
         try {
-            for (Resource r1 : r) {
+            Enumeration<URL> enumeration = cl.getResources("jtahoe.properties");
+            while (enumeration.hasMoreElements()) {
+                InputStream is = enumeration.nextElement().openStream();
                 Properties p = new Properties();
-                p.load(r1.getInputStream());
+                p.load(is);
                 String libId = p.getProperty("lib.id");
                 libs.add(libId);
             }
@@ -33,17 +31,25 @@ public class LibraryResources {
     }
 
     public List<Resource> getFiles(final ResourceType resourceType) {
-        CpResourceResolver resolver = new CpResourceResolver();
         List<Resource> res = new ArrayList<>();
+        ClassLoader cl = this.getClass().getClassLoader();
         for (final String id : libs) {
-            List<Resource> r = resolver.getResources(new ResourceFilter() {
-                @Override
-                public boolean accept(Resource resource) {
-                    return resource.getName().endsWith(id + "." + resourceType.getExtension());
-                }
-            });
-            res.addAll(r);
+            InputStream stream = cl.getResourceAsStream(id + "." + resourceType.getExtension());
+            if (stream != null) {
+                res.add(new DefaultResource(id, stream));
+            }
         }
         return res;
+    }
+
+    public Resource getFile(String name) {
+        ClassLoader cl = this.getClass().getClassLoader();
+        for (final String id : libs) {
+            InputStream stream = cl.getResourceAsStream(id + name);
+            if (stream != null) {
+                return new DefaultResource(name, stream);
+            }
+        }
+        return null;
     }
 }
