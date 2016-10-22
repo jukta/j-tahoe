@@ -1,0 +1,12 @@
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="."
+         namespace="test/include">
+
+    <th:block name="SomeBlock_A">
+        A
+    </th:block>
+
+    <th:block name="IncludeBlock_A">
+        <th:include name="test.include.SomeBlock_A"/>
+    </th:block>
+
+</th:root>
