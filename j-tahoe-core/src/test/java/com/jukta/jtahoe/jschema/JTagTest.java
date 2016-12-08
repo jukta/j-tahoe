@@ -13,7 +13,23 @@ public class JTagTest {
         JTag tag = new JTag("a").setAttrs(new JAttrs().addAttr("attr1", "val1").addAttr("attr2", "val2")).setjBody(new JBody().addElement(
                 new JTag("b").setAttrs(new JAttrs().addAttr("attr3", "val3")).setjBody(new JBody().addElement(new JText("text1")).addElement(new JText("text1")))
         ));
-        Assert.assertEquals("{_name:\"a\",_attrs: {attr2:\"val2\",attr1:\"val1\"},_: [{_name:\"b\",_attrs: {attr3:\"val3\"},_: [\"text1\",\"text1\"]}]}", tag.toJson());
+        Assert.assertEquals("{\"_name\":\"a\",\"_attrs\": {\"attr2\":\"val2\",\"attr1\":\"val1\"},\"_\": [{\"_name\":\"b\",\"_attrs\": {\"attr3\":\"val3\"},\"_\": [\"text1\",\"text1\"]}]}", tag.toJson());
+    }
+
+    @Test
+    public void toJson1() {
+
+        JBody b1 = new JBody();
+        JBody b2 = new JBody();
+        b2.addElement(new JTag("div"));
+        JBody b3 = new JBody();
+        b3.addElement(new JTag("div"));
+
+        b1.addElement(b2);
+        b1.addElement(b3);
+//        System.out.println(b1.toJson());
+
+        Assert.assertEquals("\"_\": [{\"_name\":\"div\"},{\"_name\":\"div\"}]", b1.toJson());
     }
 
     @Test

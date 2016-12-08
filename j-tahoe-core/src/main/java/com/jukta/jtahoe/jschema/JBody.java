@@ -10,13 +10,20 @@ public class JBody implements JElement {
     private List<JElement> elements = new ArrayList<JElement>();
 
     public JBody addElement(JElement element) {
-        elements.add(element);
+        if (element instanceof JBody) {
+            elements.addAll(((JBody) element).elements);
+        } else {
+            elements.add(element);
+        }
         return this;
     }
 
     @Override
     public String toJson() {
-        String res = "_: [";
+        if (elements.isEmpty()) {
+            return "";
+        }
+        String res = "\"_\": [";
         int i = 0;
         for (JElement element : elements) {
             if (i++ > 0) res += ",";

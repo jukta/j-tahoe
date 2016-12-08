@@ -43,9 +43,6 @@ public class BlockHandler extends AbstractHandler {
     }
 
     public void addDef(String name, String body) {
-        if (defs.containsKey(name)) {
-            System.out.println();
-        }
         if (defs.put(name, body) != null) {
             throw new RuntimeException("Duplicate def in block: " + getAttrs().get("name"));
         }

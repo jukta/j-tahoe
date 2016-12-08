@@ -43,4 +43,8 @@ public class JTahoeRuntimeViewResolver implements ViewResolver, InitializingBean
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
+
+    public BlockFactory getBlockFactory() {
+        return blockFactory;
+    }
 }

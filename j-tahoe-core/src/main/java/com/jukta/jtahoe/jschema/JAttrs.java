@@ -25,11 +25,11 @@ public class JAttrs {
         if (isEmpty()) {
             return "";
         }
-        String res = "_attrs: {";
+        String res = "\"_attrs\": {";
         int i = 0;
         for (Map.Entry<String, String> entry : attrs.entrySet()) {
             if (i++ > 0) res += ",";
-            res += entry.getKey() + ":\"" + entry.getValue() + "\"";
+            res += "\"" + entry.getKey() + "\"" + ":\"" + entry.getValue() + "\"";
         }
         res += "}";
         return res;

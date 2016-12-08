@@ -23,4 +23,8 @@ public class JTahoeViewResolver implements ViewResolver, InitializingBean {
     public void afterPropertiesSet() throws Exception {
         blockFactory = new BlockFactory();
     }
+
+    public BlockFactory getBlockFactory() {
+        return blockFactory;
+    }
 }
