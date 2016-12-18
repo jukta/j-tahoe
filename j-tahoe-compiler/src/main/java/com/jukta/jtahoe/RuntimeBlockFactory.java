@@ -1,7 +1,7 @@
 package com.jukta.jtahoe;
 
 import com.jukta.jtahoe.gen.NodeProcessor;
-import com.jukta.jtahoe.loader.MemoryClassLoader;
+import groovy.lang.GroovyClassLoader;
 
 import javax.tools.JavaFileObject;
 import java.util.List;
@@ -13,8 +13,13 @@ public class RuntimeBlockFactory extends BlockFactory {
 
     public RuntimeBlockFactory(BlockModelProvider blockModelProvider) {
         try {
+            GroovyClassLoader groovyClassLoader = new GroovyClassLoader();
             List<JavaFileObject> javaFileObjects = new NodeProcessor().process(blockModelProvider);
-            classLoader = new MemoryClassLoader(javaFileObjects);
+            for (JavaFileObject fileObject : javaFileObjects) {
+                String code = String.valueOf(fileObject.getCharContent(false));
+                groovyClassLoader.parseClass(code);
+            }
+            classLoader = groovyClassLoader;
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {

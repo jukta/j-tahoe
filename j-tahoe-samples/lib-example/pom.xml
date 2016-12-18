@@ -56,8 +56,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>${project.basedir}/gen/java</directory>
-                            <directory>${project.basedir}/gen/resources</directory>
+                            <directory>${project.basedir}/gen</directory>
                         </fileset>
                     </filesets>
                 </configuration>

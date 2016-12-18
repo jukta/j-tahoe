@@ -96,7 +96,7 @@ public class JarBuilder {
 
     public void generate() throws IOException {
         resourceDestDir = new File(targetDir, "resources");
-        resourceDestDir.mkdir();
+        resourceDestDir.mkdirs();
         Resource resource = new Resource();
         resource.setDirectory(resourceDestDir.getAbsolutePath());
         mavenProject.addResource(resource);

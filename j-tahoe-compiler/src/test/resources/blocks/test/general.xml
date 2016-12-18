@@ -112,6 +112,26 @@
         </th:def>
     </th:block>
 
+    <th:block name="AdvancedComposition_A1">
+        <th:def>
+            A
+        </th:def>
+    </th:block>
+
+    <th:block name="AdvancedComposition_B1">
+        <th:def>
+            B
+        </th:def>
+    </th:block>
+
+    <th:block name="AdvancedComposition_C1">
+        <lc:AdvancedComposition_A1>
+            <lc:AdvancedComposition_B1>
+                C
+            </lc:AdvancedComposition_B1>
+        </lc:AdvancedComposition_A1>
+    </th:block>
+
     <th:block name="BlockConstructionArgs_A">
         <div>${a}</div>
         ${b}

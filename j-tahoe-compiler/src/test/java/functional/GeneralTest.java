@@ -90,6 +90,15 @@ public class GeneralTest extends AbstractTest {
     }
 
     @Test
+    public void advancedComposition() {
+        Block b = newBlockInstance("test.AdvancedComposition_C1");
+        JElement el = b.body(new Attrs());
+        JBody expected = new JBody().addElement(new JBody().addElement(new JText("C")));
+
+        assertEquals(expected, el);
+    }
+
+    @Test
     public void blockConstructionArgs() {
         Block b = newBlockInstance("test.BlockConstructionArgs_C");
         JElement el = b.body(new Attrs());

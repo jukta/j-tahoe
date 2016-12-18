@@ -20,7 +20,7 @@ public class BlockHandler extends AbstractHandler {
     public BlockHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         super(genContext, node, parent);
         if (getAttrs().get("parent") != null) {
-            NamedNode defNode = new NamedNode("", "def", new HashMap<String, String>(), getNode());
+            NamedNode defNode = new NamedNode("", "def_", new HashMap<String, String>(), getNode());
             defHandler = new DefHandler(genContext, defNode, this);
         }
 

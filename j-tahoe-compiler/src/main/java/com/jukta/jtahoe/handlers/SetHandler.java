@@ -37,18 +37,18 @@ public class SetHandler extends AbstractHandler {
             if (!isGlobal) {
                 exp = "attrs.set(\"" + name + "\", " + value + ");";
                 if ("false".equals(override)) {
-                    exp = "if (attrs.get(\"" + name + "\") == null) {" + exp + " }";
+                    exp = "if (attrs.get(\"" + name + "\") == null) {" + exp + " }\n";
                 }
             } else {
                 exp = "attrs.setAttribute(\"" + name + "\", " + value + ");";
                 if ("false".equals(override)) {
-                    exp = "if (attrs.getAttribute(\"" + name + "\") == null) {" + exp + " }";
+                    exp = "if (attrs.getAttribute(\"" + name + "\") == null) {" + exp + " }\n";
                 }
             }
         } else if (element != null && value == null) {
             exp = "attrs.set(\"" + name + "\", " + element + ");";
             if ("false".equals(override)) {
-                exp = "if (attrs.get(\"" + name + "\") == null) {" + exp + " }";
+                exp = "if (attrs.get(\"" + name + "\") == null) {" + exp + " }\n";
             }
         } else {
             throw new RuntimeException("Value or element should be defined in set");

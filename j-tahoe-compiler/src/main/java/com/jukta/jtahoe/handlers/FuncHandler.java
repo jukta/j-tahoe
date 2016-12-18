@@ -16,7 +16,7 @@ public class FuncHandler extends BlockHandler {
 
     public FuncHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         super(genContext, node, parent);
-        NamedNode defNode = new NamedNode("", "def", new HashMap<String, String>(), getNode());
+        NamedNode defNode = new NamedNode("", "def_", new HashMap<String, String>(), getNode());
         defHandler = new DefHandler(genContext, defNode, this);
 
     }
@@ -48,7 +48,7 @@ public class FuncHandler extends BlockHandler {
         if (!defs.isEmpty()) {
             el += "{";
             for (Map.Entry<String, String> entry : defs.entrySet()) {
-                el += entry.getKey() + entry.getValue();
+                el += entry.getKey() + entry.getValue() + "\n";
             }
             el += "}";
         }

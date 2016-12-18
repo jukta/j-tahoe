@@ -22,12 +22,12 @@ public class ParentHandler extends AbstractHandler {
     private String getPar(AbstractHandler handler) {
         if (handler instanceof BlockHandler) {
             if (handler.getAttrs().get("parent") != null) {
-                return "def";
+                return "def_";
             }
         }
         if (handler instanceof DefHandler) {
             String defName = ((DefHandler) handler).getDefName();
-            if (defName == null) return "def";
+            if (defName == null) return "def_";
             return "def_" + defName;
         }
         else return getPar(handler.getParent());

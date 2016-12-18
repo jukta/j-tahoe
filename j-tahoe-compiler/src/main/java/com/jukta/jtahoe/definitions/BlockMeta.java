@@ -47,11 +47,11 @@ public class BlockMeta {
             if (dataHandler != null) {
                 sw.write("public " + name + "() {");
                 sw.write("dataHandler = \"" + dataHandler + "\";");
-                sw.write("}");
+                sw.write("}\n");
             }
             for (Map.Entry<String, String> entry : defs.entrySet()) {
                 sw.write(entry.getKey());
-                sw.write(entry.getValue());
+                sw.write(entry.getValue() + "\n");
             }
             if (parentName == null) {
                 sw.write("public JElement body(final Attrs attrs) {");
@@ -61,14 +61,14 @@ public class BlockMeta {
 
                 sw.write(body);
                 sw.write("return " + getVarName() + ";");
-                sw.write("}");
+                sw.write("}\n");
             } else if (args != null && !args.isEmpty()) {
                 sw.write("public void init(Attrs attrs) {");
                 sw.write("super.init(attrs);");
                 for (Map.Entry<String, String> entry : args.entrySet()) {
                     sw.write("attrs.set(\"" + entry.getKey() + "\", " + entry.getValue() + ");");
                 }
-                sw.write("}");
+                sw.write("}\n");
             }
 
             sw.write("}");

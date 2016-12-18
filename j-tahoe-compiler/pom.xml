@@ -15,6 +15,11 @@
             <artifactId>j-tahoe-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.3.7</version>
+        </dependency>
     </dependencies>
 
     <build>

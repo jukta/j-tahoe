@@ -20,7 +20,7 @@ public class ForHandler extends AbstractHandler {
         cd += "for (Object " + var + " : " + in + ") {";
         cd += "attrs.set(\"" + var +"\", " + var + ");";
         cd += body;
-        cd += "}";
+        cd += "}\n";
         getParent().appendCode(cd);
 //        String el = "new JTag(\"" + getName() + "\").setjBody(" + getVarName() + ")";
         getParent().addElement(getVarName());
