@@ -61,7 +61,7 @@ public class LibraryResourcesFilter implements Filter {
             content = jsContent;
         } else if (path.equals(name + ".css")) {
             content = cssContent;
-        } else {
+        } else if (!path.endsWith("/")) {
             Resource r = libraryResources.getFile(path);
             if (r != null) content = ResourceAppender.append(Collections.singletonList(r)).toString();
         }
