@@ -15,22 +15,22 @@ import java.util.List;
 /**
  * @since 1.0
  */
-public class XmlBlockModelProvider implements BlockModelProvider {
+public class XthBlockModelProvider implements BlockModelProvider {
 
     private ResourceResolver resources;
 
-    public XmlBlockModelProvider(ResourceResolver resources) {
+    public XthBlockModelProvider(ResourceResolver resources) {
         this.resources = resources;
     }
 
-    public XmlBlockModelProvider(String blocksFolder) {
-        this.resources = new Resources(blocksFolder);
+    public XthBlockModelProvider() {
+        this.resources = new Resources();
     }
 
     @Override
     public Iterator<NamedNode> iterator() {
         try {
-            List<Resource> xmlList = resources.getResources(new ResourceExtensionFilter(ResourceType.XML));
+            List<Resource> xmlList = resources.getResources(new ResourceExtensionFilter(ResourceType.XTH));
             return new BlockModelIterator(xmlList.iterator());
         } catch (Exception e) {
             throw new RuntimeException(e);

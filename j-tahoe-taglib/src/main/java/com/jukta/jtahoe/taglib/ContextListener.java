@@ -3,7 +3,7 @@ package com.jukta.jtahoe.taglib;
 import com.jukta.jtahoe.BlockFactory;
 import com.jukta.jtahoe.DataHandlerProvider;
 import com.jukta.jtahoe.RuntimeBlockFactory;
-import com.jukta.jtahoe.gen.xml.XmlBlockModelProvider;
+import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -17,9 +17,7 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         try {
             ServletContext context = sce.getServletContext();
-
-            String blocksDir = context.getInitParameter("blocksDir");
-            BlockFactory blockFactory = new RuntimeBlockFactory(new XmlBlockModelProvider(blocksDir));
+            BlockFactory blockFactory = new RuntimeBlockFactory(new XthBlockModelProvider());
             context.setAttribute("_jTahoe_blockFactory", blockFactory);
 
             String dataHandlerProviderClass = context.getInitParameter("dataHandlerProviderClass");

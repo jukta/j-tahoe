@@ -10,15 +10,22 @@ import java.io.InputStream;
  */
 public class FSResource implements Resource {
 
+    private File root;
     private File file;
 
-    public FSResource(File file) {
+    public FSResource(File root, File file) {
+        this.root = root;
         this.file = file;
     }
 
     @Override
     public String getName() {
         return file.getAbsolutePath();
+    }
+
+    @Override
+    public String getResourceName() {
+        return root.toURI().relativize(file.toURI()).getPath();
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.BlockFactory;
 import com.jukta.jtahoe.RuntimeBlockFactory;
-import com.jukta.jtahoe.gen.xml.XmlBlockModelProvider;
+import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +19,6 @@ import java.util.Locale;
  */
 public class JTahoeRuntimeViewResolver implements ViewResolver, InitializingBean, ApplicationContextAware {
 
-    private String blocksFolder = "blocks";
     private ApplicationContext applicationContext;
     private BlockFactory blockFactory;
 
@@ -30,13 +29,9 @@ public class JTahoeRuntimeViewResolver implements ViewResolver, InitializingBean
         return view;
     }
 
-    public void setBlocksFolder(String blocksFolder) {
-        this.blocksFolder = blocksFolder;
-    }
-
     @Override
     public void afterPropertiesSet() throws Exception {
-        blockFactory = new RuntimeBlockFactory(new XmlBlockModelProvider(blocksFolder));
+        blockFactory = new RuntimeBlockFactory(new XthBlockModelProvider());
     }
 
     @Override

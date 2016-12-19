@@ -23,7 +23,7 @@ public class FileSystemResources extends CpResourceResolver {
     public List<Resource> getResources(ResourceFilter resourceFilter) {
         File root = new File(blocksFolder);
         List<Resource> resources = new ArrayList<>();
-        scanDir(root, resources, resourceFilter);
+        scanDir(root, root, resources, resourceFilter);
         return resources;
     }
 }

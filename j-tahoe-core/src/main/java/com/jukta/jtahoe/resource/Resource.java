@@ -9,5 +9,7 @@ public interface Resource {
 
     String getName();
 
+    String getResourceName();
+
     InputStream getInputStream();
 }

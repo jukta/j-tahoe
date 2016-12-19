@@ -1,11 +1,8 @@
 package com.jukta.maven;
 
 import com.jukta.jtahoe.gen.NodeProcessor;
-import com.jukta.jtahoe.gen.xml.XmlBlockModelProvider;
-import com.jukta.jtahoe.resource.ResourceAppender;
-import com.jukta.jtahoe.resource.ResourceExtensionFilter;
-import com.jukta.jtahoe.resource.ResourceResolver;
-import com.jukta.jtahoe.resource.ResourceType;
+import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
+import com.jukta.jtahoe.resource.*;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.project.MavenProject;
 
@@ -43,8 +40,8 @@ public class JarBuilder {
         id = UUID.randomUUID().toString();
     }
 
-    private void generateSources(ResourceResolver resolver) throws IOException {
-        XmlBlockModelProvider provider = new XmlBlockModelProvider(resolver);
+    public void generateSources(ResourceResolver resolver) throws IOException {
+        XthBlockModelProvider provider = new XthBlockModelProvider(resolver);
         NodeProcessor nodeProcessor = new NodeProcessor();
         List<JavaFileObject> javaFileObjects = nodeProcessor.process(provider);
 

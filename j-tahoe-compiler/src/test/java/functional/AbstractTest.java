@@ -3,7 +3,7 @@ package functional;
 import com.jukta.jtahoe.Block;
 import com.jukta.jtahoe.BlockFactory;
 import com.jukta.jtahoe.RuntimeBlockFactory;
-import com.jukta.jtahoe.gen.xml.XmlBlockModelProvider;
+import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
 import org.junit.Before;
 
 /**
@@ -16,7 +16,7 @@ public class AbstractTest {
     @Before
     public void setUp() {
         if (blockFactory == null) {
-            blockFactory = new RuntimeBlockFactory(new XmlBlockModelProvider(blocksFolder));
+            blockFactory = new RuntimeBlockFactory(new XthBlockModelProvider());
         }
     }
 

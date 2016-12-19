@@ -23,6 +23,11 @@ public class JarResource implements Resource {
     }
 
     @Override
+    public String getResourceName() {
+        return getName();
+    }
+
+    @Override
     public InputStream getInputStream() {
         try {
             return zipFile.getInputStream(zipEntry);

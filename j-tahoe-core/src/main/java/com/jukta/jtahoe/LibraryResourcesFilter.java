@@ -1,4 +1,4 @@
-package com.jukta.jtahoe.servlet;
+package com.jukta.jtahoe;
 
 import com.jukta.jtahoe.resource.*;
 
@@ -18,28 +18,38 @@ public class LibraryResourcesFilter implements Filter {
     private String name;
     private LibraryResources libraryResources;
 
+    public LibraryResourcesFilter() {
+    }
+
+    public LibraryResourcesFilter(String name) {
+        setName(name);
+    }
+
+    public void setName(String name) {
+        if (!name.startsWith("/")) {
+            name = "/" + name;
+        }
+        this.name = name;
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         try {
-
-            String blocksFolder = filterConfig.getServletContext().getInitParameter("blocksDir");
-            if (blocksFolder == null) {
-                blocksFolder = "blocks";
+            if (name == null) {
+                setName(filterConfig.getInitParameter("name"));
             }
-
-            name = filterConfig.getInitParameter("name");
             libraryResources = new LibraryResources();
-            cssContent = join(libraryResources, ResourceType.CSS, blocksFolder);
-            jsContent = join(libraryResources, ResourceType.JS, blocksFolder);
+            cssContent = join(libraryResources, ResourceType.CSS);
+            jsContent = join(libraryResources, ResourceType.JS);
 
         } catch (IOException e) {
             throw new ServletException(e);
         }
     }
 
-    private String join(LibraryResources libraryResources, ResourceType resourceType, String blocksFolder) throws IOException {
+    private String join(LibraryResources libraryResources, ResourceType resourceType) throws IOException {
         List<Resource> files = libraryResources.getFiles(resourceType);
-        files.addAll(new Resources(blocksFolder).getResources(new ResourceExtensionFilter(resourceType)));
+        files.addAll(new Resources().getResources(new ResourceExtensionFilter(resourceType)));
         return ResourceAppender.append(files).toString();
     }
 
@@ -47,9 +57,9 @@ public class LibraryResourcesFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String path = ((HttpServletRequest) request).getRequestURI();
         String content = null;
-        if (path.equals("/" + name + ".js")) {
+        if (path.equals(name + ".js")) {
             content = jsContent;
-        } else if (path.equals("/" + name + ".css")) {
+        } else if (path.equals(name + ".css")) {
             content = cssContent;
         } else {
             Resource r = libraryResources.getFile(path);

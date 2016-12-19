@@ -10,24 +10,19 @@ import java.util.List;
  */
 public class Resources extends CpResourceResolver {
 
-    private String blocksFolder;
-
-    public Resources(String blocksFolder) {
-        this.blocksFolder = blocksFolder;
-    }
-
     @Override
     public List<Resource> getResources(ResourceFilter resourceFilter) {
-        URL url = getClass().getClassLoader().getResource(blocksFolder);
-        File root;
-        if ("vfs".equals(url.getProtocol())) {
-            root = VfsUtils.getFile(url);
-        } else {
-            root = new File(url.getFile());
-        }
-        List<Resource> resources = new ArrayList<>();
-        scanDir(root, resources, resourceFilter);
-        return resources;
+//        URL url = getClass().getClassLoader().getResource("");
+//        File root;
+//        if ("vfs".equals(url.getProtocol())) {
+//            root = VfsUtils.getFile(url);
+//        } else {
+//            root = new File(url.getFile()).getAbsoluteFile();
+//        }
+//        List<Resource> resources = new ArrayList<>();
+//        scanDir(root, root, resources, resourceFilter);
+//        return resources;
+        return super.getResources(resourceFilter);
     }
 
 }

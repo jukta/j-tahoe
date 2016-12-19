@@ -40,7 +40,7 @@ public class CssInterceptor extends HandlerInterceptorAdapter implements Initial
     public void afterPropertiesSet() throws Exception {
         LibraryResources lr = new LibraryResources();
         List<Resource> files = lr.getFiles(getFilter());
-        files.addAll(new Resources(blocksFolder).getResources(new ResourceExtensionFilter(getFilter())));
+        files.addAll(new Resources().getResources(new ResourceExtensionFilter(getFilter())));
         StringBuilder sb = ResourceAppender.append(files);
         content = sb.toString();
     }

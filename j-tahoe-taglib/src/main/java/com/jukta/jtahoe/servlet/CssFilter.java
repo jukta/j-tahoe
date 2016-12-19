@@ -18,11 +18,7 @@ public class CssFilter implements Filter {
         try {
             LibraryResources lr = new LibraryResources();
             List<Resource> files = lr.getFiles(getFilter());
-            String blocksFolder = filterConfig.getServletContext().getInitParameter("blocksDir");
-            if (blocksFolder == null) {
-                blocksFolder = "blocks";
-            }
-            files.addAll(new Resources(blocksFolder).getResources(new ResourceExtensionFilter(getFilter())));
+            files.addAll(new Resources().getResources(new ResourceExtensionFilter(getFilter())));
             StringBuilder sb = ResourceAppender.append(files);
             content = sb.toString();
         } catch (IOException e) {

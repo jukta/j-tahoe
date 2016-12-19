@@ -9,7 +9,7 @@
 
     <filter>
         <filter-name>res</filter-name>
-        <filter-class>com.jukta.jtahoe.servlet.LibraryResourcesFilter</filter-class>
+        <filter-class>com.jukta.jtahoe.LibraryResourcesFilter</filter-class>
         <init-param>
             <param-name>name</param-name>
             <param-value>all</param-value>

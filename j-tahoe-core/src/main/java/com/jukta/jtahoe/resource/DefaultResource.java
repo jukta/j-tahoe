@@ -21,7 +21,17 @@ public class DefaultResource implements Resource {
     }
 
     @Override
+    public String getResourceName() {
+        return name;
+    }
+
+    @Override
     public InputStream getInputStream() {
         return inputStream;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

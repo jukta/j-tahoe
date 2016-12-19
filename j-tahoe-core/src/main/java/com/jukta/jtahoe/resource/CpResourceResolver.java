@@ -16,7 +16,33 @@ public class CpResourceResolver implements ResourceResolver {
 
     public List<Resource> getResources(ResourceFilter resourceFilter) {
         try {
-            return getResources1(resourceFilter);
+            ResourceFilter rFilter = new ResourceExtensionFilter(ResourceType.XTH);
+            List<Resource> l = getResources1(rFilter);
+
+            List<Resource> lRes = new ArrayList<>();
+            ClassLoader cl = this.getClass().getClassLoader();
+            for (Resource res : l) {
+                String n = res.getResourceName();
+                n = n.substring(0, n.length()-4);
+                URL url = cl.getResource(n + ".css");
+                if (url != null) {
+                    lRes.add(new DefaultResource(n + ".css", url.openStream()));
+                }
+                url = cl.getResource(n + ".js");
+                if (url != null) {
+                    lRes.add(new DefaultResource(n + ".js", url.openStream()));
+                }
+            }
+            l.addAll(lRes);
+
+            lRes = new ArrayList<>();
+            for (Resource res : l) {
+                if (resourceFilter.accept(res)) {
+                    lRes.add(res);
+                }
+            }
+
+            return lRes;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -57,20 +83,21 @@ public class CpResourceResolver implements ResourceResolver {
                     }
                 }
             } else {
-                scanDir(new File(file).getAbsoluteFile(), resources, resourceFilter);
+                File root = new File(file).getAbsoluteFile();
+                scanDir(root, root, resources, resourceFilter);
             }
         }
 
         return resources;
     }
 
-    protected void scanDir(File f, List<Resource> resources, ResourceFilter resourceFilter) {
+    protected void scanDir(File root, File f, List<Resource> resources, ResourceFilter resourceFilter) {
         if (f.isDirectory()) {
             for (File f1 : f.listFiles()) {
-                scanDir(f1, resources, resourceFilter);
+                scanDir(root, f1, resources, resourceFilter);
             }
         } else {
-            Resource r = new FSResource(f);
+            Resource r = new FSResource(root, f);
             if (resourceFilter.accept(r)) {
                 resources.add(r);
             }
