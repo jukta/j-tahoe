@@ -1,5 +1,6 @@
 package com.jukta.maven;
 
+import com.jukta.jtahoe.gen.GenContext;
 import com.jukta.jtahoe.gen.NodeProcessor;
 import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
 import com.jukta.jtahoe.resource.*;
@@ -13,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.maven.model.Resource;
@@ -43,22 +45,24 @@ public class JarBuilder {
     public void generateSources(ResourceResolver resolver) throws IOException {
         XthBlockModelProvider provider = new XthBlockModelProvider(resolver);
         NodeProcessor nodeProcessor = new NodeProcessor();
-        List<JavaFileObject> javaFileObjects = nodeProcessor.process(provider);
+//        Map<String, List<JavaFileObject>> javaFileObjects = ;
 
         File compileDir = new File(targetDir, "java");
 
-        for (JavaFileObject f : javaFileObjects) {
-            System.out.println(f.getName());
-            BufferedReader reader = new BufferedReader(f.openReader(false));
-            File file = new File(compileDir, f.getName());
-            file.getParentFile().mkdirs();
-            FileWriter w = new FileWriter(file);
-            String line;
-            while ((line = reader.readLine()) != null) {
-                w.append(line);
+        for (GenContext.Package aPackage : nodeProcessor.process(provider).values()) {
+            for (JavaFileObject f : aPackage.getJavaFileObjects()) {
+                System.out.println(f.getName());
+                BufferedReader reader = new BufferedReader(f.openReader(false));
+                File file = new File(compileDir, f.getName());
+                file.getParentFile().mkdirs();
+                FileWriter w = new FileWriter(file);
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    w.append(line);
+                }
+                w.close();
+                reader.close();
             }
-            w.close();
-            reader.close();
         }
 
         mavenProject.addCompileSourceRoot(compileDir.getAbsolutePath());

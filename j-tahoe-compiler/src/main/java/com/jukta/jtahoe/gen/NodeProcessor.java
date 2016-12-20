@@ -6,9 +6,8 @@ import com.jukta.jtahoe.gen.model.Node;
 import com.jukta.jtahoe.gen.model.TextNode;
 import com.jukta.jtahoe.handlers.*;
 
-import javax.tools.JavaFileObject;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @since 1.0
@@ -34,13 +33,21 @@ public class NodeProcessor {
         }
     }
 
-    public List<JavaFileObject> process(BlockModelProvider blockModelProvider) {
-        List<JavaFileObject> fileObjectList = new ArrayList<>();
-        GenContext context = new GenContext(fileObjectList);
+    public Map<String, GenContext.Package> process(BlockModelProvider blockModelProvider) {
+        Map<String, GenContext.Package> files = new HashMap<>();
         for (NamedNode node : blockModelProvider) {
+            GenContext context = new GenContext();
             process(node, context);
+            for (GenContext.Package p : context.getFiles().values()) {
+                GenContext.Package p1 = files.get(p.getPackageName());
+                if (p1 != null) {
+                    p1.merge(p);
+                } else {
+                    files.put(p.getPackageName(), p);
+                }
+            }
         }
-        return fileObjectList;
+        return files;
     }
 
     public void process(NamedNode node, GenContext context) {

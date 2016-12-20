@@ -95,6 +95,10 @@ public class BlockMeta {
         this.pack = pack;
     }
 
+    public String getPack() {
+        return pack;
+    }
+
     public void setParent(BlockMeta parent) {
         this.parent = parent;
     }

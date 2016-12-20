@@ -1,21 +1,20 @@
 package com.jukta.jtahoe.gen;
 
 import javax.tools.JavaFileObject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Sergey Sidorov
  */
 public class GenContext {
 
-    private List<JavaFileObject> files;
+//    private List<JavaFileObject> files;
     private Map<String, String> prefixes = new HashMap<>();
     private String currentNamespace;
+    private Map<String, Package> files = new HashMap<>();
 
-    public GenContext(List<JavaFileObject> files) {
-        this.files = files;
+    public GenContext() {
+//        this.files = files;
     }
 
     public String getCurrentNamespace() {
@@ -26,16 +25,42 @@ public class GenContext {
         this.currentNamespace = currentNamespace;
     }
 
-    public List<JavaFileObject> getFiles() {
+    public Map<String, Package> getFiles() {
         return files;
-    }
-
-    public void setFiles(List<JavaFileObject> files) {
-        this.files = files;
     }
 
     public Map<String, String> getPrefixes() {
         return prefixes;
+    }
+
+    public static class Package {
+        private String packageName;
+        private List<JavaFileObject> javaFileObjects = new ArrayList<>();
+        private Set<String> dependedPackages = new HashSet<>();
+
+        public Package(String packageName) {
+            this.packageName = packageName;
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public List<JavaFileObject> getJavaFileObjects() {
+            return javaFileObjects;
+        }
+
+        public Set<String> getDependedPackages() {
+            return dependedPackages;
+        }
+
+        public void merge(Package p) {
+            if (!p.packageName.equals(packageName)) {
+                throw new RuntimeException("Could not merge packages " + p.packageName + " and " + packageName);
+            }
+            javaFileObjects.addAll(p.javaFileObjects);
+            dependedPackages.addAll(p.dependedPackages);
+        }
     }
 
 }

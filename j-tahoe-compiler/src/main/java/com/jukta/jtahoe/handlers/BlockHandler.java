@@ -6,7 +6,9 @@ import com.jukta.jtahoe.definitions.BlockMeta;
 import com.jukta.jtahoe.gen.model.NamedNode;
 
 import javax.tools.JavaFileObject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,7 +79,18 @@ public class BlockHandler extends AbstractHandler {
         meta.setRelPath(relPath);
 
         JavaFileObject file = new JavaSourceFromString(relPath + "/" + name, meta.toSource());
-        genContext.getFiles().add(file);
+        String pack = meta.getPack();
+        GenContext.Package aPackage = genContext.getFiles().get(pack);
+        if (aPackage == null) {
+            aPackage = new GenContext.Package(pack);
+            for (String n : genContext.getPrefixes().values()) {
+                if (!n.equals(genContext.getCurrentNamespace())) {
+                    aPackage.getDependedPackages().add(getPackage(n));
+                }
+            }
+            genContext.getFiles().put(pack, aPackage);
+        }
+        aPackage.getJavaFileObjects().add(file);
     }
 
     private Map<String, String> createArgs(Map<String, String> attrs) {
