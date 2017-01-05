@@ -37,4 +37,13 @@ public class ForTest extends AbstractTest {
                 .addElement(new JBody());
         assertEquals(expected, el);
     }
+
+    @Test
+    public void ForNullA() {
+        Block b = newBlockInstance("test.tags.For_A");
+        JElement el = b.body(new Attrs().set("a", null));
+        JBody expected = new JBody()
+                .addElement(new JBody());
+        assertEquals(expected, el);
+    }
 }

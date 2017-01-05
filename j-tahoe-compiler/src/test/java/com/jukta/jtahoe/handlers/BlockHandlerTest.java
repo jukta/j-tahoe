@@ -17,7 +17,7 @@ public class BlockHandlerTest {
         BlockHandler bh = new BlockHandler(null, new NamedNode(null, null, new HashMap<String, String>(), null), null);
         String ex = "${name}";
         String exp = bh.parseExp(ex, false);
-        assertEquals("eval(attrs, \"attrs.name\")", exp);
+        assertEquals("eval(attrs, \"#{name}\")", exp);
     }
 
     @Test
@@ -25,7 +25,7 @@ public class BlockHandlerTest {
         BlockHandler bh = new BlockHandler(null, new NamedNode(null, null, new HashMap<String, String>(), null), null);
         String ex = "${name}";
         String exp = bh.parseExp(ex, true);
-        assertEquals("eval(attrs, \"attrs.name\")", exp);
+        assertEquals("eval(attrs, \"#{name}\")", exp);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class BlockHandlerTest {
         BlockHandler bh = new BlockHandler(null, new NamedNode(null, null, new HashMap<String, String>(), null), null);
         String ex = "${a ' b ' 'c '  ' d' 'e f g ' h.i1 }";
         String exp = bh.parseExp(ex, true);
-        assertEquals("eval(attrs, \"attrs.a ' b ' 'c '  ' d' 'e f g ' attrs.h.i1 \")", exp);
+        assertEquals("eval(attrs, \"#{a ' b ' 'c '  ' d' 'e f g ' h.i1 }\")", exp);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class BlockHandlerTest {
         BlockHandler bh = new BlockHandler(null, new NamedNode(null, null, new HashMap<String, String>(), null), null);
         String ex = "${a} ${b} ${'c'}";
         String exp = bh.parseExp(ex, true);
-        assertEquals("eval(attrs, \"attrs.a\") + \" \" + eval(attrs, \"attrs.b\") + \" \" + eval(attrs, \"'c'\")", exp);
+        assertEquals("eval(attrs, \"#{a} #{b} #{'c'}\")", exp);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class BlockHandlerTest {
         BlockHandler bh = new BlockHandler(null, new NamedNode(null, null, new HashMap<String, String>(), null), null);
         String ex = "${!name}";
         String exp = bh.parseExp(ex, true);
-        assertEquals("eval(attrs, \"!attrs.name\")", exp);
+        assertEquals("eval(attrs, \"#{!name}\")", exp);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class BlockHandlerTest {
         BlockHandler bh = new BlockHandler(null, new NamedNode(null, null, new HashMap<String, String>(), null), null);
         String ex = "${empty name}";
         String exp = bh.parseExp(ex, true);
-        assertEquals("eval(attrs, \"empty attrs.name\")", exp);
+        assertEquals("eval(attrs, \"#{empty name}\")", exp);
     }
 
     @Test
@@ -65,6 +65,6 @@ public class BlockHandlerTest {
         BlockHandler bh = new BlockHandler(null, new NamedNode(null, null, new HashMap<String, String>(), null), null);
         String ex = "${name ne 'Test'}";
         String exp = bh.parseExp(ex, true);
-        assertEquals("eval(attrs, \"attrs.name ne 'Test'\")", exp);
+        assertEquals("eval(attrs, \"#{name ne 'Test'}\")", exp);
     }
 }

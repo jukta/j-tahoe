@@ -5,11 +5,7 @@ import com.jukta.jtahoe.gen.model.NamedNode;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by aleph on 18.02.2016.
@@ -23,10 +19,6 @@ public abstract class AbstractHandler {
 
     private static int seq = 0;
     private int $seq = 0;
-
-    public static final Pattern EL_EXP_PATTERN = Pattern.compile("\\$\\{([^\\}]*)\\}");
-    public static final Pattern VARIABLE_EXP_PATTERN = Pattern.compile("[a-zA-Z_$][a-zA-Z_$0-9]*(\\.[a-zA-Z_$][a-zA-Z_$0-9]*)*\\s*(?=([^\']*'[^\']*')*[^\']*$)");
-    public static final List<String> EL_KEY_WORDS = Arrays.asList("null", "true", "false", "div", "mod", "and", "or", "not", "eq", "ne", "lt", "gt", "ge", "le", "empty");
 
     protected AbstractHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         this.parent = parent;
@@ -80,72 +72,19 @@ public abstract class AbstractHandler {
     }
 
     public String parseExp(String str, boolean wrap) {
-        if (str != null) {
-            Matcher m = EL_EXP_PATTERN.matcher(str);
-            if (m.find()) {
-                int minSt = Integer.MAX_VALUE;
-                int maxEnd = Integer.MIN_VALUE;
-                boolean hMinSt = false;
-                boolean hMaxEnd = false;
-                do {
-                    if (wrap) {
-                        String match = m.group(1);
-                        minSt = Math.min(minSt, m.start());
-                        maxEnd = Math.max(maxEnd, m.end());
-                        hMinSt = minSt > 0;
-                        hMaxEnd = maxEnd < str.length();
-
-                        Matcher varMatcher = VARIABLE_EXP_PATTERN.matcher(match);
-                        int shift = 0;
-                        while (varMatcher.find()) {
-                            StringBuilder sb = new StringBuilder(match);
-                            if (!isElKeyWord(varMatcher.start() + shift, varMatcher.end() + shift, sb)) {
-                                match = sb.insert(varMatcher.start() + shift, "attrs.").toString();
-                                shift += 6;
-                            }
-                        }
-
-                        String rep = "eval(attrs, \"" + match + "\")";
-                        if (m.start() > 0) {
-                            rep = "\" + " + rep;
-                        }
-                        if (m.end() < str.length()) {
-                            rep = rep + " + \"";
-                        }
-                        str = m.replaceFirst(rep);
-                    } else {
-                        str = m.replaceFirst("eval(attrs, \"attrs." + m.group(1) + "\")");
-                    }
-                    m = EL_EXP_PATTERN.matcher(str);
-                } while (m.find());
-                if (hMinSt) {
-                    str = "\"" + str;
-                }
-                if (hMaxEnd) {
-                    str = str + "\"";
-                }
-            } else if (wrap) {
-                str = "\"" + str + "\"";
-            }
+        if (str == null) {
+            return null;
         }
-        return str;
-    }
-
-    private boolean isElKeyWord(int start, int end, StringBuilder sb) {
-        return EL_KEY_WORDS.contains(sb.substring(start, end).trim().toLowerCase());
+        str = str.replaceAll("\\$\\{", "#{");
+        return "eval(attrs, \"" + str + "\")";
     }
 
     public String parseItExp(String str, boolean wrap) {
-        Matcher m = EL_EXP_PATTERN.matcher(str);
-        if (m.find()) {
-            if (wrap) {
-                str = m.replaceFirst("\" + evalIt(attrs, \"attrs." + m.group(1) + "\") + \"");
-            } else {
-                str = m.replaceFirst("evalIt(attrs, \"attrs." + m.group(1) + "\")");
-            }
-//            str = "\"" + str + "\"";
+        if (str == null) {
+            return "Collections.emptyList()";
         }
-        return str;
+        str = str.replaceAll("\\$\\{", "#{");
+        return "evalIt(attrs, \"" + str + "\")";
     }
 
     public BlockHandler getBlock() {
@@ -162,8 +101,6 @@ public abstract class AbstractHandler {
     }
 
     public String getCurPackage() {
-
-//        String relPath = node.getNamespace().replaceAll("/", ".");
         return getPackage(genContext.getCurrentNamespace());
     }
 

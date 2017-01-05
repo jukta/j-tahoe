@@ -11,7 +11,10 @@ public class ElResolver extends SimpleResolver {
 
     @Override
     public Object getValue(ELContext context, Object base, Object property) {
-        if (base instanceof Attrs) {
+        if (base == null) {
+            Attrs attrs = (Attrs) context.getVariableMapper().resolveVariable("attrs").getValue(context);
+            return getValue(context, attrs, property);
+        } else if (base instanceof Attrs) {
             Attrs attrs = (Attrs) base;
             context.setPropertyResolved(true);
             Object val = attrs.get(property.toString());
