@@ -32,6 +32,14 @@ public class RuntimeBlockFactory extends BlockFactory {
 
     }
 
+    public void close() {
+        GroovyClassLoader groovyClassLoader = ((GroovyClassLoader) classLoader);
+        groovyClassLoader.clearCache();
+        try {
+            groovyClassLoader.close();
+        } catch (Exception e) {}
+    }
+
     private void compilePackage(GenContext.Package aPackage, GroovyClassLoader groovyClassLoader, Map<String, GenContext.Package> map, List<GenContext.Package> compiled) throws IOException {
         if (aPackage == null || compiled.contains(aPackage)) return;
 

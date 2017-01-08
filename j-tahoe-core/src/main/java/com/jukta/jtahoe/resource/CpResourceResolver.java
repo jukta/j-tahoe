@@ -3,9 +3,8 @@ package com.jukta.jtahoe.resource;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -14,35 +13,45 @@ import java.util.jar.JarFile;
  */
 public class CpResourceResolver implements ResourceResolver {
 
-    public List<Resource> getResources(ResourceFilter resourceFilter) {
+    private static Map<ResourceType, List<Resource>> resourceMap = new HashMap<>();
+    private static AtomicBoolean load = new AtomicBoolean(false);
+
+    private ResourceType blockResourceType;
+    private List<ResourceType> relatedResourceType;
+
+    public CpResourceResolver() {
+        blockResourceType = ResourceType.XTH;
+        relatedResourceType = new ArrayList<>();
+        relatedResourceType.add(ResourceType.CSS);
+        relatedResourceType.add(ResourceType.JS);
+        init();
+    }
+
+    private void init() {
         try {
-            ResourceFilter rFilter = new ResourceExtensionFilter(ResourceType.XTH);
+            if (load.get()) return;
+            ResourceFilter rFilter = new ResourceExtensionFilter(blockResourceType);
             List<Resource> l = getResources1(rFilter);
 
-            List<Resource> lRes = new ArrayList<>();
+            resourceMap.put(blockResourceType, l);
             ClassLoader cl = this.getClass().getClassLoader();
             for (Resource res : l) {
                 String n = res.getResourceName();
-                n = n.substring(0, n.length()-4);
-                URL url = cl.getResource(n + ".css");
-                if (url != null) {
-                    lRes.add(new DefaultResource(n + ".css", url.openStream()));
-                }
-                url = cl.getResource(n + ".js");
-                if (url != null) {
-                    lRes.add(new DefaultResource(n + ".js", url.openStream()));
+                n = n.substring(0, n.length() - blockResourceType.getExtension().length() - 1);
+
+                for (ResourceType type : relatedResourceType) {
+                    URL url = cl.getResource(n + "." + type.getExtension());
+                    if (url != null) {
+                        List<Resource> _r = resourceMap.get(type);
+                        if (_r == null) {
+                            _r = new ArrayList<>();
+                            resourceMap.put(type, _r);
+                        }
+                        _r.add(new DefaultResource(n + "." + type.getExtension(), url.openStream()));
+                    }
                 }
             }
-            l.addAll(lRes);
-
-            lRes = new ArrayList<>();
-            for (Resource res : l) {
-                if (resourceFilter.accept(res)) {
-                    lRes.add(res);
-                }
-            }
-
-            return lRes;
+            load.set(true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -134,4 +143,8 @@ public class CpResourceResolver implements ResourceResolver {
         }
     }
 
+    @Override
+    public List<Resource> getResources(ResourceType resourceType) {
+        return resourceMap.get(resourceType);
+    }
 }

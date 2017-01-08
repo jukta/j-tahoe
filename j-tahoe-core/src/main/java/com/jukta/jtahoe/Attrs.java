@@ -42,7 +42,7 @@ public class Attrs {
 
     public Attrs setAll(Attrs attrs) {
         for (Map.Entry<String, Object> attr : attrs.properties.entrySet()) {
-            attrs.set(attr.getKey(), attr.getValue());
+            this.set(attr.getKey(), attr.getValue());
         }
         return this;
     }

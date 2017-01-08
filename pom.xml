@@ -44,6 +44,7 @@
         <module>j-tahoe-taglib</module>
         <module>j-tahoe-mvc</module>
         <module>j-tahoe-maven</module>
+        <module>j-tahoe-dev</module>
     </modules>
 
     <distributionManagement>

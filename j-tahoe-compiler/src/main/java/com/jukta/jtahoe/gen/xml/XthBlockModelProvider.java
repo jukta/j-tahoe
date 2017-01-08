@@ -30,7 +30,7 @@ public class XthBlockModelProvider implements BlockModelProvider {
     @Override
     public Iterator<NamedNode> iterator() {
         try {
-            List<Resource> xmlList = resources.getResources(new ResourceExtensionFilter(ResourceType.XTH));
+            List<Resource> xmlList = resources.getResources(ResourceType.XTH);
             return new BlockModelIterator(xmlList.iterator());
         } catch (Exception e) {
             throw new RuntimeException(e);

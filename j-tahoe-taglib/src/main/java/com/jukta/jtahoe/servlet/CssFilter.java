@@ -18,7 +18,7 @@ public class CssFilter implements Filter {
         try {
             LibraryResources lr = new LibraryResources();
             List<Resource> files = lr.getFiles(getFilter());
-            files.addAll(new Resources().getResources(new ResourceExtensionFilter(getFilter())));
+            files.addAll(new Resources().getResources(getFilter()));
             StringBuilder sb = ResourceAppender.append(files);
             content = sb.toString();
         } catch (IOException e) {

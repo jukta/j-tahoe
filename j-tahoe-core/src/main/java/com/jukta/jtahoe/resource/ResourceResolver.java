@@ -7,6 +7,6 @@ import java.util.List;
  */
 public interface ResourceResolver {
 
-    List<Resource> getResources(ResourceFilter resourceFilter);
+    List<Resource> getResources(ResourceType resourceType);
 
 }

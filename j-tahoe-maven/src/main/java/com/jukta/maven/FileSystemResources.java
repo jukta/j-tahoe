@@ -1,8 +1,6 @@
 package com.jukta.maven;
 
-import com.jukta.jtahoe.resource.CpResourceResolver;
-import com.jukta.jtahoe.resource.Resource;
-import com.jukta.jtahoe.resource.ResourceFilter;
+import com.jukta.jtahoe.resource.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,10 +18,10 @@ public class FileSystemResources extends CpResourceResolver {
     }
 
     @Override
-    public List<Resource> getResources(ResourceFilter resourceFilter) {
+    public List<Resource> getResources(ResourceType resourceType) {
         File root = new File(blocksFolder);
         List<Resource> resources = new ArrayList<>();
-        scanDir(root, root, resources, resourceFilter);
+        scanDir(root, root, resources, new ResourceExtensionFilter(resourceType));
         return resources;
     }
 }

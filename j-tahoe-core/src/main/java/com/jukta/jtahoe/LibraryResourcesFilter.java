@@ -49,7 +49,7 @@ public class LibraryResourcesFilter implements Filter {
 
     private String join(LibraryResources libraryResources, ResourceType resourceType) throws IOException {
         List<Resource> files = libraryResources.getFiles(resourceType);
-        files.addAll(new Resources().getResources(new ResourceExtensionFilter(resourceType)));
+        files.addAll(new Resources().getResources(resourceType));
         return ResourceAppender.append(files).toString();
     }
 

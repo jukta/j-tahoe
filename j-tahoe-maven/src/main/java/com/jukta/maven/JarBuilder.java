@@ -14,7 +14,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.apache.maven.model.Resource;
@@ -71,7 +70,7 @@ public class JarBuilder {
     private void generateResourceFile(ResourceResolver resources, ResourceType type) throws IOException {
 
         List<com.jukta.jtahoe.resource.Resource> files = new ArrayList<>();
-        files.addAll(resources.getResources(new ResourceExtensionFilter(type)));
+        files.addAll(resources.getResources(type));
 
         StringBuilder stringBuilder = ResourceAppender.append(files);
         File file = new File(resourceDestDir, id + "." + type.getExtension());
