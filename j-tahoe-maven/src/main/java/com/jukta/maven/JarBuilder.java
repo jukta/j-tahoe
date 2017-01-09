@@ -5,6 +5,7 @@ import com.jukta.jtahoe.gen.NodeProcessor;
 import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
 import com.jukta.jtahoe.resource.*;
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 
 import javax.tools.JavaFileObject;
@@ -31,14 +32,16 @@ public class JarBuilder {
     private MavenProject mavenProject;
     private MavenSession mavenSession;
     protected String id;
+    private Log log;
 
-    public JarBuilder(String blocksDir, String resourceSrcDir, File targetDir, MavenProject mavenProject, MavenSession mavenSession) {
+    public JarBuilder(String blocksDir, String resourceSrcDir, File targetDir, MavenProject mavenProject, MavenSession mavenSession, Log log) {
         this.blocksDir = blocksDir;
         this.resourceSrcDir = resourceSrcDir;
         this.targetDir = targetDir;
         this.mavenProject = mavenProject;
         this.mavenSession = mavenSession;
         id = UUID.randomUUID().toString();
+        this.log = log;
     }
 
     public void generateSources(ResourceResolver resolver) throws IOException {
@@ -47,10 +50,10 @@ public class JarBuilder {
 //        Map<String, List<JavaFileObject>> javaFileObjects = ;
 
         File compileDir = new File(targetDir, "java");
-
+        log.info("Generating source files");
         for (GenContext.Package aPackage : nodeProcessor.process(provider).values()) {
             for (JavaFileObject f : aPackage.getJavaFileObjects()) {
-                System.out.println(f.getName());
+                log.info(f.getName());
                 BufferedReader reader = new BufferedReader(f.openReader(false));
                 File file = new File(compileDir, f.getName());
                 file.getParentFile().mkdirs();
@@ -74,6 +77,7 @@ public class JarBuilder {
 
         StringBuilder stringBuilder = ResourceAppender.append(files);
         File file = new File(resourceDestDir, id + "." + type.getExtension());
+        log.info("Generated resource file: " + file.getName());
         FileWriter w = new FileWriter(file);
         w.append(stringBuilder.toString());
         w.close();
@@ -82,6 +86,7 @@ public class JarBuilder {
     private void copyResources() throws IOException {
         File resDir = new File(resourceDestDir, id);
         resDir.mkdirs();
+        log.info("Creating resource dir: " + resDir.getName());
         FileUtils.copyDirectory(new File(resourceSrcDir), resDir);
     }
 

@@ -1,6 +1,7 @@
 package com.jukta.maven;
 
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -12,6 +13,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.*;
+import java.util.Iterator;
 
 /**
  * @author Sergey Sidorov
@@ -38,17 +40,28 @@ public class CodeGenMojo extends AbstractMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
+            removeBlocksFromResources();
             File targetDir = new File(outputDir);
             boolean jar = "jar".equalsIgnoreCase(mavenProject.getPackaging());
             if (jar) {
-                JarBuilder builder = new JarBuilder(blocksDir, resourcesDir, targetDir, mavenProject, mavenSession);
+                JarBuilder builder = new JarBuilder(blocksDir, resourcesDir, targetDir, mavenProject, mavenSession, getLog());
                 builder.generate();
             } else {
-                WarBuilder builder = new WarBuilder(blocksDir, resourcesDir, targetDir, mavenProject, mavenSession);
+                WarBuilder builder = new WarBuilder(blocksDir, resourcesDir, targetDir, mavenProject, mavenSession, getLog());
                 builder.generate();
             }
         } catch (Exception e) {
             throw new MojoFailureException("Source generator error", e);
+        }
+    }
+
+    private void removeBlocksFromResources() {
+        for (Iterator<Resource> it = mavenProject.getResources().iterator(); it.hasNext(); ) {
+            Resource next =  it.next();
+            if (next.getDirectory().equals(new File(blocksDir).getAbsolutePath())) {
+                it.remove();
+            }
+
         }
     }
 }
