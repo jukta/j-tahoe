@@ -40,7 +40,8 @@ public class CodeGenMojo extends AbstractMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            removeBlocksFromResources();
+            removeFromResources(blocksDir);
+            removeFromResources(resourcesDir);
             File targetDir = new File(outputDir);
             boolean jar = "jar".equalsIgnoreCase(mavenProject.getPackaging());
             if (jar) {
@@ -55,7 +56,7 @@ public class CodeGenMojo extends AbstractMojo {
         }
     }
 
-    private void removeBlocksFromResources() {
+    private void removeFromResources(String dir) {
         for (Iterator<Resource> it = mavenProject.getResources().iterator(); it.hasNext(); ) {
             Resource next =  it.next();
             if (next.getDirectory().equals(new File(blocksDir).getAbsolutePath())) {
