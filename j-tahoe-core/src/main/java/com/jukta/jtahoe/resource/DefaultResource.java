@@ -1,6 +1,8 @@
 package com.jukta.jtahoe.resource;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 /**
  * @since 1.0
@@ -8,11 +10,11 @@ import java.io.InputStream;
 public class DefaultResource implements Resource {
 
     private String name;
-    private InputStream inputStream;
+    private URL url;
 
-    public DefaultResource(String name, InputStream inputStream) {
+    public DefaultResource(String name, URL url) {
         this.name = name;
-        this.inputStream = inputStream;
+        this.url = url;
     }
 
     @Override
@@ -26,8 +28,8 @@ public class DefaultResource implements Resource {
     }
 
     @Override
-    public InputStream getInputStream() {
-        return inputStream;
+    public InputStream getInputStream() throws IOException {
+        return url.openStream();
     }
 
     @Override

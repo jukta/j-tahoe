@@ -47,7 +47,7 @@ public class CpResourceResolver implements ResourceResolver {
                             _r = new ArrayList<>();
                             resourceMap.put(type, _r);
                         }
-                        _r.add(new DefaultResource(n + "." + type.getExtension(), url.openStream()));
+                        _r.add(new DefaultResource(n + "." + type.getExtension(), url));
                     }
                 }
             }

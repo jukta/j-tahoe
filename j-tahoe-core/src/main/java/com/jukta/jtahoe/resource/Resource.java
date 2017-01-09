@@ -1,5 +1,6 @@
 package com.jukta.jtahoe.resource;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -11,5 +12,5 @@ public interface Resource {
 
     String getResourceName();
 
-    InputStream getInputStream();
+    InputStream getInputStream() throws IOException;
 }

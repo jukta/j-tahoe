@@ -34,7 +34,7 @@ public class LibraryResources {
         List<Resource> res = new ArrayList<>();
         ClassLoader cl = this.getClass().getClassLoader();
         for (final String id : libs) {
-            InputStream stream = cl.getResourceAsStream(id + "." + resourceType.getExtension());
+            URL stream = cl.getResource(id + "." + resourceType.getExtension());
             if (stream != null) {
                 res.add(new DefaultResource(id, stream));
             }
@@ -45,9 +45,9 @@ public class LibraryResources {
     public Resource getFile(String name) {
         ClassLoader cl = this.getClass().getClassLoader();
         for (final String id : libs) {
-            InputStream stream = cl.getResourceAsStream(id + name);
-            if (stream != null) {
-                return new DefaultResource(name, stream);
+            URL url = cl.getResource(id + name);
+            if (url != null) {
+                return new DefaultResource(name, url);
             }
         }
         return null;
