@@ -1,8 +1,5 @@
 package com.jukta.jtahoe.jschema;
 
-/**
- * Created by aleph on 18.02.2016.
- */
 public class JTag implements JElement {
     private String name;
     private JAttrs attrs;

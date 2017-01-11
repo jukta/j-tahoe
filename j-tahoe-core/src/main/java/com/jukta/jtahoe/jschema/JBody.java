@@ -3,19 +3,21 @@ package com.jukta.jtahoe.jschema;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by aleph on 18.02.2016.
- */
 public class JBody implements JElement {
     private List<JElement> elements = new ArrayList<JElement>();
 
     public JBody addElement(JElement element) {
-        if (element instanceof JBody) {
-            elements.addAll(((JBody) element).elements);
-        } else {
-            elements.add(element);
-        }
+        elements.add(element);
         return this;
+    }
+
+    private String toJson1() {
+        List<String> eList = new ArrayList<>();
+        for (JElement element : elements) {
+            String e = (element instanceof JBody) ? ((JBody) element).toJson1() : element.toJson();
+            if (e != null && !"".equals(e)) eList.add(e);
+        }
+        return String.join(",", eList);
     }
 
     @Override
@@ -24,11 +26,7 @@ public class JBody implements JElement {
             return "";
         }
         String res = "\"_\": [";
-        int i = 0;
-        for (JElement element : elements) {
-            if (i++ > 0) res += ",";
-            res += element.toJson();
-        }
+        res += toJson1();
         res += "]";
         return res;
     }

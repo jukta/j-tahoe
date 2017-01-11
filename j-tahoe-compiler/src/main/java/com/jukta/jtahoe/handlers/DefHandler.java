@@ -45,11 +45,19 @@ public class DefHandler extends AbstractHandler {
 //        for (String s : getAttrs().keySet()) {
 //            attrs += ".set(\"" + s + "\", \"" + getAttrs().get(s) + "\")";
 //        }
-        String defName = name == null ? "def_" : "def_" + name;
-        String el = "this." + defName + "(attrs)";
-        getParent().addElement(el);
 
         BlockHandler blockHandler = getBlock();
+
+        String defName = name == null ? "def_" : "def_" + name;
+
+        String el;
+        if (getParent() instanceof DefHandler) {
+            el = "this." + defName + "(attrs)";
+        } else {
+            el = blockHandler.getBlockName() + ".this." + defName + "(attrs)";
+        }
+        getParent().addElement(el);
+
         String def;
         if (blockHandler instanceof FuncHandler) {
             def = "public JElement " + defName + "(final Attrs _attrs" + getVarName()+ ")";

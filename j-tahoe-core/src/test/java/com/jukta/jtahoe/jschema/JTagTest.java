@@ -10,10 +10,12 @@ public class JTagTest {
 
     @Test
     public void toJson() {
-        JTag tag = new JTag("a").setAttrs(new JAttrs().addAttr("attr1", "val1").addAttr("attr2", "val2")).setjBody(new JBody().addElement(
-                new JTag("b").setAttrs(new JAttrs().addAttr("attr3", "val3")).setjBody(new JBody().addElement(new JText("text1")).addElement(new JText("text1")))
-        ));
-        Assert.assertEquals("{\"_name\":\"a\",\"_attrs\": {\"attr2\":\"val2\",\"attr1\":\"val1\"},\"_\": [{\"_name\":\"b\",\"_attrs\": {\"attr3\":\"val3\"},\"_\": [\"text1\",\"text1\"]}]}", tag.toJson());
+        JTag tag = new JTag("a").setAttrs(new JAttrs().addAttr("attr1", "val1").addAttr("attr2", "val2")).setjBody(new JBody()
+                .addElement(new JTag("b").setAttrs(new JAttrs().addAttr("attr3", "val3")).setjBody(new JBody().addElement(new JText("text1")).addElement(new JText("text1"))))
+                .addElement(new JTag("b1").setAttrs(new JAttrs().addAttr("attr4", "val4")).setjBody(new JBody().addElement(new JText("text2")).addElement(new JText("text2"))))
+                .addElement(new JBody())
+        );
+        Assert.assertEquals("{\"_name\":\"a\",\"_attrs\": {\"attr2\":\"val2\",\"attr1\":\"val1\"},\"_\": [{\"_name\":\"b\",\"_attrs\": {\"attr3\":\"val3\"},\"_\": [\"text1\",\"text1\"]},{\"_name\":\"b1\",\"_attrs\": {\"attr4\":\"val4\"},\"_\": [\"text2\",\"text2\"]}]}", tag.toJson());
     }
 
     @Test

@@ -5,6 +5,6 @@ package com.jukta.jtahoe;
  */
 public interface DataHandlerProvider {
 
-    Attrs getData(String dataHandler, Attrs attrs);
+    void getData(String dataHandler, Attrs attrs, Block.Callback callback);
 
 }

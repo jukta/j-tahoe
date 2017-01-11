@@ -46,13 +46,13 @@ public class BlockHandler extends AbstractHandler {
 
     public void addDef(String name, String body) {
         if (defs.put(name, body) != null) {
-            throw new RuntimeException("Duplicate def in block: " + getAttrs().get("name"));
+            throw new RuntimeException("Duplicate def in block: " + getBlockName());
         }
     }
 
     @Override
     public void end() {
-        String name = getAttrs().get("name");
+        String name = getBlockName();
         if (name == null) {
             throw new RuntimeException("Undefined block name in namespace \"" + getGenContext().getCurrentNamespace() + "\"");
         }
@@ -91,6 +91,10 @@ public class BlockHandler extends AbstractHandler {
             genContext.getFiles().put(pack, aPackage);
         }
         aPackage.getJavaFileObjects().add(file);
+    }
+
+    public String getBlockName() {
+        return getAttrs().get("name");
     }
 
     private Map<String, String> createArgs(Map<String, String> attrs) {

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 public class FilterPanel implements DataHandler {
 
     @Override
-    public Attrs getData(Attrs attrs, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) {
+    public Attrs getData(Attrs attrs) {
         return attrs.set("b", "hello from data handler");
     }
 }

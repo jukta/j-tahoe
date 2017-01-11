@@ -34,6 +34,11 @@ public class FuncHandler extends BlockHandler {
     }
 
     @Override
+    public String getBlockName() {
+        return getName();
+    }
+
+    @Override
     public void end() {
         DefHandler dh = defHandler;
         defHandler = null;

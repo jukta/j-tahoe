@@ -31,4 +31,19 @@
     <th:block name="DataHandlerOverride_B" parent="DataHandlerOverride_A" dataHandler="D1">
     </th:block>
 
+
+    <th:block name="DataHandlerAsync_A" dataHandler="A">
+        ${a}
+    </th:block>
+
+    <th:block name="DataHandlerAsync_B" dataHandler="B">
+        <lc:DataHandlerAsync_A/>
+        ${b}
+    </th:block>
+
+    <th:block name="DataHandlerAsync_C" dataHandler="C">
+        <lc:DataHandlerAsync_B/>
+        ${c}
+    </th:block>
+
 </th:root>

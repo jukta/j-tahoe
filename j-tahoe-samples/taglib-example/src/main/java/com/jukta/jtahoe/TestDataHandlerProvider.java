@@ -6,8 +6,8 @@ package com.jukta.jtahoe;
 public class TestDataHandlerProvider implements DataHandlerProvider {
 
     @Override
-    public Attrs getData(String dataHandler, Attrs attrs) {
-        return null;
+    public void getData(String dataHandler, Attrs attrs, Block.Callback callback) {
+
     }
 
 }

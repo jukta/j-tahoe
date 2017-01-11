@@ -93,7 +93,7 @@ public class GeneralTest extends AbstractTest {
     public void advancedComposition() {
         Block b = newBlockInstance("test.AdvancedComposition_C1");
         JElement el = b.body(new Attrs());
-        JBody expected = new JBody().addElement(new JBody().addElement(new JText("C")));
+        JBody expected = new JBody().addElement(new JBody().addElement(new JBody().addElement(new JBody().addElement(new JBody().addElement(new JText("C"))))));
 
         assertEquals(expected, el);
     }

@@ -10,9 +10,6 @@ import javax.el.ValueExpression;
 import java.util.Arrays;
 import java.util.Collections;
 
-/**
- * Created by aleph on 17.02.2016.
- */
 public abstract class Block {
     private String name;
     private String parent;
@@ -26,10 +23,12 @@ public abstract class Block {
 
     public void init(Attrs attrs) {};
 
-    public void callDataHandler(Attrs attrs) {
+    public void callDataHandler(Attrs attrs, final Callback callback) {
         if (dataHandler != null) {
             DataHandlerProvider dataHandlerProvider = attrs.getDataHandlerProvider();
-            attrs.setAll(dataHandlerProvider.getData(dataHandler, attrs));
+            dataHandlerProvider.getData(dataHandler, attrs, callback);
+        } else {
+            callback.call();
         }
     }
 
@@ -56,6 +55,12 @@ public abstract class Block {
             o = Collections.emptyList();
         }
         return (Iterable) o;
+    }
+
+    public interface Callback {
+
+        void call();
+
     }
 
 }

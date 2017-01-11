@@ -55,13 +55,12 @@ public class PageHandler implements HttpHandler {
             Attrs attrs = new Attrs();
             attrs.setDataHandlerProvider(new DataHandlerProvider() {
                 @Override
-                public Attrs getData(String dataHandler, Attrs attrs) {
+                public void getData(String dataHandler, Attrs attrs, Block.Callback callback) {
                     Attrs a = new Attrs();
                     try {
                         loadData(dataHandler, a);
-                        return a;
                     } catch (Exception e) {}
-                    return a;
+                    callback.call();
                 }
             });
             if (data != null) {

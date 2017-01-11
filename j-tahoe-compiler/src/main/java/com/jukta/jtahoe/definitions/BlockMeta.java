@@ -56,10 +56,14 @@ public class BlockMeta {
             if (parentName == null) {
                 sw.write("public JElement body(final Attrs attrs) {");
                 sw.write("super.body(attrs);\n");
-                sw.write("callDataHandler(attrs);\n");
-                sw.write("JBody " + getVarName() + " = new JBody();\n");
+                sw.write("final JBody " + getVarName() + " = new JBody();\n");
+                sw.write("callDataHandler(attrs, new com.jukta.jtahoe.Block.Callback() {" +
+                        "public void call() {" +
+                        "" + body +
+                        "}" +
+                        "});\n");
 
-                sw.write(body);
+//                sw.write(body);
                 sw.write("return " + getVarName() + ";");
                 sw.write("}\n");
             } else if (args != null && !args.isEmpty()) {

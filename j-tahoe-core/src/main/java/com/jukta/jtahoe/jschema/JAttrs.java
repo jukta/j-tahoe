@@ -3,9 +3,6 @@ package com.jukta.jtahoe.jschema;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by aleph on 18.02.2016.
- */
 public class JAttrs {
     private Map<String, String> attrs = new HashMap<String, String>();
 
