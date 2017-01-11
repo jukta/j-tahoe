@@ -1,0 +1,14 @@
+<sv:root xmlns:sv="http://jukta.com/tahoe/schema"
+         xmlns="http://www.w3.org/1999/xhtml"
+         namespace="com/jukta/taglib/test"
+         xmlns:lib="com/jukta/lib/test"
+         xmlns:lc=".">
+
+    <sv:block name="BlockA" dataHandler="dh">
+        <h1>JTahoe Taglib Example</h1>
+        ${message} on page ${a}
+        <hr/>
+        <lib:Button name="Click me"/>
+    </sv:block>
+
+</sv:root>

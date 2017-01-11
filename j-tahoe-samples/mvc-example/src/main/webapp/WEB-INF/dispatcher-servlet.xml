@@ -33,9 +33,7 @@
 
     <!--<bean id="viewResolver" class="com.jukta.jtahoe.springmvc.JTahoeViewResolver"/>-->
 
-    <bean id="viewResolver" class="com.jukta.jtahoe.springmvc.JTahoeRuntimeViewResolver">
-        <property name="blocksFolder" value="blocks"/>
-    </bean>
+    <bean id="viewResolver" class="com.jukta.jtahoe.springmvc.JTahoeRuntimeViewResolver"/>
 
     <bean id="filterPanel" class="test.FilterPanel">
 

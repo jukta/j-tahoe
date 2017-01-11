@@ -23,7 +23,7 @@ public class TestController {
         return "test.Main";
     }
 
-    @RequestMapping("/index")
+    @RequestMapping("/")
     public String index(Model model) {
         List<TradeModel> list = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
@@ -43,7 +43,7 @@ public class TestController {
             list.add(m);
         }
         model.addAttribute("list", list);
-        return "pages.IndexPage";
+        return "com.jukta.mvc.test.Main";
     }
 
 }

@@ -145,6 +145,6 @@ public class CpResourceResolver implements ResourceResolver {
 
     @Override
     public List<Resource> getResources(ResourceType resourceType) {
-        return resourceMap.get(resourceType);
+        return Optional.ofNullable(resourceMap.get(resourceType)).orElse(new ArrayList<>());
     }
 }

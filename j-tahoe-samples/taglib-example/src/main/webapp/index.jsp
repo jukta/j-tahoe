@@ -3,9 +3,11 @@
 <html>
     <head>
         <title>First JSP</title>
+        <link rel="stylesheet" href="/all.css" type="text/css"/>
+        <script src="/all.js" type="text/javascript"></script>
     </head>
     <body>
-        <ex:block name="test.BlockA">
+        <ex:block name="com.jukta.taglib.test.BlockA">
             <ex:attr name="a" value="<%= request.getRequestURI() %>"/>
         </ex:block>
     </body>

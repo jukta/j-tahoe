@@ -15,4 +15,9 @@ public class FilterPanel implements DataHandler {
     public Attrs getData(Attrs attrs) {
         return attrs.set("b", "hello from data handler");
     }
+
+    @Override
+    public boolean async() {
+        return false;
+    }
 }

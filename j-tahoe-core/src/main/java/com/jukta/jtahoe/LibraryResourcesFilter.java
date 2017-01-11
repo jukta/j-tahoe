@@ -5,8 +5,10 @@ import com.jukta.jtahoe.resource.*;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @since 1.0
@@ -49,7 +51,7 @@ public class LibraryResourcesFilter implements Filter {
 
     private String join(LibraryResources libraryResources, ResourceType resourceType) throws IOException {
         List<Resource> files = libraryResources.getFiles(resourceType);
-        files.addAll(new Resources().getResources(resourceType));
+        files.addAll(Optional.ofNullable(new Resources().getResources(resourceType)).orElse(new ArrayList<>()));
         return ResourceAppender.append(files).toString();
     }
 

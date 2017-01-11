@@ -1,0 +1,21 @@
+<sv:root xmlns:sv="http://jukta.com/tahoe/schema"
+         xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://jukta.com/tahoe/schema"
+         namespace="com/jukta/mvc/test"
+         xmlns:lib="com/jukta/lib/test"
+         xmlns:lc=".">
+
+    <sv:block name="Main">
+
+        <lib:Main>
+            <th:def name="head">
+                <link rel="stylesheet" href="/resources/all.css" type="text/css"/>
+                <script src="/resources/all.js" type="text/javascript"/>
+            </th:def>
+            <th:def name="body">
+                <h1>JTahoe Mvc Example</h1>
+                <lib:Button name="Click me"/>
+            </th:def>
+        </lib:Main>
+    </sv:block>
+
+</sv:root>

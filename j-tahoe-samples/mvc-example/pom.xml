@@ -6,11 +6,16 @@
     <parent>
         <groupId>com.jukta</groupId>
         <artifactId>j-tahoe-samples</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
+        <version>1.1.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <dependencies>
+        <dependency>
+            <groupId>com.jukta</groupId>
+            <artifactId>lib-example</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.jukta</groupId>
             <artifactId>j-tahoe-mvc</artifactId>
