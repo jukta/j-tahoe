@@ -11,7 +11,6 @@ import com.jukta.jtahoe.jschema.JAttrs;
 import com.jukta.jtahoe.jschema.JBody;
 import com.jukta.jtahoe.jschema.JElement;
 import com.jukta.jtahoe.jschema.JTag;
-import com.jukta.maven.FileSystemResources;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
@@ -56,9 +55,8 @@ public class PageHandler implements HttpHandler {
             attrs.setDataHandlerProvider(new DataHandlerProvider() {
                 @Override
                 public void getData(String dataHandler, Attrs attrs, Block.Callback callback) {
-                    Attrs a = new Attrs();
                     try {
-                        loadData(dataHandler, a);
+                        loadData(dataHandler, attrs);
                     } catch (Exception e) {}
                     callback.call();
                 }
@@ -97,7 +95,6 @@ public class PageHandler implements HttpHandler {
         for (String c : env.getJs()) {
             headBody.addElement(new JTag("script").setAttrs(new JAttrs().addAttr("src", c).addAttr("type", "text/javascript")).setjBody(new JBody()));
         }
-
 
         JElement page = new JTag("html").setjBody(new JBody().addElement(head).addElement(body));
         body.setjBody(new JBody().addElement(block));

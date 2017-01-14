@@ -4,6 +4,7 @@ import com.jukta.jtahoe.resource.CompositeResourceResolver;
 import com.jukta.jtahoe.resource.ResourceResolver;
 import com.jukta.maven.FileSystemResources;
 
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -78,5 +79,17 @@ public class Env {
             resolver.addResolver(new FileSystemResources(d.trim()));
         }
         return resolver;
+    }
+
+    @Override
+    public String toString() {
+        return  "\tblocksDir=" + String.join(",", Arrays.asList(blocksDirs)) + '\n' +
+                "\tdataDir=" + dataDir + '\n' +
+                "\twrapBlock=" + wrap + '\n' +
+                "\thead.js=" + String.join(",", Arrays.asList(js)) + '\n' +
+                "\thead.css=" + String.join(",", Arrays.asList(css)) + '\n' +
+                "\tport=" + port + '\n' +
+                "\tresourceName=" + resourceName + '\n' +
+                "\tstaticDir=" + staticDir;
     }
 }
