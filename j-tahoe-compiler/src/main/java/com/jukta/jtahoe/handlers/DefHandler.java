@@ -54,7 +54,7 @@ public class DefHandler extends AbstractHandler {
         if (getParent() instanceof DefHandler) {
             el = "this." + defName + "(attrs)";
         } else {
-            el = "_" + blockHandler.getBlockName() + "." + defName + "(attrs)";
+            el = "((" + blockHandler.getBlockName() + ")_" + blockHandler.getBlockName() + ")." + defName + "(attrs)";
         }
         getParent().addElement(el);
 
