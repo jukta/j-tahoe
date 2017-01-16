@@ -145,4 +145,14 @@
 
     </th:block>
 
+    <th:block name="lowercaseA">
+        <th:def/>
+    </th:block>
+
+    <th:block name="lowercaseB">
+        <lc:lowercaseA>
+            A
+        </lc:lowercaseA>
+    </th:block>
+
 </th:root>

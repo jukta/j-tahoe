@@ -109,5 +109,13 @@ public class GeneralTest extends AbstractTest {
         assertEquals(expected, el);
     }
 
+    @Test
+    public void lowerCase() {
+        Block b = newBlockInstance("test.lowercaseB");
+        JElement el = b.body(new Attrs());
+        JBody expected = new JBody().addElement(new JBody().addElement(new JText("A")));
+        assertEquals(expected.toString(), el.toString());
+    }
+
 
 }

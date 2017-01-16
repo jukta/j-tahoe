@@ -38,12 +38,14 @@ public class BlockMeta {
             sw.write("package " + pack + ";");
             sw.write("import com.jukta.jtahoe.Attrs;");
             sw.write("import com.jukta.jtahoe.jschema.*;");
+            sw.write("import  com.jukta.jtahoe.Block;");
             sw.write("public class " + name);
             if (parentName == null) {
-                sw.write(" extends com.jukta.jtahoe.Block {");
+                sw.write(" extends Block {");
             } else {
                 sw.write(" extends " + parentName + " {");
             }
+            sw.write("Block" + " _" + name + " = this;");
             if (dataHandler != null) {
                 sw.write("public " + name + "() {");
                 sw.write("dataHandler = \"" + dataHandler + "\";");
@@ -57,7 +59,8 @@ public class BlockMeta {
                 sw.write("public JElement body(final Attrs attrs) {");
                 sw.write("super.body(attrs);\n");
                 sw.write("final JBody " + getVarName() + " = new JBody();\n");
-                sw.write("callDataHandler(attrs, new com.jukta.jtahoe.Block.Callback() {" +
+
+                sw.write("callDataHandler(attrs, new Block.Callback() {" +
                         "public void call() {" +
                         "" + body +
                         "}" +
