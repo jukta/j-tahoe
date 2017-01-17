@@ -87,7 +87,7 @@ public class JarBuilder {
         File resDir = new File(resourceDestDir, id);
         resDir.mkdirs();
         log.info("Creating resource dir: " + resDir.getName());
-        FileUtils.copyDirectory(new File(resourceSrcDir), resDir);
+        FileUtils.copyDirectoryStructure(new File(resourceSrcDir), resDir);
     }
 
     protected void generateProps() throws IOException {
