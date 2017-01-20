@@ -67,6 +67,11 @@ public class LibraryResourcesFilter implements Filter {
             response.setContentType("text/css");
         } else if (!path.endsWith("/")) {
             Resource r = libraryResources.getFile(path);
+            if (path.endsWith(".js")) {
+                response.setContentType("text/javascript");
+            } else if (path.endsWith(".css")) {
+                response.setContentType("text/css");
+            }
             if (r != null) content = ResourceAppender.append(Collections.singletonList(r)).toString();
         }
         if (content == null) {
