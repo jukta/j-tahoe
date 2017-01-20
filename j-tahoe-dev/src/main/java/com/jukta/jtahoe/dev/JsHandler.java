@@ -9,6 +9,7 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,17 +28,28 @@ public class JsHandler implements HttpHandler {
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
         String res = exchange.getRelativePath();
-        if (!env.getJsResourceName().equals(res)) {
+
+        if (!res.endsWith(".js")) {
             next.handleRequest(exchange);
             return;
         }
 
         LibraryResources lr = new LibraryResources();
-        List<Resource> files = lr.getFiles(ResourceType.JS);
-        files.addAll(env.getResourceResolver().getResources(ResourceType.JS));
-        StringBuilder sb = ResourceAppender.append(files);
-        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/javascript");
-        exchange.getResponseSender().send(sb.toString());
+        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/css");
 
+        if (env.getJsResourceName().equals(res)) {
+            List<Resource> files = lr.getFiles(ResourceType.JS);
+            files.addAll(env.getResourceResolver().getResources(ResourceType.JS));
+            StringBuilder sb = ResourceAppender.append(files);
+            exchange.getResponseSender().send(sb.toString());
+        } else {
+            Resource r = lr.getFile(res);
+            if (r == null) {
+                next.handleRequest(exchange);
+                return;
+            }
+            StringBuilder sb = ResourceAppender.append(Collections.singletonList(r));
+            exchange.getResponseSender().send(sb.toString());
+        }
     }
 }

@@ -48,6 +48,7 @@ public class PageHandler implements HttpHandler {
         RuntimeBlockFactory factory = null;
         try {
             factory = new RuntimeBlockFactory(new XthBlockModelProvider(env.getResourceResolver()));
+            Thread.currentThread().setContextClassLoader(factory.getClassLoader());
 
             Block block = factory.create(blockName);
 
