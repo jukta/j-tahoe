@@ -25,11 +25,11 @@ public class Dev {
         Properties p = new Properties();
 
         if (new File(pr).exists()) {
-            p.load(new FileReader(pr));
             System.out.println("Loading \"" + CONFIG_PROPERTIES + "\" from working directory");
+            p.load(new FileReader(pr));
         } else if (Dev.class.getClassLoader().getResource(CONFIG_PROPERTIES) != null) {
-            p.load(Dev.class.getResourceAsStream(CONFIG_PROPERTIES));
             System.out.println("Loading \"" + CONFIG_PROPERTIES + "\" from classpath");
+            p.load(Dev.class.getClassLoader().getResourceAsStream(CONFIG_PROPERTIES));
         } else {
             System.out.println("Could not find file \"" + CONFIG_PROPERTIES + "\" in classpath/working directory");
         }

@@ -20,7 +20,7 @@ public class Env {
     private String[] css;
     private int port = 8080;
     private String resourceName = "all";
-    private String staticDir = "public";
+    private String[] staticDirs = new String[] {"public"};
 
     public Env(Properties p) {
         wrap = "true".equals(p.getProperty("wrapBlock", "" + wrap));
@@ -30,7 +30,7 @@ public class Env {
         css = p.getProperty("head.css", "").split(",");
         port = Integer.parseInt(p.getProperty("port", "" + port));
         resourceName = p.getProperty("resourceName", resourceName);
-        staticDir = p.getProperty("staticDir", staticDir);
+        staticDirs = p.getProperty("staticDir", "public").split(",");
     }
 
     public String getBlocksDir() {
@@ -69,8 +69,8 @@ public class Env {
         return "/" + resourceName + ".css";
     }
 
-    public String getStaticDir() {
-        return staticDir;
+    public String[] getStaticDir() {
+        return staticDirs;
     }
 
     public ResourceResolver getResourceResolver() {
@@ -90,6 +90,6 @@ public class Env {
                 "\thead.css=" + String.join(",", Arrays.asList(css)) + '\n' +
                 "\tport=" + port + '\n' +
                 "\tresourceName=" + resourceName + '\n' +
-                "\tstaticDir=" + staticDir;
+                "\tstaticDir=" + staticDirs;
     }
 }

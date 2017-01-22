@@ -2,6 +2,7 @@ package com.jukta.jtahoe.dev;
 
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.Headers;
 import sun.misc.IOUtils;
 
 import java.io.File;
@@ -24,18 +25,19 @@ public class StaticHandler implements HttpHandler {
     public void handleRequest(HttpServerExchange exchange) throws Exception {
         String res = exchange.getRelativePath();
 
-        File f = new File(env.getStaticDir(), res);
+        String[] dirs = env.getStaticDir();
 
-        if (!f.exists()) {
-            next.handleRequest(exchange);
-            return;
+        for (String d : dirs) {
+            File f = new File(d.trim(), res);
+            if (f.exists()) {
+                FileInputStream fio = new FileInputStream(f);
+                String cont = new String(IOUtils.readFully(fio, -1, false));
+                exchange.getResponseSender().send(cont);
+                return;
+            }
         }
-
-        FileInputStream fio = new FileInputStream(f);
-        String cont = new String(IOUtils.readFully(fio, -1, false));
-
-//        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/css");
-        exchange.getResponseSender().send(cont);
+        next.handleRequest(exchange);
+        return;
 
     }
 }
