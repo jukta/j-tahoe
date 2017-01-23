@@ -118,4 +118,12 @@ public class GeneralTest extends AbstractTest {
     }
 
 
+    @Test
+    public void escaping() {
+        Block b = newBlockInstance("test.escaping");
+        JElement el = b.body(new Attrs());
+        JBody expected = new JBody().addElement(new JBody().addElement(new JText("A \" \" B")));
+        assertEquals(expected.toString(), el.toString());
+    }
+
 }

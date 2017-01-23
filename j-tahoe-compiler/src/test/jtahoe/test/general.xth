@@ -155,4 +155,8 @@
         </lc:lowercaseA>
     </th:block>
 
+    <th:block name="escaping">
+        A " " B
+    </th:block>
+
 </th:root>

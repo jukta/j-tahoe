@@ -35,6 +35,7 @@ public abstract class AbstractHandler {
         text = text.trim();
         if (text.equals("")) return;
         text = text.replace("\n", "");
+        text = text.replaceAll("\"", "\\\\\"");
         text = parseExp(text, true);
         addElement("new JText(" + text + ".toString())");
     }

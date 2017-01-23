@@ -79,6 +79,8 @@ public class NodeProcessor {
                 handler = new SetHandler(genContext, node, parent);
             } else if (node.getName().equals("unset")) {
                 handler = new UnsetHandler(genContext, node, parent);
+            } else if (node.getName().equals("nbsp")) {
+                handler = new NbspHandler(genContext, node, parent);
             }
         } else {
             if (!isHtml(node)) {
