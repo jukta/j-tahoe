@@ -27,7 +27,7 @@ public class ParentTest extends AbstractTest {
     public void parentDefaultDef() {
         Block b = newBlockInstance("test.tags.ParentDefaultDef_B");
         JElement el = b.body(new Attrs());
-        JBody expected = new JBody().addElement(new JBody().addElement(new JBody().addElement(new JText("A"))));
+        JBody expected = new JBody().addElement(new JBody().addElement(new JBody().addElement(new JBody().addElement(new JText("A")))));
         assertEquals(expected, el);
     }
 

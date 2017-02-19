@@ -7,6 +7,8 @@ import de.odysseus.el.util.SimpleContext;
 
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -57,10 +59,23 @@ public abstract class Block {
         return (Iterable) o;
     }
 
+    public JElement parent(Attrs attrs, String name, Block parent) {
+        Block block = (Block) attrs.get("__parent__");
+        if (block == null) {
+           block = parent;
+        }
+
+        try {
+            Method method = block.getClass().getDeclaredMethod(name+"Super", Attrs.class);
+            return (JElement) method.invoke(block, attrs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new JBody();
+    }
+
     public interface Callback {
-
         void call();
-
     }
 
 }

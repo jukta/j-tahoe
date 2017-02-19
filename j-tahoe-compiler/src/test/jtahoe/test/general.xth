@@ -36,6 +36,57 @@
         B2
     </th:block>
 
+    <th:block name="CascadeDefInheritance_A">
+        A1
+        <th:def/>
+        A3
+    </th:block>
+
+    <th:block name="CascadeDefInheritance_B" parent="CascadeDefInheritance_A">
+        B1
+        <th:def>
+            B2
+        </th:def>
+        B3
+    </th:block>
+
+    <th:block name="CascadeDefInheritance_C" parent="CascadeDefInheritance_B">
+        C1
+    </th:block>
+
+    <th:block name="AdvancedDefInheritance_A">
+        A1
+        <th:def/>
+        A3
+    </th:block>
+
+    <th:block name="AdvancedDefInheritance_B">
+        B1
+        <lc:AdvancedDefInheritance_A>
+            <th:def name="aaa">
+                B2
+            </th:def>
+        </lc:AdvancedDefInheritance_A>
+        B3
+    </th:block>
+
+    <th:block name="AdvancedDefInheritance_C" parent="AdvancedDefInheritance_B">
+        <th:def name="aaa">
+            C1
+        </th:def>
+    </th:block>
+
+    <th:block name="DuplicateDefs_A">
+        <th:def>
+            A1
+        </th:def>
+    </th:block>
+
+    <th:block name="DuplicateDefs_B">
+        <lc:DuplicateDefs_A>B1</lc:DuplicateDefs_A>
+        <lc:DuplicateDefs_A>B2</lc:DuplicateDefs_A>
+    </th:block>
+
     <th:block name="NamedDefInheritance_A">
         A1
         <th:def name="def1">
@@ -95,13 +146,13 @@
     </th:block>
 
     <th:block name="InheritanceComposition_B1">
-        <th:def name="def1">
+        <th:def name="def2">
             B1
         </th:def>
     </th:block>
 
     <th:block name="InheritanceComposition_B2" parent="InheritanceComposition_B1">
-        <th:def name="def1">
+        <th:def name="def2">
             <th:parent/>
             <lc:InheritanceComposition_A2>
                 <th:def name="def1">

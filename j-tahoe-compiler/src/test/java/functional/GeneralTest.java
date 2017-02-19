@@ -52,6 +52,47 @@ public class GeneralTest extends AbstractTest {
     }
 
     @Test
+    public void cascadeDefInheritance() {
+        Block b = newBlockInstance("test.CascadeDefInheritance_C");
+        JElement el = b.body(new Attrs());
+        System.out.println(el.toJson());
+        JBody expected = new JBody()
+                .addElement(new JText("A1"))
+                .addElement(new JBody()
+                        .addElement(new JText("B1"))
+                        .addElement(new JBody().addElement(new JText("C1")))
+                        .addElement(new JText("B3")))
+                .addElement(new JText("A3"));
+        assertEquals(expected, el);
+    }
+
+    @Test
+    public void advancedDefInheritance() {
+        Block b = newBlockInstance("test.AdvancedDefInheritance_C");
+        JElement el = b.body(new Attrs());
+//        System.out.println(el.toJson());
+        JBody expected = new JBody().
+                addElement(new JText("B1"))
+                .addElement(new JBody()
+                        .addElement(new JText("A1"))
+                        .addElement(new JBody().addElement(new JBody().addElement(new JText("C1"))))
+                        .addElement(new JText("A3")))
+                .addElement(new JText("B3"));
+        assertEquals(expected, el);
+    }
+
+    @Test
+    public void duplicateDefs() {
+        Block b = newBlockInstance("test.DuplicateDefs_B");
+        JElement el = b.body(new Attrs());
+//        System.out.println(el.toJson());
+        JBody expected = new JBody()
+                .addElement(new JBody().addElement(new JBody().addElement(new JText("B1"))))
+                .addElement(new JBody().addElement(new JBody().addElement(new JText("B2"))));
+        assertEquals(expected, el);
+    }
+
+    @Test
     public void namedDefInheritance() {
         Block b = newBlockInstance("test.NamedDefInheritance_B");
         JElement el = b.body(new Attrs());

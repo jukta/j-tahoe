@@ -17,13 +17,24 @@ import java.util.Map;
 public class BlockHandler extends AbstractHandler {
     private String body = "";
     protected Map<String, String> defs = new HashMap<>();
-    private DefHandler defHandler;
+    protected DefHandler defHandler;
 
     public BlockHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         super(genContext, node, parent);
         if (getAttrs().get("parent") != null) {
-            NamedNode defNode = new NamedNode("", "def_", new HashMap<String, String>(), getNode());
+            HashMap<String, String> attrs = new HashMap<>();
+            attrs.put("name", getParentBlock());
+            NamedNode defNode = new NamedNode("", "def_", attrs, getNode());
             defHandler = new DefHandler(genContext, defNode, this);
+            defHandler.setDefaultDef(true);
+
+//            attrs = new HashMap<>();
+//            attrs.put("name", getBlockName());
+//            defNode = new NamedNode("", "def_", attrs, getNode());
+//            DefHandler defH = new DefHandler(genContext, defNode, this);
+//            defH.setDefaultDef(true);
+////            defH.addElement("this.def_" + getParentBlock() + "(attrs)");
+//            defH.end();
         }
 
     }
@@ -45,6 +56,7 @@ public class BlockHandler extends AbstractHandler {
     }
 
     public void addDef(String name, String body) {
+//        defs.put(name, body);
         if (defs.put(name, body) != null) {
             throw new RuntimeException("Duplicate def in block: " + getBlockName());
         }
@@ -60,7 +72,7 @@ public class BlockHandler extends AbstractHandler {
 
         DefHandler dh = defHandler;
         defHandler = null;
-        if (defs.size() == 0 && dh != null && dh.body.length() > 0) dh.end();
+        if (dh != null && dh.body.length() > 0) dh.end();
 
         BlockMeta meta = new BlockMeta(getSeq(), name, getAttrs());
         meta.setBody(body);
@@ -112,5 +124,12 @@ public class BlockHandler extends AbstractHandler {
 
     public Map<String, String> getDefs() {
         return defs;
+    }
+
+    public String getParentBlock() {
+        String parent = getAttrs().get("parent");
+        if (parent == null) return null;
+            String[] p = parent.split(":");
+            return p.length > 1 ? p[1] : p[0];
     }
 }

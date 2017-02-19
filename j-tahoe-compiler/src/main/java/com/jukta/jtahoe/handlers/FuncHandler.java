@@ -16,9 +16,11 @@ public class FuncHandler extends BlockHandler {
 
     public FuncHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         super(genContext, node, parent);
-        NamedNode defNode = new NamedNode("", "def_", new HashMap<String, String>(), getNode());
+        HashMap<String, String> attrs = new HashMap<>();
+        attrs.put("name", getBlockName());
+        NamedNode defNode = new NamedNode("", "def_", attrs, getNode());
         defHandler = new DefHandler(genContext, defNode, this);
-
+        defHandler.setDefaultDef(true);
     }
 
     @Override
@@ -42,7 +44,9 @@ public class FuncHandler extends BlockHandler {
     public void end() {
         DefHandler dh = defHandler;
         defHandler = null;
-        if (defs.size() == 0 && dh.body.length() > 0) dh.end();
+        if (dh.body.length() > 0) {
+            dh.end();
+        }
         String attrs = "new Attrs(attrs)";
         for (String s : getAttrs().keySet()) {
             attrs += ".set(\"" + s + "\", " + parseExp(getAttrs().get(s), true) + ")";
@@ -59,6 +63,10 @@ public class FuncHandler extends BlockHandler {
         }
         el += ".body(" + attrs + ")";
         getParent().addElement(el);
+    }
+
+    public String getParentBlock() {
+        return getBlock(false).getBlockName();
     }
 
 }

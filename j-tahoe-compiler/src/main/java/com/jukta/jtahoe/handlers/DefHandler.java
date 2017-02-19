@@ -11,11 +11,16 @@ import java.io.StringWriter;
 public class DefHandler extends AbstractHandler {
 
     String body = "";
-    private String name;
+    protected String name;
+    private boolean defaultDef = false;
 
     public DefHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         super(genContext, node, parent);
         this.name = getAttrs().get("name");
+    }
+
+    public void setDefaultDef(boolean defaultDef) {
+        this.defaultDef = defaultDef;
     }
 
     public void setName(String name) {
@@ -27,7 +32,7 @@ public class DefHandler extends AbstractHandler {
     }
 
     public String getDefName() {
-        return name;
+        return name == null ? "def_" + getBlock(true).getBlockName(): "def_" + name;
     }
 
     public void appendCode(String code) {
@@ -46,9 +51,19 @@ public class DefHandler extends AbstractHandler {
 //            attrs += ".set(\"" + s + "\", \"" + getAttrs().get(s) + "\")";
 //        }
 
-        BlockHandler blockHandler = getBlock();
+        BlockHandler blockHandler = getBlock(true);
+        BlockHandler blockHandlerInt = getBlock(false);
 
-        String defName = name == null ? "def_" : "def_" + name;
+        if (getBlock(false).getBlockName().equals("AdvancedDefInheritance_A")) {
+            System.out.println();
+        }
+
+//        if (name != null && name.equals("aaa")) {
+//            System.out.println();
+//        }
+
+        String defName = getDefName();
+        String defNameInt = name == null ? "def_" + blockHandlerInt.getBlockName(): "def_" + name;
 
         String el;
         if (getParent() instanceof DefHandler) {
@@ -59,9 +74,8 @@ public class DefHandler extends AbstractHandler {
         getParent().addElement(el);
 
         String def;
-        if (blockHandler instanceof FuncHandler) {
+        if (blockHandler instanceof FuncHandler || (defaultDef && !blockHandler.equals(blockHandlerInt))) {
             def = "public JElement " + defName + "(final Attrs _attrs" + getVarName()+ ")";
-
         } else {
             def = "public JElement " + defName + "(final Attrs attrs)";
         }
@@ -72,7 +86,38 @@ public class DefHandler extends AbstractHandler {
         fw.write("return " + getVarName() + ";");
         fw.write("}");
 
-        blockHandler.addDef(def, fw.toString());
+        if (!defaultDef && !blockHandler.equals(blockHandlerInt)) {
+            blockHandler.addDef(def, fw.toString());
+        } else {
+            blockHandlerInt.addDef(def, fw.toString());
+        }
+
+//        if (blockHandler.equals(blockHandlerInt) && blockHandler.getParentBlock() != null) {
+//            def = "public JElement " + defName + "Super(final Attrs attrs)";
+//            fw = new StringWriter();
+//            fw.write("{ return super." + defName + "(attrs); }");
+//            blockHandler.addDef(def, fw.toString());
+//        }
+
+        if (!defaultDef && !blockHandler.equals(blockHandlerInt)) {
+            def = "public JElement " + defNameInt + "(final Attrs _attrs" + getVarName()+ ")";
+
+            fw = new StringWriter();
+            fw.write("{");
+//            fw.write("JBody " + getVarName() + " = new JBody();\n");
+//            fw.write(el + ";");
+//            fw.write("return " + getVarName() + ";");
+            fw.write("attrs.set(\"__parent__\", this);");
+            fw.write("return " + el + ";");
+            fw.write("}");
+
+            blockHandlerInt.addDef(def, fw.toString());
+
+            def = "public JElement " + defNameInt + "Super(final Attrs _attrs" + getVarName()+ ")";
+            fw = new StringWriter();
+            fw.write("{ return super." + defNameInt + "(attrs); }");
+            blockHandlerInt.addDef(def, fw.toString());
+        }
 
     }
 }

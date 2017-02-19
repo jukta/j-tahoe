@@ -88,8 +88,16 @@ public abstract class AbstractHandler {
         return "evalIt(attrs, \"" + str + "\")";
     }
 
-    public BlockHandler getBlock() {
-        return getBlock(getParent());
+    public BlockHandler getBlock(boolean top) {
+        BlockHandler handler = getBlock(getParent());
+        while (top) {
+            if (handler instanceof FuncHandler) {
+                handler = getBlock(handler.getParent());
+            } else {
+                return handler;
+            }
+        }
+        return handler;
     }
 
     private BlockHandler getBlock(AbstractHandler handler) {
