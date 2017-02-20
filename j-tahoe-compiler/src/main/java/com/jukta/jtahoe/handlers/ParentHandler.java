@@ -18,6 +18,7 @@ public class ParentHandler extends AbstractHandler {
         if (defHandler.getBlock(false) instanceof FuncHandler) {
             String el = "parent(attrs, \"" + defHandler.getDefName() + "\", this)";
             getParent().addElement(el);
+            defHandler.addSuperMethod(defHandler.getDefName());
         } else if (defHandler.name == null) {
             String el = "super.def_" + defHandler.getBlock(true).getParentBlock() + "(attrs)";
             getParent().addElement(el);

@@ -4,6 +4,8 @@ import com.jukta.jtahoe.gen.GenContext;
 import com.jukta.jtahoe.gen.model.NamedNode;
 
 import java.io.StringWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by aleph on 20.02.2016.
@@ -13,10 +15,15 @@ public class DefHandler extends AbstractHandler {
     String body = "";
     protected String name;
     private boolean defaultDef = false;
+    private Set<String> superDefs = new HashSet<>();
 
     public DefHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         super(genContext, node, parent);
         this.name = getAttrs().get("name");
+    }
+
+    public void addSuperMethod(String defName) {
+        superDefs.add(defName);
     }
 
     public void setDefaultDef(boolean defaultDef) {
@@ -46,21 +53,8 @@ public class DefHandler extends AbstractHandler {
 
     @Override
     public void end() {
-//        String attrs = "new com.jukta.jtahoe.Attrs()";
-//        for (String s : getAttrs().keySet()) {
-//            attrs += ".set(\"" + s + "\", \"" + getAttrs().get(s) + "\")";
-//        }
-
         BlockHandler blockHandler = getBlock(true);
         BlockHandler blockHandlerInt = getBlock(false);
-
-        if (getBlock(false).getBlockName().equals("AdvancedDefInheritance_A")) {
-            System.out.println();
-        }
-
-//        if (name != null && name.equals("aaa")) {
-//            System.out.println();
-//        }
 
         String defName = getDefName();
         String defNameInt = name == null ? "def_" + blockHandlerInt.getBlockName(): "def_" + name;
@@ -92,31 +86,23 @@ public class DefHandler extends AbstractHandler {
             blockHandlerInt.addDef(def, fw.toString());
         }
 
-//        if (blockHandler.equals(blockHandlerInt) && blockHandler.getParentBlock() != null) {
-//            def = "public JElement " + defName + "Super(final Attrs attrs)";
-//            fw = new StringWriter();
-//            fw.write("{ return super." + defName + "(attrs); }");
-//            blockHandler.addDef(def, fw.toString());
-//        }
-
         if (!defaultDef && !blockHandler.equals(blockHandlerInt)) {
             def = "public JElement " + defNameInt + "(final Attrs _attrs" + getVarName()+ ")";
 
             fw = new StringWriter();
             fw.write("{");
-//            fw.write("JBody " + getVarName() + " = new JBody();\n");
-//            fw.write(el + ";");
-//            fw.write("return " + getVarName() + ";");
             fw.write("attrs.set(\"__parent__\", this);");
             fw.write("return " + el + ";");
             fw.write("}");
 
             blockHandlerInt.addDef(def, fw.toString());
 
-            def = "public JElement " + defNameInt + "Super(final Attrs _attrs" + getVarName()+ ")";
-            fw = new StringWriter();
-            fw.write("{ return super." + defNameInt + "(attrs); }");
-            blockHandlerInt.addDef(def, fw.toString());
+            if (superDefs.contains(defNameInt)) {
+                def = "public JElement " + defNameInt + "Super(final Attrs _attrs" + getVarName() + ")";
+                fw = new StringWriter();
+                fw.write("{ return super." + defNameInt + "(attrs); }");
+                blockHandlerInt.addDef(def, fw.toString());
+            }
         }
 
     }
