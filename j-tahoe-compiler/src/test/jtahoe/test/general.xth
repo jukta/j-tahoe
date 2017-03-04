@@ -210,4 +210,13 @@
         A " " B
     </th:block>
 
+    <th:block name="cdata">
+        <th:escape>
+        <![CDATA[
+        <th:block name="escaping1">
+        A " " B
+    </th:block>]]>
+        </th:escape>
+    </th:block>
+
 </th:root>

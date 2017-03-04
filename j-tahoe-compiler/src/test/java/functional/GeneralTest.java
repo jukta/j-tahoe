@@ -167,4 +167,17 @@ public class GeneralTest extends AbstractTest {
         assertEquals(expected.toString(), el.toString());
     }
 
+    @Test
+    public void escape() {
+
+        Block b = newBlockInstance("test.cdata");
+        JElement el = b.body(new Attrs().set("a", "A"));
+
+        JBody expected = new JBody().addElement(new JText("\n" +
+                "        &lt;th:block name=\"escaping1\"&gt;\n" +
+                "        A \" \" B\n" +
+                "    &lt;/th:block&gt;"));
+        assertEquals(expected.toString(), el.toString());
+    }
+
 }

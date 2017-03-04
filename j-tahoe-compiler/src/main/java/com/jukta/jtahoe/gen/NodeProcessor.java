@@ -81,6 +81,8 @@ public class NodeProcessor {
                 handler = new UnsetHandler(genContext, node, parent);
             } else if (node.getName().equals("nbsp")) {
                 handler = new NbspHandler(genContext, node, parent);
+            } else if (node.getName().equals("escape")) {
+                handler = new EscapeHandler(genContext, node, parent);
             }
         } else {
             if (!isHtml(node)) {
