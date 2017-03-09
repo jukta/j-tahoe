@@ -35,6 +35,20 @@ public class JTagTest {
     }
 
     @Test
+    public void toJson2() {
+
+        JBody b1 = new JBody();
+        JTag b2 = new JTag("div").setAttrs(new JAttrs().addAttr("class", "c1"));
+        JTag b3 = new JTag("div").setAttrs(new JAttrs().addAttr("class", "c2")).setjBody(new JBody());
+
+        b1.addElement(b2);
+        b1.addElement(b3);
+//        System.out.println(b1.toJson());
+
+        Assert.assertEquals("\"_\": [{\"_name\":\"div\",\"_attrs\": {\"class\":\"c1\"}},{\"_name\":\"div\",\"_attrs\": {\"class\":\"c2\"}}]", b1.toJson());
+    }
+
+    @Test
     public void toHtml() {
         JTag tag = new JTag("a").setAttrs(new JAttrs().addAttr("attr1", "val1").addAttr("attr2", "val2")).setjBody(new JBody().addElement(
                 new JTag("b").setAttrs(new JAttrs().addAttr("attr3", "val3")).setjBody(new JBody().addElement(new JText("text1")).addElement(new JText("text1")))

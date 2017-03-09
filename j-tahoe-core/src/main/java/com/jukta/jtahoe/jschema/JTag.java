@@ -27,7 +27,10 @@ public class JTag implements JElement {
     public String toJson() {
         String res = "{\"_name\":\"" + name + "\"";
         if (attrs != null && !attrs.isEmpty()) res += "," + attrs.toJson();
-        if (jBody != null) res += "," + jBody.toJson();
+        if (jBody != null) {
+            String b = jBody.toJson();
+            if (!"".equals(b)) res += "," + b;
+        }
         res += "}";
         return res;
     }
