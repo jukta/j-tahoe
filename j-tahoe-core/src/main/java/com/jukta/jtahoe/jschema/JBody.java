@@ -11,6 +11,10 @@ public class JBody implements JElement {
         return this;
     }
 
+    public List<JElement> getElements() {
+        return elements;
+    }
+
     private String toJson1() {
         List<String> eList = new ArrayList<>();
         for (JElement element : elements) {

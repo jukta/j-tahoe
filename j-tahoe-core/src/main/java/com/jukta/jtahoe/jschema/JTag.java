@@ -9,6 +9,14 @@ public class JTag implements JElement {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public JAttrs getAttrs() {
+        return attrs;
+    }
+
     public JTag setAttrs(JAttrs attrs) {
         this.attrs = attrs;
         return this;

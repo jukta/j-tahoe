@@ -2,8 +2,12 @@ package functional;
 
 import com.jukta.jtahoe.Attrs;
 import com.jukta.jtahoe.Block;
+import com.jukta.jtahoe.BlockHandler;
 import com.jukta.jtahoe.jschema.*;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 /**
@@ -178,6 +182,41 @@ public class GeneralTest extends AbstractTest {
                 "        A \" \" B\n" +
                 "    &lt;/th:block&gt;"));
         assertEquals(expected.toString(), el.toString());
+    }
+
+    @Test
+    public void blockHandler() {
+        Block b = newBlockInstance("test.AdvancedComposition_C1");
+        Attrs attrs = new Attrs();
+        List<String> res1 = new ArrayList<>();
+        List<String> res2 = new ArrayList<>();
+        attrs.setBlockHandler(new BlockHandler() {
+            @Override
+            public void before(String block, Attrs attrs) {
+                res1.add(block);
+            }
+
+            @Override
+            public void after(String block, Attrs a, JElement jElement) {
+                res2.add(block + " " + jElement);
+
+            }
+        });
+        b.body(attrs);
+
+        List<String> before = new ArrayList<>();
+        before.add("test.AdvancedComposition_C1");
+        before.add("test.AdvancedComposition_A1");
+        before.add("test.AdvancedComposition_B1");
+
+        assertEquals(before, res1);
+
+        List<String> after = new ArrayList<>();
+        after.add("test.AdvancedComposition_B1 \"_\": [\"C\"]");
+        after.add("test.AdvancedComposition_A1 \"_\": [\"C\"]");
+        after.add("test.AdvancedComposition_C1 \"_\": [\"C\"]");
+
+        assertEquals(after, res2);
     }
 
 }

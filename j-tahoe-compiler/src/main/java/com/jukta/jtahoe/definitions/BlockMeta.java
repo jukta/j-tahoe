@@ -62,7 +62,9 @@ public class BlockMeta {
 
                 sw.write("callDataHandler(attrs, new Block.Callback() {" +
                         "public void call() {" +
-                        "" + body +
+                        "if (attrs.getBlockHandler() != null) attrs.getBlockHandler().before(\""+pack+"." + name + "\", attrs);\n" +
+                        "" + body + "\n" +
+                        "if (attrs.getBlockHandler() != null) attrs.getBlockHandler().after(\""+pack+"." + name + "\", attrs, " + getVarName() + ");\n" +
                         "}" +
                         "});\n");
 

@@ -7,12 +7,14 @@ public class Attrs {
     private Map<String, Object> properties = new HashMap<String, Object>();
     private Map<String, Object> attributes = new HashMap<String, Object>();
     private DataHandlerProvider dataHandlerProvider;
+    private BlockHandler blockHandler;
 
     public Attrs() {
     }
 
     public Attrs(Attrs attrs) {
         dataHandlerProvider = attrs.dataHandlerProvider;
+        blockHandler = attrs.blockHandler;
         attributes = attrs.attributes;
     }
 
@@ -60,6 +62,13 @@ public class Attrs {
         return dataHandlerProvider;
     }
 
+    public BlockHandler getBlockHandler() {
+        return blockHandler;
+    }
+
+    public void setBlockHandler(BlockHandler blockHandler) {
+        this.blockHandler = blockHandler;
+    }
 }
 
 

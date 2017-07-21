@@ -18,6 +18,10 @@ public class JAttrs {
         return this;
     }
 
+    public Map<String, String> getAttrs() {
+        return attrs;
+    }
+
     public String toJson() {
         if (isEmpty()) {
             return "";
