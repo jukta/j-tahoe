@@ -1,12 +1,14 @@
 package com.jukta.jtahoe;
 
-import com.jukta.jtahoe.resource.*;
+import com.jukta.jtahoe.resource.Resource;
+import com.jukta.jtahoe.resource.ResourceAppender;
+import com.jukta.jtahoe.resource.ResourceType;
+import com.jukta.jtahoe.resource.Resources;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +20,6 @@ public class LibraryResourcesFilter implements Filter {
     private String jsContent;
     private String cssContent;
     private String name;
-    private LibraryResources libraryResources;
 
     public LibraryResourcesFilter() {
     }
@@ -40,17 +41,16 @@ public class LibraryResourcesFilter implements Filter {
             if (name == null) {
                 setName(filterConfig.getInitParameter("name"));
             }
-            libraryResources = new LibraryResources();
-            cssContent = join(libraryResources, ResourceType.CSS);
-            jsContent = join(libraryResources, ResourceType.JS);
+            cssContent = join(ResourceType.CSS);
+            jsContent = join(ResourceType.JS);
 
         } catch (IOException e) {
             throw new ServletException(e);
         }
     }
 
-    private String join(LibraryResources libraryResources, ResourceType resourceType) throws IOException {
-        List<Resource> files = libraryResources.getFiles(resourceType);
+    private String join(ResourceType resourceType) throws IOException {
+        List<Resource> files = new ArrayList<>();
         files.addAll(Optional.ofNullable(new Resources().getResources(resourceType)).orElse(new ArrayList<>()));
         return ResourceAppender.append(files).toString();
     }
@@ -65,14 +65,6 @@ public class LibraryResourcesFilter implements Filter {
         } else if (path.equals(name + ".css")) {
             content = cssContent;
             response.setContentType("text/css");
-        } else if (!path.endsWith("/")) {
-            Resource r = libraryResources.getFile(path);
-            if (path.endsWith(".js")) {
-                response.setContentType("text/javascript");
-            } else if (path.endsWith(".css")) {
-                response.setContentType("text/css");
-            }
-            if (r != null) content = ResourceAppender.append(Collections.singletonList(r)).toString();
         }
         if (content == null) {
             chain.doFilter(request, response);

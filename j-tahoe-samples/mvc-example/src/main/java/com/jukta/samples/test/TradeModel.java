@@ -1,4 +1,4 @@
-package test;
+package com.jukta.samples.test;
 
 /**
  * @author Sergey Sidorov

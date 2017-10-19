@@ -76,7 +76,7 @@ public class JarBuilder {
         files.addAll(resources.getResources(type));
 
         StringBuilder stringBuilder = ResourceAppender.append(files);
-        File file = new File(resourceDestDir, id + "." + type.getExtension());
+        File file = new File(resourceDestDir, mavenProject.getArtifactId() + "." + type.getExtension());
         log.info("Generated resource file: " + file.getName());
         FileWriter w = new FileWriter(file);
         w.append(stringBuilder.toString());
@@ -84,9 +84,9 @@ public class JarBuilder {
     }
 
     private void copyResources() throws IOException {
-        File resDir = new File(resourceDestDir, id);
-        resDir.mkdirs();
-        log.info("Creating resource dir: " + resDir.getName());
+        File resDir = resourceDestDir;
+//        resDir.mkdirs();
+//        log.info("Creating resource dir: " + resDir.getName());
         FileUtils.copyDirectoryStructure(new File(resourceSrcDir), resDir);
     }
 
@@ -102,8 +102,10 @@ public class JarBuilder {
     public void generate() throws IOException {
         resourceDestDir = new File(targetDir, "resources");
         resourceDestDir.mkdirs();
+
         Resource resource = new Resource();
         resource.setDirectory(resourceDestDir.getAbsolutePath());
+//        resource.setTargetPath(mavenProject.getBuild().getOutputDirectory() + "/META-INF/resources/webjars/" + mavenProject.getArtifactId() + "/" + mavenProject.getVersion());
         mavenProject.addResource(resource);
 
         ResourceResolver resolver = new FileSystemResources(blocksDir);
@@ -111,7 +113,12 @@ public class JarBuilder {
         generateSources(resolver);
         generateResourceFile(resolver, ResourceType.CSS);
         generateResourceFile(resolver, ResourceType.JS);
-        copyResources();
+
+        for (Resource r : mavenProject.getResources()) {
+            r.setTargetPath(mavenProject.getBuild().getOutputDirectory() + "/META-INF/resources/webjars/" + mavenProject.getArtifactId() + "/" + mavenProject.getVersion());
+        }
+
+//        copyResources();
         generateProps();
     }
 

@@ -1,7 +1,8 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>mvc-example</artifactId>
-    <packaging>war</packaging>
+    <version>1.1.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <parent>
         <groupId>com.jukta</groupId>
@@ -9,6 +10,18 @@
         <version>1.1.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>1.5.8.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -19,14 +32,41 @@
         <dependency>
             <groupId>com.jukta</groupId>
             <artifactId>j-tahoe-mvc</artifactId>
-            <version>${project.version}</version>
+            <version>1.1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
+            <groupId>com.jukta</groupId>
+            <artifactId>aloha-webjar</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>1.5.8.RELEASE</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

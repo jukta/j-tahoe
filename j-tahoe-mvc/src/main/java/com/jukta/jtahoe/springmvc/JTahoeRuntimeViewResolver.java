@@ -10,7 +10,6 @@ import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
  */
 public class JTahoeRuntimeViewResolver extends JTahoeViewResolver {
 
-    @Override
     public void afterPropertiesSet() throws Exception {
         if (getBlockFactory() == null) {
             setBlockFactory(new RuntimeBlockFactory(new XthBlockModelProvider()));

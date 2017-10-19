@@ -4,18 +4,21 @@
          xmlns:lib="com/jukta/lib/test"
          xmlns:lc=".">
 
-    <sv:block name="Main">
-
+    <th:block name="Main">
         <lib:Main>
             <th:def name="head">
-                <link rel="stylesheet" href="/resources/all.css" type="text/css"/>
-                <script src="/resources/all.js" type="text/javascript"/>
+                <link rel="stylesheet" href="/resources/all.css" type="text/css"></link>
+                <script src="/resources/all.js" type="text/javascript"></script>
+
+                <script src="/webjars/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+                <script src="/webjars/aloha-webjar/1.1.1-SNAPSHOT/sv.js" type="text/javascript"></script>
+
             </th:def>
             <th:def name="body">
                 <h1>JTahoe Mvc Example</h1>
                 <lib:Button name="Click me"/>
             </th:def>
         </lib:Main>
-    </sv:block>
+    </th:block>
 
 </sv:root>

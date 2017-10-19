@@ -1,17 +1,32 @@
-package test;
+package com.jukta.samples.test;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 /**
  * @author Sergey Sidorov
  */
 @Controller
 public class TestController {
+
+//    @Autowired
+//    private Executor executor;
+
+//    @Value("${spring.application.name}")
+//    String name;
+
+    @PostConstruct
+    public void init() {
+        System.out.println();
+    }
 
     @RequestMapping("/hello")
     public String helloWorld(Model model) {

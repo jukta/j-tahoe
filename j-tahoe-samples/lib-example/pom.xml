@@ -30,7 +30,7 @@
                 <!--<directory>resources</directory>-->
             <!--</resource>-->
         <!--</resources>-->
-        <sourceDirectory>blocks</sourceDirectory>
+        <!--<sourceDirectory>blocks</sourceDirectory>-->
         <plugins>
             <plugin>
                 <groupId>com.jukta</groupId>
@@ -44,8 +44,8 @@
                             <goal>code-gen</goal>
                         </goals>
                         <configuration>
-                            <blocksDir>${project.basedir}/blocks</blocksDir>
-                            <resourcesDir>${project.basedir}/public</resourcesDir>
+                            <blocksDir>${project.basedir}/src/main/blocks</blocksDir>
+                            <!--<resourcesDir>${project.basedir}/src/main/resources</resourcesDir>-->
                             <outputDir>${project.basedir}/gen</outputDir>
                         </configuration>
                     </execution>

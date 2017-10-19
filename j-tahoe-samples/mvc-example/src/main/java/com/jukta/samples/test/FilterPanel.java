@@ -1,10 +1,7 @@
-package test;
+package com.jukta.samples.test;
 
 import com.jukta.jtahoe.Attrs;
 import com.jukta.jtahoe.DataHandler;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Sergey Sidorov
