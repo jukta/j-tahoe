@@ -56,8 +56,10 @@ public class DefaultDataHandlerProvider implements DataHandlerProvider {
     }
 
     public void await() {
-        phaser.register();
-        phaser.arriveAndAwaitAdvance();
+        if (executor != null) {
+            phaser.register();
+            phaser.arriveAndAwaitAdvance();
+        }
     }
 
     public DataHandler getDataHandler(String dataHandler, Attrs attrs) {

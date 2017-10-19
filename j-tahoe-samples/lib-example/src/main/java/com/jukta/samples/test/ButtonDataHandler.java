@@ -4,13 +4,14 @@ import com.jukta.jtahoe.Attrs;
 import com.jukta.jtahoe.DataHandler;
 
 /**
- * @author Sergey Sidorov
+ * Created by Sergey on 10/19/2017.
  */
-public class FilterPanel implements DataHandler {
+public class ButtonDataHandler implements DataHandler {
 
     @Override
     public Attrs getData(Attrs attrs) {
-        return attrs.set("b", "hello from data handler");
+        attrs.set("message", "This is button from library");
+        return attrs;
     }
 
     @Override

@@ -1,14 +1,15 @@
 package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.BlockFactory;
+import com.jukta.jtahoe.DataHandlerProvider;
 import com.jukta.jtahoe.LibraryResourcesFilter;
 import com.jukta.jtahoe.RuntimeBlockFactory;
 import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -31,6 +32,9 @@ public class JTahoeConfiguration extends WebMvcConfigurerAdapter {
     @Value("${jtahoe.executor.maxThreads:4}")
     private int maxThreads;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     @Bean
     @ConditionalOnMissingBean
     public BlockFactory blockFactory() {
@@ -49,8 +53,14 @@ public class JTahoeConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     @ConditionalOnMissingBean
+    public DataHandlerProvider dataHandlerProvider() {
+        return new SpringContextDataHandlerProvider(applicationContext);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public JTahoeViewResolver viewResolver() {
-        return new JTahoeViewResolver(blockFactory(), executor());
+        return new JTahoeViewResolver(blockFactory(), executor(), dataHandlerProvider());
     }
 
     @Override

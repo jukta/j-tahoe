@@ -13,9 +13,15 @@
     <dependencies>
         <dependency>
             <groupId>com.jukta</groupId>
-            <artifactId>j-tahoe-core</artifactId>
+            <artifactId>j-tahoe-mvc</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.jukta</groupId>
+            <artifactId>aloha-webjar</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -46,7 +52,7 @@
                         <configuration>
                             <blocksDir>${project.basedir}/src/main/blocks</blocksDir>
                             <!--<resourcesDir>${project.basedir}/src/main/resources</resourcesDir>-->
-                            <outputDir>${project.basedir}/gen</outputDir>
+                            <!--<outputDir>${project.basedir}/gen</outputDir>-->
                         </configuration>
                     </execution>
                 </executions>

@@ -6,10 +6,10 @@ import org.springframework.context.ApplicationContext;
 /**
  * @author Sergey Sidorov
  */
-public class MvcDataHandlerProvider extends DefaultDataHandlerProvider {
+public class SpringContextDataHandlerProvider extends DefaultDataHandlerProvider {
     private ApplicationContext applicationContext;
 
-    public MvcDataHandlerProvider(ApplicationContext applicationContext) {
+    public SpringContextDataHandlerProvider(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 

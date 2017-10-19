@@ -7,8 +7,9 @@ import com.jukta.jtahoe.jschema.JElement;
  */
 public class BlockHandlerAdapter implements BlockHandler {
 
-    public void before(String block, Attrs attrs) {}
+    @Override
+    public void before(String blockName, Attrs attrs, Block block) {}
 
-    public void after(String block, Attrs attrs, JElement jElement) {}
-
+    @Override
+    public void after(String blockName, Attrs attrs, JElement jElement, Block block) {}
 }

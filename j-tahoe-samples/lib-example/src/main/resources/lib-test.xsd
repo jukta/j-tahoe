@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="com/jukta/lib/test"
+           xmlns="com/jukta/lib/test"
+           xmlns:th="http://jukta.com/tahoe/schema">
+
+    <xs:element name="Button" type="Button"/>
+    <xs:element name="Main" type="Main"/>
+
+    <xs:complexType name="Button">
+        <xs:attribute name="name" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Main">
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:sequence>
+            <xs:element ref="th:def" minOccurs="0" maxOccurs="2"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

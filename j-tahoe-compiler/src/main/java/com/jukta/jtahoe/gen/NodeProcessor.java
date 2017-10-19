@@ -16,6 +16,12 @@ public class NodeProcessor {
 
     public static final String JTAHOE_CORE_URI = "http://jukta.com/tahoe/schema";
 
+    private ArtifactInfo artifactInfo;
+
+    public void setArtifactInfo(ArtifactInfo artifactInfo) {
+        this.artifactInfo = artifactInfo;
+    }
+
     private void process(Node node, GenContext context, AbstractHandler pHandler) {
         if (node instanceof TextNode) {
             pHandler.text(((TextNode) node).getText());
@@ -37,6 +43,7 @@ public class NodeProcessor {
         Map<String, GenContext.Package> files = new HashMap<>();
         for (NamedNode node : blockModelProvider) {
             GenContext context = new GenContext();
+            context.setArtifactInfo(artifactInfo);
             process(node, context);
             for (GenContext.Package p : context.getFiles().values()) {
                 GenContext.Package p1 = files.get(p.getPackageName());

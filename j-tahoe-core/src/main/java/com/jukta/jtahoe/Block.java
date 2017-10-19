@@ -74,6 +74,10 @@ public abstract class Block {
         return new JBody();
     }
 
+    protected Block self() {
+        return this;
+    }
+
     public interface Callback {
         void call();
     }

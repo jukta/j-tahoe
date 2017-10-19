@@ -1,7 +1,6 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>mvc-example</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -32,24 +31,17 @@
         <dependency>
             <groupId>com.jukta</groupId>
             <artifactId>j-tahoe-mvc</artifactId>
-            <version>1.1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.jukta</groupId>
             <artifactId>aloha-webjar</artifactId>
-            <version>1.1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>

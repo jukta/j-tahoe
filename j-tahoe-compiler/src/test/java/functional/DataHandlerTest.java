@@ -31,6 +31,9 @@ public class DataHandlerTest extends AbstractTest {
                 attrs.set("b", "B");
                 callback.call();
             }
+
+            @Override
+            public void await() {}
         });
         JElement el = b.body(attrs);
         JBody expected = new JBody().addElement(new JText("B"));
@@ -51,6 +54,9 @@ public class DataHandlerTest extends AbstractTest {
                 attrs.set("d", "D");
                 callback.call();
             }
+
+            @Override
+            public void await() {}
         });
         JElement el = b.body(attrs);
         JBody expected = new JBody()
@@ -73,6 +79,9 @@ public class DataHandlerTest extends AbstractTest {
                 attrs.set("b", "B");
                 callback.call();
             }
+
+            @Override
+            public void await() {}
         });
         JElement el = b.body(attrs);
         JBody expected = new JBody().addElement(new JBody().addElement(new JText("B")));
@@ -92,6 +101,9 @@ public class DataHandlerTest extends AbstractTest {
                 attrs.set("b", "B");
                 callback.call();
             }
+
+            @Override
+            public void await() {}
         });
         JElement el = b.body(attrs);
         JBody expected = new JBody().addElement(new JText("B"));

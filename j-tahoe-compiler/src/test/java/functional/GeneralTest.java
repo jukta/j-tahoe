@@ -192,13 +192,13 @@ public class GeneralTest extends AbstractTest {
         List<String> res2 = new ArrayList<>();
         attrs.setBlockHandler(new BlockHandler() {
             @Override
-            public void before(String block, Attrs attrs) {
-                res1.add(block);
+            public void before(String blockName, Attrs attrs, Block block) {
+                res1.add(blockName);
             }
 
             @Override
-            public void after(String block, Attrs a, JElement jElement) {
-                res2.add(block + " " + jElement);
+            public void after(String blockName, Attrs a, JElement jElement, Block block) {
+                res2.add(blockName + " " + jElement);
 
             }
         });
@@ -217,6 +217,37 @@ public class GeneralTest extends AbstractTest {
         after.add("test.AdvancedComposition_C1 \"_\": [\"C\"]");
 
         assertEquals(after, res2);
+    }
+
+    @Test
+    public void recursion() {
+        Block b = newBlockInstance("test.Recursion_B");
+        Attrs attrs = new Attrs();
+
+        JElement el = b.body(attrs);
+
+        JBody expected = new JBody().addElement(new JBody()
+                .addElement(new JText("A"))
+                .addElement(new JBody()
+                        .addElement(new JText("A1"))
+                        .addElement(new JBody()
+                                .addElement(new JText("A"))
+                                .addElement(new JBody().addElement(new JText("A2")))
+                        )
+                )
+        );
+
+        assertEquals(expected, el);
+    }
+
+    @Test
+    public void script() {
+        Block b = newBlockInstance("test.Script");
+        Attrs attrs = new Attrs();
+
+        JElement el = b.body(attrs);
+
+        System.out.println(el.toJson());
     }
 
 }

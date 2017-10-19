@@ -11,4 +11,9 @@ public class TestDataHandlerProvider implements DataHandlerProvider {
         callback.call();
     }
 
+    @Override
+    public void await() {
+
+    }
+
 }

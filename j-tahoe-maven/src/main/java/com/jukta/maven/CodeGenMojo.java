@@ -24,7 +24,7 @@ public class CodeGenMojo extends AbstractMojo {
     @Parameter( property = "blocksDir", defaultValue = "blocks" )
     private String blocksDir;
 
-    @Parameter( property = "outputDir", defaultValue = "gen" )
+    @Parameter( property = "outputDir", defaultValue = "${project.build.directory}/generated-sources" )
     private String outputDir;
 
     @Parameter( property = "resourcesDir", defaultValue = "public" )

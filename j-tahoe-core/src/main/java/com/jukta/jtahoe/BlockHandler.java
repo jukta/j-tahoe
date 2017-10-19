@@ -7,8 +7,8 @@ import com.jukta.jtahoe.jschema.JElement;
  */
 public interface BlockHandler {
 
-    void before(String block, Attrs attrs);
+    void before(String blockName, Attrs attrs, Block block);
 
-    void after(String block,  Attrs attrs, JElement jElement);
+    void after(String blockName,  Attrs attrs, JElement jElement, Block block);
 
 }

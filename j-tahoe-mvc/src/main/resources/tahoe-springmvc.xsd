@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="com/jukta/jtahoe/springmvc" xmlns="com/jukta/jtahoe/springmvc" >
+
+    <xs:element name="Script" type="Script"/>
+
+    <xs:complexType name="Script">
+        <xs:attribute name="artifact" type="xs:string"/>
+        <xs:attribute name="version" type="xs:string"/>
+        <xs:attribute name="resource" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Stylesheet">
+        <xs:attribute name="artifact" type="xs:string"/>
+        <xs:attribute name="version" type="xs:string"/>
+        <xs:attribute name="resource" type="xs:string"/>
+    </xs:complexType>
+
+</xs:schema>

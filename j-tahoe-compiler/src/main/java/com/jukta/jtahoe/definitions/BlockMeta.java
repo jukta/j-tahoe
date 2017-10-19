@@ -1,5 +1,8 @@
 package com.jukta.jtahoe.definitions;
 
+import com.jukta.jtahoe.gen.ArtifactInfo;
+import com.jukta.jtahoe.gen.GenContext;
+
 import java.io.StringWriter;
 import java.util.Map;
 
@@ -21,11 +24,13 @@ public class BlockMeta {
     private Map<String, String> defs;
     private Map<String, String> attrs;
     private Map<String, String> args;
+    private GenContext genContext;
 
-    public BlockMeta(int seq, String name, Map<String, String> attrs) {
+    public BlockMeta(int seq, String name, Map<String, String> attrs, GenContext genContext) {
         this.name = name;
         this.attrs = attrs;
         this.seq = seq;
+        this.genContext = genContext;
     }
 
     public String toSource() {
@@ -39,6 +44,13 @@ public class BlockMeta {
             sw.write("import com.jukta.jtahoe.Attrs;");
             sw.write("import com.jukta.jtahoe.jschema.*;");
             sw.write("import  com.jukta.jtahoe.Block;");
+
+            ArtifactInfo artifactInfo = genContext.getArtifactInfo();
+            if (artifactInfo != null) {
+                sw.write("import com.jukta.jtahoe.ArtifactInfo;");
+                sw.write("@ArtifactInfo(groupId = \"" + artifactInfo.getGroupId() + "\", artifactId = \"" + artifactInfo.getArtifactId() + "\", version = \"" + artifactInfo.getVersion() + "\")");
+            }
+
             sw.write("public class " + name);
             if (parentName == null) {
                 sw.write(" extends Block {");
@@ -62,9 +74,9 @@ public class BlockMeta {
 
                 sw.write("callDataHandler(attrs, new Block.Callback() {" +
                         "public void call() {" +
-                        "if (attrs.getBlockHandler() != null) attrs.getBlockHandler().before(\""+pack+"." + name + "\", attrs);\n" +
+                        "if (attrs.getBlockHandler() != null) attrs.getBlockHandler().before(\""+pack+"." + name + "\", attrs, self());\n" +
                         "" + body + "\n" +
-                        "if (attrs.getBlockHandler() != null) attrs.getBlockHandler().after(\""+pack+"." + name + "\", attrs, " + getVarName() + ");\n" +
+                        "if (attrs.getBlockHandler() != null) attrs.getBlockHandler().after(\""+pack+"." + name + "\", attrs, " + getVarName() + ", self());\n" +
                         "}" +
                         "});\n");
 

@@ -61,6 +61,8 @@ public class PageHandler implements HttpHandler {
                     } catch (Exception e) {}
                     callback.call();
                 }
+                @Override
+                public void await() {}
             });
             if (data != null) {
                 loadData(data, attrs);

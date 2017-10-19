@@ -1,0 +1,46 @@
+<th:root xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://jukta.com/tahoe/schema"
+         namespace="com/jukta/mvc/test"
+         xmlns:lib="com/jukta/lib/test"
+         xmlns:mvc="com/jukta/jtahoe/springmvc"
+         xmlns:lc=".">
+
+    <th:block name="Main">
+
+        <!--<th:doc>-->
+            <!--this is a block for this and for that-->
+            <!--<th:attr name="attr1">-->
+                <!--this attribute for that and for this-->
+            <!--</th:attr>-->
+            <!--<th:def name="def1">-->
+                <!--this def can do this-->
+            <!--</th:def>-->
+            <!--<th:dataHandler name="dh">-->
+                <!--this dataHandler works like that-->
+            <!--</th:dataHandler>-->
+        <!--</th:doc>-->
+
+
+        <lib:Main>
+            <th:def name="head">
+
+                <mvc:Stylesheet artifact="lib-example" version="1.1.1-SNAPSHOT" resource="lib-example.css"/>
+                <mvc:Stylesheet/>
+
+                <mvc:Script artifact="jquery" version="3.2.1" resource="jquery.min.js"/>
+                <mvc:Script artifact="aloha-webjar" version="1.1.1-SNAPSHOT" resource="sv.js"/>
+                <mvc:Script artifact="lib-example" version="1.1.1-SNAPSHOT" resource="lib-example.js"/>
+                <mvc:Script/>
+
+            </th:def>
+            <th:def name="body">
+                <h1>${model.title}</h1>
+                <p>
+                    ${model.text}
+                </p>
+                <lib:Button name="Click me"/>
+            </th:def>
+        </lib:Main>
+
+    </th:block>
+
+</th:root>

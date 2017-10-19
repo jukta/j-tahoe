@@ -28,9 +28,11 @@
         <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:simpleType>
 
+    <xs:element name="def" type="Def"/>
+
     <xs:complexType name="Block">
         <xs:choice>
-            <xs:element name="def" type="Def" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="def" minOccurs="0" maxOccurs="unbounded"/>
             <xs:sequence>
                 <xs:element name="if" type="If" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="for" type="For" minOccurs="0" maxOccurs="unbounded"/>

@@ -7,4 +7,6 @@ public interface DataHandlerProvider {
 
     void getData(String dataHandler, Attrs attrs, Block.Callback callback);
 
+    void await();
+
 }

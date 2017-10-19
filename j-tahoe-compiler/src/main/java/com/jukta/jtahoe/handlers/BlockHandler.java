@@ -74,7 +74,7 @@ public class BlockHandler extends AbstractHandler {
         defHandler = null;
         if (dh != null && dh.body.length() > 0) dh.end();
 
-        BlockMeta meta = new BlockMeta(getSeq(), name, getAttrs());
+        BlockMeta meta = new BlockMeta(getSeq(), name, getAttrs(), genContext);
         meta.setBody(body);
         if (parent != null) {
             meta.setParentName(processPrefix(parent));

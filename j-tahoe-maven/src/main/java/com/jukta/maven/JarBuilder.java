@@ -1,10 +1,12 @@
 package com.jukta.maven;
 
+import com.jukta.jtahoe.gen.ArtifactInfo;
 import com.jukta.jtahoe.gen.GenContext;
 import com.jukta.jtahoe.gen.NodeProcessor;
 import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
 import com.jukta.jtahoe.resource.*;
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 
@@ -33,6 +35,7 @@ public class JarBuilder {
     private MavenSession mavenSession;
     protected String id;
     private Log log;
+    private File compileDir;
 
     public JarBuilder(String blocksDir, String resourceSrcDir, File targetDir, MavenProject mavenProject, MavenSession mavenSession, Log log) {
         this.blocksDir = blocksDir;
@@ -42,14 +45,16 @@ public class JarBuilder {
         this.mavenSession = mavenSession;
         id = UUID.randomUUID().toString();
         this.log = log;
+        compileDir = new File(targetDir, "java");
     }
 
     public void generateSources(ResourceResolver resolver) throws IOException {
         XthBlockModelProvider provider = new XthBlockModelProvider(resolver);
         NodeProcessor nodeProcessor = new NodeProcessor();
+        nodeProcessor.setArtifactInfo(new ArtifactInfo(mavenProject.getGroupId(), mavenProject.getArtifactId(), mavenProject.getVersion()));
 //        Map<String, List<JavaFileObject>> javaFileObjects = ;
 
-        File compileDir = new File(targetDir, "java");
+
         log.info("Generating source files");
         for (GenContext.Package aPackage : nodeProcessor.process(provider).values()) {
             for (JavaFileObject f : aPackage.getJavaFileObjects()) {
@@ -91,11 +96,16 @@ public class JarBuilder {
     }
 
     protected void generateProps() throws IOException {
-        File file = new File(resourceDestDir, "jtahoe.properties");
+        File file = new File(compileDir, "jtahoe.properties");
         FileWriter w = new FileWriter(file);
         w.append("lib.name=" + mavenProject.getArtifactId() + "\n");
         w.append("lib.version=" + mavenProject.getVersion() + "\n");
         w.append("lib.id=" + id + "\n");
+
+        w.append("dependencies=");
+        for (Dependency d : mavenProject.getDependencies()) {
+            w.append(d.getGroupId() + ":" + d.getArtifactId() + ":" + d.getVersion() + ";");
+        }
         w.close();
     }
 

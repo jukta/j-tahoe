@@ -15,9 +15,11 @@
         </html>
     </th:block>
 
-    <th:block name="Button">
-        This is button from library
-        <button class="button">${name}</button>
+    <th:block name="Button" dataHandler="buttonDataHandler">
+        <div class="button" sv-controller="button">
+        ${message}
+        <button sv-click="clk">${name}</button>
+        </div>
     </th:block>
 
 </th:root>
