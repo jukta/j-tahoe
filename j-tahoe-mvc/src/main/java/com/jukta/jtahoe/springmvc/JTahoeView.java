@@ -1,6 +1,8 @@
 package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.*;
+import com.jukta.jtahoe.ArtifactInfo;
+import com.jukta.jtahoe.gen.*;
 import com.jukta.jtahoe.jschema.JElement;
 import org.springframework.web.servlet.View;
 
@@ -16,11 +18,13 @@ public class JTahoeView implements View {
     private DataHandlerProvider handlerProvider;
 
     private String viewName;
-    private  BlockFactory blockFactory;
+    private BlockFactory blockFactory;
+    private LibraryMetaController libraryMetaController;
 
-    public JTahoeView(String viewName, BlockFactory blockFactory) {
+    public JTahoeView(String viewName, BlockFactory blockFactory, LibraryMetaController libraryMetaController) {
         this.viewName = viewName;
         this.blockFactory = blockFactory;
+        this.libraryMetaController = libraryMetaController;
     }
 
     public void setHandlerProvider(DataHandlerProvider handlerProvider) {
@@ -50,7 +54,12 @@ public class JTahoeView implements View {
             public void before(String blockName, Attrs attrs, Block block) {
                 if (block.getClass().isAnnotationPresent(ArtifactInfo.class)) {
                     ArtifactInfo info = block.getClass().getDeclaredAnnotation(ArtifactInfo.class);
-                    System.out.println(info.groupId() + ":" + info.artifactId() + ":" + info.version());
+
+                    com.jukta.jtahoe.gen.ArtifactInfo i = new com.jukta.jtahoe.gen.ArtifactInfo(info.groupId(), info.artifactId(), info.version());
+                    System.out.println(i);
+                    for (com.jukta.jtahoe.gen.ArtifactInfo i1 : libraryMetaController.getDependencies(i)) {
+                        System.out.println("\t" + i1);
+                    }
                 }
             }
 

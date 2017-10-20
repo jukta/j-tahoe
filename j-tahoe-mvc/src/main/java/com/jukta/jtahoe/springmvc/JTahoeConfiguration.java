@@ -60,7 +60,7 @@ public class JTahoeConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     @ConditionalOnMissingBean
     public JTahoeViewResolver viewResolver() {
-        return new JTahoeViewResolver(blockFactory(), executor(), dataHandlerProvider());
+        return new JTahoeViewResolver(blockFactory(), executor(), dataHandlerProvider(), libraryMetaController());
     }
 
     @Override
@@ -77,6 +77,10 @@ public class JTahoeConfiguration extends WebMvcConfigurerAdapter {
         registration.setName("libraryResourcesFilter");
         registration.setOrder(1);
         return registration;
+    }
+
+    @Bean LibraryMetaController libraryMetaController() {
+        return new LibraryMetaController();
     }
 
 }

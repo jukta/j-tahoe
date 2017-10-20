@@ -4,11 +4,15 @@ import com.jukta.jtahoe.gen.ArtifactInfo;
 import com.jukta.jtahoe.gen.GenContext;
 import com.jukta.jtahoe.gen.NodeProcessor;
 import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
-import com.jukta.jtahoe.resource.*;
+import com.jukta.jtahoe.resource.ResourceAppender;
+import com.jukta.jtahoe.resource.ResourceResolver;
+import com.jukta.jtahoe.resource.ResourceType;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
-import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.FileUtils;
 
 import javax.tools.JavaFileObject;
 import java.io.BufferedReader;
@@ -16,11 +20,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
-import org.apache.maven.model.Resource;
-import org.codehaus.plexus.util.FileUtils;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * @since 1.0
@@ -96,17 +100,27 @@ public class JarBuilder {
     }
 
     protected void generateProps() throws IOException {
-        File file = new File(compileDir, "jtahoe.properties");
+        File file = new File(resourceDestDir, "jtahoe.properties");
         FileWriter w = new FileWriter(file);
-        w.append("lib.name=" + mavenProject.getArtifactId() + "\n");
-        w.append("lib.version=" + mavenProject.getVersion() + "\n");
         w.append("lib.id=" + id + "\n");
+        w.append("lib.group=" + mavenProject.getGroupId() + "\n");
+        w.append("lib.artifact=" + mavenProject.getArtifactId() + "\n");
+        w.append("lib.version=" + mavenProject.getVersion() + "\n");
 
         w.append("dependencies=");
-        for (Dependency d : mavenProject.getDependencies()) {
-            w.append(d.getGroupId() + ":" + d.getArtifactId() + ":" + d.getVersion() + ";");
+
+        for (Artifact d : mavenProject.getArtifacts()) {
+            Artifact a = mavenSession.getLocalRepository().find(d);
+            JarEntry entry = new JarFile(a.getFile().getAbsolutePath()).getJarEntry("META-INF/resources/webjars/");
+            if (entry == null) continue;
+            w.append(a.getGroupId() + ":" + a.getArtifactId() + ":" + a.getVersion() + ";");
         }
         w.close();
+
+        Resource resource = new Resource();
+        resource.setDirectory(resourceDestDir.getAbsolutePath());
+        resource.setIncludes(Collections.singletonList("jtahoe.properties"));
+        mavenProject.addResource(resource);
     }
 
     public void generate() throws IOException {
@@ -115,7 +129,7 @@ public class JarBuilder {
 
         Resource resource = new Resource();
         resource.setDirectory(resourceDestDir.getAbsolutePath());
-//        resource.setTargetPath(mavenProject.getBuild().getOutputDirectory() + "/META-INF/resources/webjars/" + mavenProject.getArtifactId() + "/" + mavenProject.getVersion());
+        resource.setExcludes(Collections.singletonList("jtahoe.properties"));
         mavenProject.addResource(resource);
 
         ResourceResolver resolver = new FileSystemResources(blocksDir);

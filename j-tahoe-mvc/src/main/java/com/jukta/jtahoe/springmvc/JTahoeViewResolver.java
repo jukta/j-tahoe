@@ -20,19 +20,21 @@ public class JTahoeViewResolver implements ViewResolver, ApplicationContextAware
     private BlockFactory blockFactory;
     private Executor executor;
     private DataHandlerProvider handlerProvider;
+    private LibraryMetaController libraryMetaController;
 
     public JTahoeViewResolver() {
     }
 
-    public JTahoeViewResolver(BlockFactory blockFactory, Executor executor, DataHandlerProvider handlerProvider) {
+    public JTahoeViewResolver(BlockFactory blockFactory, Executor executor, DataHandlerProvider handlerProvider, LibraryMetaController libraryMetaController) {
         this.blockFactory = blockFactory;
         this.executor = executor;
         this.handlerProvider = handlerProvider;
+        this.libraryMetaController = libraryMetaController;
     }
 
     @Override
     public View resolveViewName(String s, Locale locale) throws Exception {
-        JTahoeView view = new JTahoeView(s, blockFactory);
+        JTahoeView view = new JTahoeView(s, blockFactory, libraryMetaController);
         view.setHandlerProvider(handlerProvider);
         return view;
     }
@@ -64,5 +66,13 @@ public class JTahoeViewResolver implements ViewResolver, ApplicationContextAware
 
     public void setHandlerProvider(DataHandlerProvider handlerProvider) {
         this.handlerProvider = handlerProvider;
+    }
+
+    public LibraryMetaController getLibraryMetaController() {
+        return libraryMetaController;
+    }
+
+    public void setLibraryMetaController(LibraryMetaController libraryMetaController) {
+        this.libraryMetaController = libraryMetaController;
     }
 }

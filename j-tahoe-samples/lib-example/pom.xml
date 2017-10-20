@@ -45,7 +45,7 @@
                 <executions>
                     <execution>
                         <id>code-gen</id>
-                        <phase>generate-sources</phase>
+                        <!--<phase>generate-sources</phase>-->
                         <goals>
                             <goal>code-gen</goal>
                         </goals>

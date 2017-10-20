@@ -18,6 +18,12 @@ public abstract class Block {
     protected String dataHandler;
     private static ExpressionFactory factory = new ExpressionFactoryImpl();
 
+    private Block self;
+
+    public Block() {
+        self = this;
+    }
+
     public JElement body(Attrs attrs) {
         init(attrs);
         return new JBody();
@@ -75,7 +81,7 @@ public abstract class Block {
     }
 
     protected Block self() {
-        return this;
+        return self;
     }
 
     public interface Callback {
