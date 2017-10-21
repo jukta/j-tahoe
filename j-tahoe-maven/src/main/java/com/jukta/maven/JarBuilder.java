@@ -1,6 +1,5 @@
 package com.jukta.maven;
 
-import com.jukta.jtahoe.gen.ArtifactInfo;
 import com.jukta.jtahoe.gen.GenContext;
 import com.jukta.jtahoe.gen.NodeProcessor;
 import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
@@ -11,6 +10,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -41,6 +41,9 @@ public class JarBuilder {
     private Log log;
     private File compileDir;
 
+    private String jsDependecies;
+    private String cssDependecies;
+
     public JarBuilder(String blocksDir, String resourceSrcDir, File targetDir, MavenProject mavenProject, MavenSession mavenSession, Log log) {
         this.blocksDir = blocksDir;
         this.resourceSrcDir = resourceSrcDir;
@@ -55,7 +58,7 @@ public class JarBuilder {
     public void generateSources(ResourceResolver resolver) throws IOException {
         XthBlockModelProvider provider = new XthBlockModelProvider(resolver);
         NodeProcessor nodeProcessor = new NodeProcessor();
-        nodeProcessor.setArtifactInfo(new ArtifactInfo(mavenProject.getGroupId(), mavenProject.getArtifactId(), mavenProject.getVersion()));
+        nodeProcessor.setBuildId(id);
 //        Map<String, List<JavaFileObject>> javaFileObjects = ;
 
 
@@ -107,20 +110,48 @@ public class JarBuilder {
         w.append("lib.artifact=" + mavenProject.getArtifactId() + "\n");
         w.append("lib.version=" + mavenProject.getVersion() + "\n");
 
-        w.append("dependencies=");
 
-        for (Artifact d : mavenProject.getArtifacts()) {
-            Artifact a = mavenSession.getLocalRepository().find(d);
-            JarEntry entry = new JarFile(a.getFile().getAbsolutePath()).getJarEntry("META-INF/resources/webjars/");
-            if (entry == null) continue;
-            w.append(a.getGroupId() + ":" + a.getArtifactId() + ":" + a.getVersion() + ";");
+        if (jsDependecies != null) {
+            w.append("dependencies.js=");
+            for (String res : jsDependecies.split(";")) {
+                String dep = getDepEntry(res);
+                if (dep != null) w.append(dep + ";");
+            }
+            w.append("\n");
         }
+
+        if (cssDependecies != null) {
+            w.append("dependencies.css=");
+            for (String res : cssDependecies.split(";")) {
+                String dep = getDepEntry(res);
+                if (dep != null) w.append(dep + ";");
+            }
+            w.append("\n");
+        }
+
         w.close();
 
         Resource resource = new Resource();
         resource.setDirectory(resourceDestDir.getAbsolutePath());
         resource.setIncludes(Collections.singletonList("jtahoe.properties"));
         mavenProject.addResource(resource);
+    }
+
+    private String getDepEntry(String file) throws IOException {
+
+
+        if (new File(resourceDestDir, file).exists()) {
+            return "/webjars/" + mavenProject.getArtifactId() + "/" + mavenProject.getVersion() + "/" + file;
+        }
+
+        for (Artifact d : mavenProject.getArtifacts()) {
+            Artifact a = mavenSession.getLocalRepository().find(d);
+            JarEntry entry = new JarFile(a.getFile().getAbsolutePath()).getJarEntry("META-INF/resources/webjars/" + a.getArtifactId() + "/" + a.getVersion() + "/" + file);
+            if (entry == null) continue;
+
+            return "/webjars/" + a.getArtifactId() + "/" + a.getVersion() + "/" + file;
+        }
+        return null;
     }
 
     public void generate() throws IOException {
@@ -146,4 +177,11 @@ public class JarBuilder {
         generateProps();
     }
 
+    public void setJsDependecies(String jsDependecies) {
+        this.jsDependecies = jsDependecies;
+    }
+
+    public void setCssDependecies(String cssDependecies) {
+        this.cssDependecies = cssDependecies;
+    }
 }

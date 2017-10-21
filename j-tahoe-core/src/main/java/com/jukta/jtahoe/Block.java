@@ -1,7 +1,6 @@
 package com.jukta.jtahoe;
 
-import com.jukta.jtahoe.jschema.JBody;
-import com.jukta.jtahoe.jschema.JElement;
+import com.jukta.jtahoe.jschema.*;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.util.SimpleContext;
 
@@ -13,20 +12,29 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public abstract class Block {
-    private String name;
     private String parent;
     protected String dataHandler;
     private static ExpressionFactory factory = new ExpressionFactoryImpl();
 
-    private Block self;
-
-    public Block() {
-        self = this;
-    }
-
     public JElement body(Attrs attrs) {
         init(attrs);
-        return new JBody();
+        final JBody el = new JBody();
+        callDataHandler(attrs, () -> {
+            if (attrs.getBlockHandler() != null)
+                attrs.getBlockHandler().before(getBlockType().getName(), attrs, this);
+
+            doBody(el, attrs);
+
+            if (attrs.getBlockHandler() != null)
+                attrs.getBlockHandler().after(getBlockType().getName(), attrs, el, this);
+        });
+        return el;
+
+
+    }
+
+    protected void doBody(JBody el, Attrs attrs) {
+
     }
 
     public void init(Attrs attrs) {};
@@ -80,8 +88,15 @@ public abstract class Block {
         return new JBody();
     }
 
-    protected Block self() {
-        return self;
+    public Class getBlockType() {
+        return getBlockType(this.getClass());
+    }
+
+    public static Class getBlockType(Class c) {
+        if (c.isAnonymousClass()) {
+            return getBlockType(c.getSuperclass());
+        }
+        return c;
     }
 
     public interface Callback {

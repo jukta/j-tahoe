@@ -13,7 +13,7 @@ public class GenContext {
     private String currentNamespace;
     private Map<String, Package> files = new HashMap<>();
 
-    private ArtifactInfo artifactInfo;
+    private String buildId;
 
     public GenContext() {
 //        this.files = files;
@@ -65,11 +65,11 @@ public class GenContext {
         }
     }
 
-    public void setArtifactInfo(ArtifactInfo artifactInfo) {
-        this.artifactInfo = artifactInfo;
+    public void setBuildId(String buildId) {
+        this.buildId = buildId;
     }
 
-    public ArtifactInfo getArtifactInfo() {
-        return artifactInfo;
+    public String getBuildId() {
+        return buildId;
     }
 }

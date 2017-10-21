@@ -8,8 +8,15 @@ import com.jukta.jtahoe.jschema.JElement;
 public class BlockHandlerAdapter implements BlockHandler {
 
     @Override
+    public void startRendering(Attrs attrs) {}
+
+    @Override
     public void before(String blockName, Attrs attrs, Block block) {}
 
     @Override
     public void after(String blockName, Attrs attrs, JElement jElement, Block block) {}
+
+    @Override
+    public void stopRendering(Attrs attrs, JElement jElement) {}
+
 }

@@ -3,6 +3,7 @@ package functional;
 import com.jukta.jtahoe.Attrs;
 import com.jukta.jtahoe.Block;
 import com.jukta.jtahoe.BlockHandler;
+import com.jukta.jtahoe.BlockHandlerAdapter;
 import com.jukta.jtahoe.jschema.*;
 import org.junit.Test;
 
@@ -190,7 +191,7 @@ public class GeneralTest extends AbstractTest {
         Attrs attrs = new Attrs();
         List<String> res1 = new ArrayList<>();
         List<String> res2 = new ArrayList<>();
-        attrs.setBlockHandler(new BlockHandler() {
+        attrs.setBlockHandler(new BlockHandlerAdapter() {
             @Override
             public void before(String blockName, Attrs attrs, Block block) {
                 res1.add(blockName);

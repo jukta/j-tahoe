@@ -16,10 +16,10 @@ public class NodeProcessor {
 
     public static final String JTAHOE_CORE_URI = "http://jukta.com/tahoe/schema";
 
-    private ArtifactInfo artifactInfo;
+    private String buildId;
 
-    public void setArtifactInfo(ArtifactInfo artifactInfo) {
-        this.artifactInfo = artifactInfo;
+    public void setBuildId(String buildId) {
+        this.buildId = buildId;
     }
 
     private void process(Node node, GenContext context, AbstractHandler pHandler) {
@@ -43,7 +43,7 @@ public class NodeProcessor {
         Map<String, GenContext.Package> files = new HashMap<>();
         for (NamedNode node : blockModelProvider) {
             GenContext context = new GenContext();
-            context.setArtifactInfo(artifactInfo);
+            context.setBuildId(buildId);
             process(node, context);
             for (GenContext.Package p : context.getFiles().values()) {
                 GenContext.Package p1 = files.get(p.getPackageName());

@@ -10,6 +10,8 @@ public class IncludeBlock extends Block {
 
     public IncludeBlock(String className) {
         this.className = className;
+//        this.pack = "com.jukta.jtahoe";
+//        this.name = "IncludeBlock";
     }
 
     @Override

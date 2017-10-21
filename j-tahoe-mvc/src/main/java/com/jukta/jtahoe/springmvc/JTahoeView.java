@@ -1,9 +1,8 @@
 package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.*;
-import com.jukta.jtahoe.ArtifactInfo;
-import com.jukta.jtahoe.gen.*;
 import com.jukta.jtahoe.jschema.JElement;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,20 +14,23 @@ import java.util.Map;
  */
 public class JTahoeView implements View {
     private String contentType = "text/html;charset=UTF-8";
-    private DataHandlerProvider handlerProvider;
-
     private String viewName;
-    private BlockFactory blockFactory;
-    private LibraryMetaController libraryMetaController;
 
-    public JTahoeView(String viewName, BlockFactory blockFactory, LibraryMetaController libraryMetaController) {
+    private BlockFactory blockFactory;
+    private DataHandlerProvider handlerProvider;
+    private ApplicationContext applicationContext;
+
+    public JTahoeView(String viewName, BlockFactory blockFactory) {
         this.viewName = viewName;
         this.blockFactory = blockFactory;
-        this.libraryMetaController = libraryMetaController;
     }
 
     public void setHandlerProvider(DataHandlerProvider handlerProvider) {
         this.handlerProvider = handlerProvider;
+    }
+
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -38,8 +40,16 @@ public class JTahoeView implements View {
 
     @Override
     public void render(Map<String, ?> map, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) throws Exception {
-        Thread.currentThread().setContextClassLoader(blockFactory.getClassLoader());
-        Block block = blockFactory.create(viewName);
+
+        Attrs attrs = buildAttrs(map, httpservletrequest);
+        JElement el = render(attrs);
+
+        httpservletresponse.setCharacterEncoding("UTF-8");
+        httpservletresponse.setContentType(getContentType());
+        httpservletresponse.getWriter().write(el.toHtml());
+    }
+
+    Attrs buildAttrs(Map<String, ?> map, HttpServletRequest httpservletrequest) {
         Attrs attrs = new Attrs();
         attrs.setDataHandlerProvider(handlerProvider);
         for (Map.Entry<String, ?> entry : map.entrySet()) {
@@ -49,33 +59,28 @@ public class JTahoeView implements View {
         attrs.setAttribute("session", httpservletrequest.getSession());
         attrs.setAttribute("request", httpservletrequest);
 
-        attrs.setBlockHandler(new BlockHandler() {
-            @Override
-            public void before(String blockName, Attrs attrs, Block block) {
-                if (block.getClass().isAnnotationPresent(ArtifactInfo.class)) {
-                    ArtifactInfo info = block.getClass().getDeclaredAnnotation(ArtifactInfo.class);
+        attrs.setBlockHandler(new SpringContextBlockHandler(applicationContext));
+        return attrs;
+    }
 
-                    com.jukta.jtahoe.gen.ArtifactInfo i = new com.jukta.jtahoe.gen.ArtifactInfo(info.groupId(), info.artifactId(), info.version());
-                    System.out.println(i);
-                    for (com.jukta.jtahoe.gen.ArtifactInfo i1 : libraryMetaController.getDependencies(i)) {
-                        System.out.println("\t" + i1);
-                    }
-                }
-            }
+    JElement render(Attrs attrs) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        Thread.currentThread().setContextClassLoader(blockFactory.getClassLoader());
+        Block block = blockFactory.create(viewName);
 
-            @Override
-            public void after(String blockName, Attrs attrs, JElement jElement, Block block) {
-
-            }
-        });
+        BlockHandler blockHandler = attrs.getBlockHandler();
+        if (blockHandler != null) {
+            blockHandler.startRendering(attrs);
+        }
 
         JElement el = block.body(attrs);
 
-        handlerProvider.await();
+        attrs.getDataHandlerProvider().await();
 
-        httpservletresponse.setCharacterEncoding("UTF-8");
-        httpservletresponse.setContentType(getContentType());
-        httpservletresponse.getWriter().write(el.toHtml());
+        if (blockHandler != null) {
+            blockHandler.stopRendering(attrs, el);
+        }
+
+        return el;
     }
 
 }

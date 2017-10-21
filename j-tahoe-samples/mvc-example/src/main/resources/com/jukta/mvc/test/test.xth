@@ -26,10 +26,7 @@
                 <mvc:Stylesheet artifact="lib-example" version="1.1.1-SNAPSHOT" resource="lib-example.css"/>
                 <mvc:Stylesheet/>
 
-                <mvc:Script artifact="jquery" version="3.2.1" resource="jquery.min.js"/>
-                <mvc:Script artifact="aloha-webjar" version="1.1.1-SNAPSHOT" resource="sv.js"/>
-                <mvc:Script artifact="lib-example" version="1.1.1-SNAPSHOT" resource="lib-example.js"/>
-                <mvc:Script/>
+                <mvc:Script auto="true"/>
 
             </th:def>
             <th:def name="body">

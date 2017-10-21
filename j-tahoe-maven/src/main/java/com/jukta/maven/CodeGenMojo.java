@@ -6,6 +6,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
 
@@ -27,6 +28,12 @@ public class CodeGenMojo extends AbstractMojo {
     @Parameter( property = "resourcesDir", defaultValue = "public" )
     private String resourcesDir;
 
+    @Parameter( property = "jsDependecies")
+    private String jsDependecies;
+
+    @Parameter( property = "cssDependecies")
+    private String cssDependecies;
+
     @Component
     protected MavenProject mavenProject;
     @Component
@@ -36,18 +43,29 @@ public class CodeGenMojo extends AbstractMojo {
 //    protected MojoExecutor.ExecutionEnvironment _pluginEnv;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
+
+        System.out.println("---------------------");
+        System.out.println(jsDependecies);
+        System.out.println(cssDependecies);
+        System.out.println("---------------------");
+
+
         try {
             removeFromResources(blocksDir);
 //            removeFromResources(resourcesDir);
             File targetDir = new File(outputDir);
             boolean jar = "jar".equalsIgnoreCase(mavenProject.getPackaging());
+            JarBuilder builder;
             if (jar) {
-                JarBuilder builder = new JarBuilder(blocksDir, resourcesDir, targetDir, mavenProject, mavenSession, getLog());
-                builder.generate();
+                builder = new JarBuilder(blocksDir, resourcesDir, targetDir, mavenProject, mavenSession, getLog());
             } else {
-                WarBuilder builder = new WarBuilder(blocksDir, resourcesDir, targetDir, mavenProject, mavenSession, getLog());
-                builder.generate();
+                builder = new WarBuilder(blocksDir, resourcesDir, targetDir, mavenProject, mavenSession, getLog());
             }
+
+            builder.setJsDependecies(jsDependecies);
+            builder.setCssDependecies(cssDependecies);
+            builder.generate();
+
         } catch (Exception e) {
             throw new MojoFailureException("Source generator error", e);
         }

@@ -1,6 +1,5 @@
 package com.jukta.jtahoe.definitions;
 
-import com.jukta.jtahoe.gen.ArtifactInfo;
 import com.jukta.jtahoe.gen.GenContext;
 
 import java.io.StringWriter;
@@ -45,10 +44,10 @@ public class BlockMeta {
             sw.write("import com.jukta.jtahoe.jschema.*;");
             sw.write("import  com.jukta.jtahoe.Block;");
 
-            ArtifactInfo artifactInfo = genContext.getArtifactInfo();
-            if (artifactInfo != null) {
-                sw.write("import com.jukta.jtahoe.ArtifactInfo;");
-                sw.write("@ArtifactInfo(groupId = \"" + artifactInfo.getGroupId() + "\", artifactId = \"" + artifactInfo.getArtifactId() + "\", version = \"" + artifactInfo.getVersion() + "\")");
+            String buildId = genContext.getBuildId();
+            if (buildId != null) {
+                sw.write("import com.jukta.jtahoe.BuildId;");
+                sw.write("@BuildId(\"" + buildId + "\")");
             }
 
             sw.write("public class " + name);
@@ -68,20 +67,20 @@ public class BlockMeta {
                 sw.write(entry.getValue() + "\n");
             }
             if (parentName == null) {
-                sw.write("public JElement body(final Attrs attrs) {");
-                sw.write("super.body(attrs);\n");
-                sw.write("final JBody " + getVarName() + " = new JBody();\n");
-
-                sw.write("callDataHandler(attrs, new Block.Callback() {" +
-                        "public void call() {" +
-                        "if (attrs.getBlockHandler() != null) attrs.getBlockHandler().before(\""+pack+"." + name + "\", attrs, self());\n" +
-                        "" + body + "\n" +
-                        "if (attrs.getBlockHandler() != null) attrs.getBlockHandler().after(\""+pack+"." + name + "\", attrs, " + getVarName() + ", self());\n" +
-                        "}" +
-                        "});\n");
+                sw.write("public void doBody(final JBody " + getVarName() + ", final Attrs attrs) {");
+//                sw.write("super.body(attrs);\n");
+//                sw.write("final JBody " + getVarName() + " = new JBody();\n");
+                sw.write("" + body + "\n");
+//                sw.write("callDataHandler(attrs, new Block.Callback() {" +
+//                        "public void call() {" +
+//                        "if (attrs.getBlockHandler() != null) attrs.getBlockHandler().before(\""+pack+"." + name + "\", attrs, self());\n" +
+//                        "" + body + "\n" +
+//                        "if (attrs.getBlockHandler() != null) attrs.getBlockHandler().after(\""+pack+"." + name + "\", attrs, " + getVarName() + ", self());\n" +
+//                        "}" +
+//                        "});\n");
 
 //                sw.write(body);
-                sw.write("return " + getVarName() + ";");
+//                sw.write("return " + getVarName() + ";");
                 sw.write("}\n");
             } else if (args != null && !args.isEmpty()) {
                 sw.write("public void init(Attrs attrs) {");
