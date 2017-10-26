@@ -12,6 +12,7 @@ public class GenContext {
     private Map<String, String> prefixes = new HashMap<>();
     private String currentNamespace;
     private Map<String, Package> files = new HashMap<>();
+    private boolean keepSpaces = false;
 
     private String buildId;
 
@@ -71,5 +72,13 @@ public class GenContext {
 
     public String getBuildId() {
         return buildId;
+    }
+
+    public boolean isKeepSpaces() {
+        return keepSpaces;
+    }
+
+    public void setKeepSpaces(boolean keepSpaces) {
+        this.keepSpaces = keepSpaces;
     }
 }

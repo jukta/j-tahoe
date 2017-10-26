@@ -19,7 +19,7 @@ public class SetTest extends AbstractTest {
         Block b = newBlockInstance("test.tags.SetLocal_A");
         JElement el = b.body(new Attrs());
         JBody expected = new JBody().addElement(new JText("abcA A def"));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml().trim());
     }
 
     @Test
@@ -27,7 +27,7 @@ public class SetTest extends AbstractTest {
         Block b = newBlockInstance("test.tags.UnsetLocal_A");
         JElement el = b.body(new Attrs());
         JBody expected = new JBody().addElement(new JText("abc  def"));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml().trim());
     }
 
     @Test
@@ -37,9 +37,9 @@ public class SetTest extends AbstractTest {
                 .set("a", "a")
                 .set("b", "b"));
         JBody expected = new JBody()
-                .addElement(new JText("a"))
+                .addElement(new JText("a\n\n"))
                 .addElement(new JText("B"));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml().trim());
     }
 
     @Test
@@ -67,11 +67,11 @@ public class SetTest extends AbstractTest {
         JElement el = b.body(attrs);
         b.body(attrs);
         JBody expected = new JBody()
-                .addElement(new JText("a"))
+                .addElement(new JText("a\n\n"))
                 .addElement(new JText("B"));
         assertEquals("a", attrs.getAttribute("a"));
         assertEquals("B", attrs.getAttribute("b"));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml().trim());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class SetTest extends AbstractTest {
                 .addElement(new JBody()
                         .addElement(new JBody()
                                 .addElement(new JText("B"))));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml().trim());
     }
 
 }

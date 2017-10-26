@@ -26,7 +26,7 @@ public class ForTest extends AbstractTest {
                 .addElement(new JBody()
                         .addElement(new JText("A"))
                         .addElement(new JText("B")));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml());
     }
 
     @Test
@@ -35,7 +35,7 @@ public class ForTest extends AbstractTest {
         JElement el = b.body(new Attrs().set("a", Collections.emptyList()));
         JBody expected = new JBody()
                 .addElement(new JBody());
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml());
     }
 
     @Test

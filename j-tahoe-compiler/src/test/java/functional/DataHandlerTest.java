@@ -37,7 +37,7 @@ public class DataHandlerTest extends AbstractTest {
         });
         JElement el = b.body(attrs);
         JBody expected = new JBody().addElement(new JText("B"));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml().trim());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class DataHandlerTest extends AbstractTest {
                 .addElement(new JBody()
                         .addElement(new JBody().addElement(new JText("C")))
                         .addElement(new JText("D")));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml().trim());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class DataHandlerTest extends AbstractTest {
         });
         JElement el = b.body(attrs);
         JBody expected = new JBody().addElement(new JBody().addElement(new JText("B")));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml().trim());
     }
 
     @Test
@@ -107,7 +107,7 @@ public class DataHandlerTest extends AbstractTest {
         });
         JElement el = b.body(attrs);
         JBody expected = new JBody().addElement(new JText("B"));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml().trim());
     }
 
     @Test
@@ -137,6 +137,7 @@ public class DataHandlerTest extends AbstractTest {
                         @Override
                         public Attrs getData(Attrs attrs) {
                             assertNotEquals(mainThread, Thread.currentThread().getName());
+                            System.out.println("BBBBBBBBB");
                             return attrs.set("b", "BBB");
                         }
 
@@ -176,7 +177,7 @@ public class DataHandlerTest extends AbstractTest {
                         .addElement(new JBody().addElement(new JText("AAA")))
                         .addElement(new JText("BBB")))
                 .addElement(new JText("CCC"));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml().trim());
         pool.shutdownNow();
     }
 

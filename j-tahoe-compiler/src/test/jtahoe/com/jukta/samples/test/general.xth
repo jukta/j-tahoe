@@ -234,8 +234,11 @@
     </th:block>
 
     <th:block name="Script">
-        <script src="/webjars/aloha-webjar/1.1.1-SNAPSHOT/sv.js" type="text/javascript">
-        </script>
+        <div>1</div><div>2</div>
+        1
+        2
+        3
+
     </th:block>
 
 </th:root>

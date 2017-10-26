@@ -39,14 +39,14 @@ public class JBody implements JElement {
     public String toHtml() {
         String res = "";
         for (JElement element : elements) {
-            res += element.toHtml() + "\n";
+            res += element.toHtml();
         }
         return res;
     }
 
     @Override
     public String toString() {
-        return toJson();
+        return toHtml();
     }
 
     @Override

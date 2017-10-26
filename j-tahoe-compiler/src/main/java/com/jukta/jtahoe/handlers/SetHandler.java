@@ -16,6 +16,9 @@ public class SetHandler extends AbstractHandler {
     private String element = null;
 
     @Override
+    public void text(String text) {}
+
+    @Override
     public void addElement(String element) {
         if (this.element != null) {
             throw new RuntimeException("Only one element is supported for set");

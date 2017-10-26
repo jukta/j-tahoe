@@ -32,5 +32,6 @@ public class RootHandler extends AbstractHandler {
 
     }
 
-
+    @Override
+    public void text(String text) {}
 }

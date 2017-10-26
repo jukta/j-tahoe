@@ -50,4 +50,9 @@ public class NamedNode implements Node {
     public Map<String, String> getPrefixes() {
         return prefixes;
     }
+
+    @Override
+    public String toString() {
+        return namespace + ":" + name + "[" + attributes.toString() + "]";
+    }
 }

@@ -23,7 +23,11 @@ public class HtmlHandler extends AbstractHandler {
         if (getAttrs().size() > 0) {
             el += ".setAttrs(new JAttrs()";
             for (Map.Entry<String, String> entry : getAttrs().entrySet()) {
-                el += ".addAttr(\"" + entry.getKey() + "\", (String) " + parseExp(entry.getValue(), true) + ")";
+                String val = entry.getValue();
+                if (val != null) {
+                    val = val.replaceAll("\n", "").replaceAll("\r", "").trim();
+                }
+                el += ".addAttr(\"" + entry.getKey() + "\", (String) " + parseExp(val, true) + ")";
             }
             el += ")";
         }

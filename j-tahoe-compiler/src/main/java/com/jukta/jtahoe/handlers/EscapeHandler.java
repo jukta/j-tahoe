@@ -17,9 +17,11 @@ public class EscapeHandler extends AbstractHandler {
     @Override
     public void text(String text) {
         if (text.trim().equals("")) return;
+        text = text.trim();
         text = text.replaceAll("<", "&lt;");
         text = text.replaceAll(">", "&gt;");
         text = text.replaceAll("\n", "\\\\n");
+        text = text.replaceAll("\r", "\\\\r");
         text = text.replaceAll("\"", "\\\\\"");
 //        text = text.replaceAll("\\$", "\\$");
         addElement("new JText(\"" + text + "\")");

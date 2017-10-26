@@ -27,4 +27,9 @@ public abstract class SimpleBlockHandler extends BlockHandler {
     public void addDef(String name, String body) {
         throw new UnsupportedOperationException("Block " + getName() + " doesn't support body");
     }
+
+    public void text(String text) {
+        if (text.trim().equals("")) return;
+        throw new UnsupportedOperationException("Block " + getName() + " doesn't support body");
+    }
 }

@@ -2,15 +2,16 @@ package com.jukta.jtahoe.gen.xml;
 
 import com.jukta.jtahoe.BlockModelProvider;
 import com.jukta.jtahoe.gen.model.NamedNode;
-import com.jukta.jtahoe.resource.*;
-import org.xml.sax.InputSource;
+import com.jukta.jtahoe.resource.Resource;
+import com.jukta.jtahoe.resource.ResourceResolver;
+import com.jukta.jtahoe.resource.ResourceType;
+import com.jukta.jtahoe.resource.Resources;
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -31,6 +32,7 @@ public class XthBlockModelProvider implements BlockModelProvider {
     public Iterator<NamedNode> iterator() {
         try {
             List<Resource> xmlList = resources.getResources(ResourceType.XTH);
+//            xmlList = xmlList.stream().filter(resource -> resource.getName().contains("parent.xth")).collect(Collectors.toList());
             return new BlockModelIterator(xmlList.iterator());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -40,13 +42,9 @@ public class XthBlockModelProvider implements BlockModelProvider {
     private class BlockModelIterator implements Iterator<NamedNode> {
 
         private Iterator<Resource> iterator;
-        private XMLReader xmlReader;
 
         private BlockModelIterator(Iterator<Resource> iterator) throws ParserConfigurationException, SAXException {
             this.iterator = iterator;
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            factory.setNamespaceAware(true);
-            xmlReader = factory.newSAXParser().getXMLReader();
         }
 
         @Override
@@ -59,8 +57,30 @@ public class XthBlockModelProvider implements BlockModelProvider {
             Resource xml = iterator.next();
             try {
                 FileHandler fileHandler = new FileHandler();
-                xmlReader.setContentHandler(fileHandler);
-                xmlReader.parse(new InputSource(xml.getInputStream()));
+
+                BasicParser parser = new BasicParser(fileHandler) {
+                    @Override
+                    protected void handle(String l) {
+                        if (l.startsWith("<!DOCTYPE")) {
+                            getHandler().text(l);
+                            return;
+                        }
+                        NamedNode top = fileHandler.getTop();
+                        if (top == null) {
+                            super.handle(l);
+                            return;
+                        }
+                        //TODO cleanup prefixes
+                        if (top.getName().equals("escape") && !l.startsWith("</th:escape")) {
+                            getHandler().text(l);
+                        } else {
+                            super.handle(l);
+                        }
+                    }
+                };
+
+                parser.parse(xml.getInputStream());
+
                 return fileHandler.getNode();
             } catch (Exception e) {
                 throw new RuntimeException("Error parsing file \"" + xml.getName() + "\"", e);

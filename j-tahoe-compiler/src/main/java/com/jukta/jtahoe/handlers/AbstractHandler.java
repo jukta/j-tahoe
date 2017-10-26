@@ -32,12 +32,22 @@ public abstract class AbstractHandler {
     }
 
     public void text(String text) {
-        text = text.trim();
-        if (text.equals("")) return;
-        text = text.replace("\n", "");
-        text = text.replaceAll("\"", "\\\\\"");
-        text = parseExp(text, true);
-        addElement("new JText(" + text + ".toString())");
+        if (!genContext.isKeepSpaces() && text.trim().equals("")) return;
+
+        StringBuffer elTxt = new StringBuffer();
+        String[] lines = text.split("\n");
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+//            line = line.trim();
+            line = line.replace("\r", "");
+            line = line.replaceAll("\"", "\\\\\"");
+            elTxt.append(line.trim());
+            if (genContext.isKeepSpaces() && (i < lines.length -1 || text.endsWith("\n"))) {
+                elTxt.append("\\n");
+            }
+        }
+
+        addElement("new JText(" + parseExp(elTxt.toString(), true) + ".toString())");
     }
 
     public void end() {
@@ -75,6 +85,9 @@ public abstract class AbstractHandler {
     public String parseExp(String str, boolean wrap) {
         if (str == null) {
             return null;
+        }
+        if (!str.contains("${")) {
+            return "\"" + str + "\"";
         }
         str = str.replaceAll("\\$\\{", "#{");
         return "eval(attrs, \"" + str + "\")";
@@ -144,5 +157,12 @@ public abstract class AbstractHandler {
         } else {
             return sp[1];
         }
+    }
+
+    public String toLowerCase(String val) {
+        if (val != null) {
+            val = val.toLowerCase();
+        }
+        return val;
     }
 }

@@ -94,7 +94,7 @@ public class GeneralTest extends AbstractTest {
         JBody expected = new JBody()
                 .addElement(new JBody().addElement(new JBody().addElement(new JText("B1"))))
                 .addElement(new JBody().addElement(new JBody().addElement(new JText("B2"))));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml());
     }
 
     @Test
@@ -152,7 +152,7 @@ public class GeneralTest extends AbstractTest {
                 .addElement(new JTag("div").setjBody(new JBody()
                         .addElement(new JText("A"))))
                 .addElement(new JText("B"));
-        assertEquals(expected, el);
+        assertEquals(expected.toHtml(), el.toHtml());
     }
 
     @Test
@@ -178,9 +178,9 @@ public class GeneralTest extends AbstractTest {
         Block b = newBlockInstance("test.cdata");
         JElement el = b.body(new Attrs().set("a", "A"));
 
-        JBody expected = new JBody().addElement(new JText("\n" +
-                "        &lt;th:block name=\"escaping1\"&gt;\n" +
-                "        A \" \" B\n" +
+        JBody expected = new JBody().addElement(new JText("" +
+                "&lt;th:block name=\"escaping1\"&gt;\r\n" +
+                "        A \" \" B\r\n" +
                 "    &lt;/th:block&gt;"));
         assertEquals(expected.toString(), el.toString());
     }
@@ -213,9 +213,9 @@ public class GeneralTest extends AbstractTest {
         assertEquals(before, res1);
 
         List<String> after = new ArrayList<>();
-        after.add("test.AdvancedComposition_B1 \"_\": [\"C\"]");
-        after.add("test.AdvancedComposition_A1 \"_\": [\"C\"]");
-        after.add("test.AdvancedComposition_C1 \"_\": [\"C\"]");
+        after.add("test.AdvancedComposition_B1 C");
+        after.add("test.AdvancedComposition_A1 C");
+        after.add("test.AdvancedComposition_C1 C");
 
         assertEquals(after, res2);
     }
@@ -243,12 +243,12 @@ public class GeneralTest extends AbstractTest {
 
     @Test
     public void script() {
-        Block b = newBlockInstance("test.Script");
+        Block b = newBlockInstance("test.Test");
         Attrs attrs = new Attrs();
 
         JElement el = b.body(attrs);
 
-        System.out.println(el.toJson());
+        System.out.println(el.toHtml());
     }
 
 }
