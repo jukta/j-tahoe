@@ -212,10 +212,9 @@
 
     <th:block name="cdata">
         <th:escape>
-        <![CDATA[
         <th:block name="escaping1">
         A " " B
-    </th:block>]]>
+    </th:block>
         </th:escape>
     </th:block>
 
@@ -231,14 +230,6 @@
                 A2
             </lc:Recursion_A>
         </lc:Recursion_A>
-    </th:block>
-
-    <th:block name="Script">
-        <div>1</div><div>2</div>
-        1
-        2
-        3
-
     </th:block>
 
 </th:root>

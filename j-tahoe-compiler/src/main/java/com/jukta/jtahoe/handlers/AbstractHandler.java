@@ -41,7 +41,10 @@ public abstract class AbstractHandler {
 //            line = line.trim();
             line = line.replace("\r", "");
             line = line.replaceAll("\"", "\\\\\"");
-            elTxt.append(line.trim());
+            line = line.trim();
+            if (!"".equals(line)) {
+                elTxt.append(line);
+            }
             if (genContext.isKeepSpaces() && (i < lines.length -1 || text.endsWith("\n"))) {
                 elTxt.append("\\n");
             }

@@ -54,7 +54,7 @@ public class BasicParser {
         s.findInLine("<((\\w+):)?(\\w+)");
         MatchResult n = s.match();
 
-        String attrPat = "([a-z:]+)\\s*(=\\s*\"(\\S+)\")?";
+        String attrPat = "([a-zA-Z:]+)\\s*(=\\s*\"([^\"]+)\")?";
         Map<String, String> attrs = new HashMap<>();
         while (s.findInLine(attrPat) != null) {
             MatchResult result = s.match();

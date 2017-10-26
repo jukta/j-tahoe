@@ -179,9 +179,9 @@ public class GeneralTest extends AbstractTest {
         JElement el = b.body(new Attrs().set("a", "A"));
 
         JBody expected = new JBody().addElement(new JText("" +
-                "&lt;th:block name=\"escaping1\"&gt;\r\n" +
-                "        A \" \" B\r\n" +
-                "    &lt;/th:block&gt;"));
+                "&lt;th:block name=\"escaping1\"&gt;" +
+                "A \" \" B" +
+                "&lt;/th:block&gt;"));
         assertEquals(expected.toString(), el.toString());
     }
 
@@ -239,16 +239,6 @@ public class GeneralTest extends AbstractTest {
         );
 
         assertEquals(expected, el);
-    }
-
-    @Test
-    public void script() {
-        Block b = newBlockInstance("test.Test");
-        Attrs attrs = new Attrs();
-
-        JElement el = b.body(attrs);
-
-        System.out.println(el.toHtml());
     }
 
 }

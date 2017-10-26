@@ -37,7 +37,7 @@ public class SetTest extends AbstractTest {
                 .set("a", "a")
                 .set("b", "b"));
         JBody expected = new JBody()
-                .addElement(new JText("a\n\n"))
+                .addElement(new JText("a"))
                 .addElement(new JText("B"));
         assertEquals(expected.toHtml(), el.toHtml().trim());
     }
@@ -67,7 +67,7 @@ public class SetTest extends AbstractTest {
         JElement el = b.body(attrs);
         b.body(attrs);
         JBody expected = new JBody()
-                .addElement(new JText("a\n\n"))
+                .addElement(new JText("a"))
                 .addElement(new JText("B"));
         assertEquals("a", attrs.getAttribute("a"));
         assertEquals("B", attrs.getAttribute("b"));
