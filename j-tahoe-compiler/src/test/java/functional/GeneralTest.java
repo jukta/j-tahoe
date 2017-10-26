@@ -241,4 +241,22 @@ public class GeneralTest extends AbstractTest {
         assertEquals(expected, el);
     }
 
+    @Test
+    public void seftClosing() {
+        Block b = newBlockInstance("test.SelfClosing");
+        Attrs attrs = new Attrs();
+
+        JElement el = b.body(attrs);
+        assertEquals("<br/>", el.toHtml());
+    }
+
+    @Test
+    public void comments() {
+        Block b = newBlockInstance("test.Comments");
+        Attrs attrs = new Attrs();
+        JElement el = b.body(attrs);
+
+        assertEquals("<!-- commentsa-->", el.toHtml());
+    }
+
 }

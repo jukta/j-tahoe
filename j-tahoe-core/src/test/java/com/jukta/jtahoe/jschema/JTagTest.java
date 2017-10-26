@@ -61,4 +61,10 @@ public class JTagTest {
                 "</a>", tag.toHtml());
     }
 
+    @Test
+    public void selfClosing() {
+        JTag tag = new JTag("a").setAttrs(new JAttrs().addAttr("attr1", "val1"));
+        Assert.assertEquals("<a attr1=\"val1\"/>", tag.toHtml());
+    }
+
 }

@@ -232,4 +232,16 @@
         </lc:Recursion_A>
     </th:block>
 
+    <th:block name="SelfClosing">
+        <br/>
+    </th:block>
+
+    <th:block name="Comments">
+        <!-- comments
+        a
+        -->
+        A
+        <!-- comments b -->
+    </th:block>
+
 </th:root>

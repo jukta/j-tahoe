@@ -15,6 +15,7 @@ public class NamedNode implements Node {
     private Map<String, String> attributes;
     private NamedNode parent;
     private Map<String, String> prefixes = new HashMap<>();
+    private boolean selfClosing = false;
 
     public NamedNode(String namespace, String name, Map<String, String> attributes, NamedNode parent) {
         this.namespace = namespace;
@@ -49,6 +50,14 @@ public class NamedNode implements Node {
 
     public Map<String, String> getPrefixes() {
         return prefixes;
+    }
+
+    public boolean isSelfClosing() {
+        return selfClosing;
+    }
+
+    public void setSelfClosing(boolean selfClosing) {
+        this.selfClosing = selfClosing;
     }
 
     @Override

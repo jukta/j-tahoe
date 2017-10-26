@@ -9,7 +9,7 @@ import org.junit.Before;
 /**
  * @since 1.0
  */
-public class AbstractTest {
+public abstract class AbstractTest {
     private String blocksFolder = "blocks";
     protected static BlockFactory blockFactory;
 

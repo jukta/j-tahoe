@@ -31,7 +31,9 @@ public class HtmlHandler extends AbstractHandler {
             }
             el += ")";
         }
-        el += ".setjBody(" + getVarName() + ")";
+        if (!getNode().isSelfClosing()) {
+            el += ".setjBody(" + getVarName() + ")";
+        }
         getParent().addElement(el);
     }
 

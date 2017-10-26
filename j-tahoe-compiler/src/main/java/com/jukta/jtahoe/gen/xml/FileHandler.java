@@ -53,6 +53,7 @@ public class FileHandler implements BasicParser.Handler {
         } else {
             parent.getChildren().add(node);
         }
+        node.setSelfClosing(selfClosing);
         if (!selfClosing) stack.push(node);
     }
 
