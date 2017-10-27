@@ -57,44 +57,17 @@ public class XthBlockModelProvider implements BlockModelProvider {
             Resource xml = iterator.next();
             try {
                 FileHandler fileHandler = new FileHandler();
-                final boolean[] comments = {false};
                 BasicParser parser = new BasicParser(fileHandler) {
                     @Override
                     protected void handle(String l) {
-                        if (l.startsWith("<!--")) {
-                            comments[0] = true;
-                            getHandler().text(l);
-                            if (l.endsWith("-->")) {
-                                comments[0] = false;
-                            }
-                            return;
-                        }
-
-                        if (l.endsWith("-->")) {
-                            comments[0] = false;
-                            getHandler().text(l);
-                            return;
-                        }
-
-
                         if (l.startsWith("<!DOCTYPE")) {
-                            getHandler().text(l);
-                            return;
-                        }
-                        NamedNode top = fileHandler.getTop();
-                        if (!comments[0] && top == null) {
-                            super.handle(l);
-                            return;
-                        }
-                        //TODO cleanup prefixes
-                        if (comments[0] || (top.getName().equals("escape") && !l.startsWith("</th:escape"))) {
                             getHandler().text(l);
                         } else {
                             super.handle(l);
                         }
                     }
                 };
-
+                fileHandler.setParser(parser);
                 parser.parse(xml.getInputStream());
 
                 return fileHandler.getNode();

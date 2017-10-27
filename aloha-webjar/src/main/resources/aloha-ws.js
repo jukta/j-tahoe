@@ -1,9 +1,9 @@
-var sv_ws = new function() {
+var aa_ws = new function() {
 
     this.ws = {};
     var q = [];
 
-    this.ws.emmit = function (type, data) {
+    this.ws.emit = function (type, data) {
         var req;
         if (typeof data === "object") {
             req = type + ";;;1;;;" + JSON.stringify(data);
@@ -32,15 +32,15 @@ var sv_ws = new function() {
     var onmessage = function(e) {
         var m = e.data.split(';;;');
         if (m[1] == "0") {
-            SV.emmit(m[0], m[2]);
+            AA.emit(m[0], m[2]);
         } else {
-            SV.emmit(m[0], JSON.parse(m[2]));
+            AA.emit(m[0], JSON.parse(m[2]));
         }
     };
 
     var onclose = function() {
         isOpened = false;
-        SV.emmit("ws-error", {});
+        AA.emit("ws-error", {});
     };
 
     var onheartbeat = function() {
@@ -69,4 +69,4 @@ var sv_ws = new function() {
 
 };
 
-var SV = $.extend(SV, sv_ws);
+var AA = $.extend(AA, aa_ws);

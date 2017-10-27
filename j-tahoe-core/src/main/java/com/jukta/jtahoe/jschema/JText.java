@@ -1,5 +1,8 @@
 package com.jukta.jtahoe.jschema;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class JText implements JElement {
     private String text;
 
@@ -16,13 +19,13 @@ public class JText implements JElement {
     }
 
     @Override
-    public String toJson() {
-        return "\"" + text + "\"";
+    public String toHtml() {
+        return text;
     }
 
     @Override
-    public String toHtml() {
-        return text;
+    public void toHtml(OutputStream outputStream) throws IOException {
+        outputStream.write(text.getBytes());
     }
 
     @Override
@@ -38,7 +41,6 @@ public class JText implements JElement {
         JText jText = (JText) o;
 
         return text != null ? text.equals(jText.text) : jText.text == null;
-
     }
 
     @Override

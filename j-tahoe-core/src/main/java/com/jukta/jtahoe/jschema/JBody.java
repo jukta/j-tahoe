@@ -1,5 +1,7 @@
 package com.jukta.jtahoe.jschema;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,26 +17,6 @@ public class JBody implements JElement {
         return elements;
     }
 
-    private String toJson1() {
-        List<String> eList = new ArrayList<>();
-        for (JElement element : elements) {
-            String e = (element instanceof JBody) ? ((JBody) element).toJson1() : element.toJson();
-            if (e != null && !"".equals(e)) eList.add(e);
-        }
-        return String.join(",", eList);
-    }
-
-    @Override
-    public String toJson() {
-        if (elements.isEmpty()) {
-            return "";
-        }
-        String res = "\"_\": [";
-        res += toJson1();
-        res += "]";
-        return res;
-    }
-
     @Override
     public String toHtml() {
         String res = "";
@@ -42,6 +24,13 @@ public class JBody implements JElement {
             res += element.toHtml();
         }
         return res;
+    }
+
+    @Override
+    public void toHtml(OutputStream outputStream) throws IOException {
+        for (JElement element : elements) {
+            element.toHtml(outputStream);
+        }
     }
 
     @Override

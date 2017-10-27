@@ -16,4 +16,10 @@ public class LibTestConfiguration {
         return new ButtonDataHandler();
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public ButtonController buttonController() {
+        return new ButtonController();
+    }
+
 }

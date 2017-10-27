@@ -17,6 +17,11 @@ public class FileHandler implements BasicParser.Handler {
     private Stack<NamedNode> stack = new Stack<>();
     private NamedNode node;
     private Map<String, String> prefixes = new HashMap<>();
+    private BasicParser parser;
+
+    public void setParser(BasicParser parser) {
+        this.parser = parser;
+    }
 
     public NamedNode getNode() {
         return node;
@@ -39,15 +44,15 @@ public class FileHandler implements BasicParser.Handler {
             parent = stack.peek();
         }
 
-        String uri = "__html__";
-        if (ns != null) {
-            uri = prefixes.get(ns);
-        }
+        String uri = getUri(ns, name);
 
-        if (uri.equals(XHTML)) uri = "__html__";
         NamedNode node = new NamedNode(uri, name, attrs, parent);
         node.getPrefixes().putAll(prefixes);
 //        prefixes.clear();
+        if (name.equals("escape") && uri.equals("http://jukta.com/tahoe/schema")) {
+            parser.setBypass(true);
+            thNS = ns;
+        }
         if (parent == null) {
             this.node = node;
         } else {
@@ -57,6 +62,8 @@ public class FileHandler implements BasicParser.Handler {
         if (!selfClosing) stack.push(node);
     }
 
+    private String thNS;
+
     public void end(String ns, String name) {
         stack.pop();
     }
@@ -64,7 +71,22 @@ public class FileHandler implements BasicParser.Handler {
     @Override
     public void text(String text) {
         if (stack.empty()) return;
-        stack.peek().getChildren().add(new TextNode(text));
+        if (text.equals("</" + thNS + ":escape>")) {
+            parser.setBypass(false);
+            end(thNS, "escape");
+        } else {
+            stack.peek().getChildren().add(new TextNode(text));
+        }
+    }
+
+    private String getUri(String ns, String name) {
+        String uri = "__html__";
+        if (ns != null) {
+            uri = prefixes.get(ns);
+        }
+
+        if (uri.equals(XHTML)) uri = "__html__";
+        return uri;
     }
 
 }

@@ -1,8 +1,12 @@
-SV.controller('button', function(el) {
+AA.controller('button', function(el) {
     this.on = {};
 
     this.on["clk"] = function(e, next) {
-        alert("You've clicked the button!!!");
+        AA.http.emit("clk", {});
+    }
+
+    this.on["clkResponse"] = function(e, next) {
+        alert(e);
     }
 
 });

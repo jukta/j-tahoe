@@ -238,7 +238,7 @@
 
     <th:block name="Comments">
         <!-- comments
-        a
+        <span>a</span>
         -->
         A
         <!-- comments b -->

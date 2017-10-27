@@ -1,5 +1,7 @@
 package com.jukta.jtahoe.jschema;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,20 +24,6 @@ public class JAttrs {
         return attrs;
     }
 
-    public String toJson() {
-        if (isEmpty()) {
-            return "";
-        }
-        String res = "\"_attrs\": {";
-        int i = 0;
-        for (Map.Entry<String, String> entry : attrs.entrySet()) {
-            if (i++ > 0) res += ",";
-            res += "\"" + entry.getKey() + "\"" + ":\"" + entry.getValue() + "\"";
-        }
-        res += "}";
-        return res;
-    }
-
     public String toHtml() {
         String res = "";
         if (!isEmpty()) {
@@ -47,6 +35,10 @@ public class JAttrs {
             }
         }
         return res;
+    }
+
+    public void toHtml(OutputStream outputStream) throws IOException {
+        outputStream.write(toHtml().getBytes());
     }
 
     public boolean isEmpty() {

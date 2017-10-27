@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.Map;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @since 1.0
@@ -11,14 +12,14 @@ import java.util.Map;
 public class BasicParserTest {
 
     @Test
-    public void simpleHtmlBlock() {
+    public void comments() {
 
         StringBuffer sb = new StringBuffer();
 
         BasicParser p = new BasicParser(new BasicParser.Handler() {
             @Override
             public void start(String ns, String name, Map<String, String> attrs, boolean selfClosing) {
-                sb.append(ns + ":" + name + attrs + "/");
+                sb.append(ns).append(":").append(name).append(attrs).append(selfClosing ? "/" : "");
             }
 
             @Override
@@ -28,15 +29,25 @@ public class BasicParserTest {
 
             @Override
             public void end(String ns, String name) {
-                sb.append("/" + ns + ":" + name);
+                sb.append("/").append(ns).append(":").append(name);
             }
         });
 
         p.parse(new ByteArrayInputStream(("<div>" +
-                "<!--\n <br/> \n -->" +
+                "<!--<br/>-->" +
+                "</div>").getBytes()));
+
+        assertEquals(" null:div{}<!--<br/>-->/null:div", sb.toString());
+
+        sb.delete(0, sb.length());
+        p.parse(new ByteArrayInputStream(("<div>" +
+                "<!--\n<br/>\n-->\n    " +
                 "</div>").getBytes()));
 
         System.out.println(sb.toString());
+        assertEquals(" null:div{}<!--\n<br/>\n-->\n" +
+                "    /null:div", sb.toString());
+
 
     }
 

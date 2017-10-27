@@ -1,38 +1,41 @@
-var sv_core = new function() {
+var aloha_core = new function() {
 
     var self = this;
     var controllerList = [];
 
     this.controller = function(name, func) {
-        if (func != null && (typeof name === 'string' || myVar instanceof String)) {
+        if (func != null && (typeof name === 'string' || name instanceof String)) {
             controllerList[name] = func;    
         } else {
-            return $(name)[0].svController;
+            return name.jquery ? name[0].aController : name.aController;
         }
     };
 
     this.initControllers = function(el) {
-        var clk = el.find('[sv-click]').addBack('[sv-click]');
+        var clk = el.find('[a-click]').addBack('[a-click]');
         clk.unbind("click");
         clk.bind("click", onClick);
-        var c = el.find('[sv-controller]').addBack('[sv-controller]');
+        var c = el.find('[a-controller]').addBack('[a-controller]');
         for (var i = c.length - 1; i >= 0 ; i--) {
-            var func = controllerList[$(c[i]).attr('sv-controller')];
+            var func = controllerList[$(c[i]).attr('a-controller')];
             if (func) {
-                c[i].svController = new func(c[i]);
+                c[i].emit = function(link, data) {
+                    fire(this, link, data);
+                };
+                c[i].aController = new func(c[i]);
             }
         }
     };
 
     this.destroyControllers = function(el) {
-        var c = el.find('[sv-controller]').addBack('[sv-controller]');
+        var c = el.find('[a-controller]').addBack('[a-controller]');
         for (var i = 0; i < c.length; i++) {
-            var controller = c[i].svController;
+            var controller = c[i].aController;
             if (controller && controller.destroy) {
                 controller.destroy();
             }
         }
-        el.find('[sv-click]').unbind("click");
+        el.find('[a-click]').unbind("click");
     };
 
     this.html = function(el, html) {
@@ -45,18 +48,16 @@ var sv_core = new function() {
     };
 
     var onClick = function(e) {
-        var link = $(e.currentTarget).attr('sv-click');
         var c = e.currentTarget;
-        if (!self.fire(c, link, e)) cancelDefaultAction(e);
+        var link = $(c).attr('a-click');
+        if (!fire(c, link, e)) cancelDefaultAction(e);
     };
 
-    this.fire = function(el, link, data) {
-        var c = $(el).parents('[sv-controller]');
-        // var c = $(el);
-        // c.push.apply(c, $(el).parents('[sv-controller]'));
+    var fire = function(el, link, data) {
+        var c = $(el).parents('[a-controller]');
         var next = true;
         for (var i = 0; i < c.length ; i++) {
-            var cont = c[i].svController;
+            var cont = c[i].aController;
             if (!cont || !cont.on) continue;
             var handler = null;
             if (link && cont.on[link]) {
@@ -77,11 +78,11 @@ var sv_core = new function() {
         return next;
     };
 
-    this.emmit = function(link, data) {
-        var c = $.find('[sv-controller]');
+    this.emit = function(link, data) {
+        var c = $.find('[a-controller]');
         for (var i = 0; i < c.length; i++) {
-            if (c[i].svController && c[i].svController.on && c[i].svController.on[link]) {
-                c[i].svController.on[link](data, function() {});
+            if (c[i].aController && c[i].aController.on && c[i].aController.on[link]) {
+                c[i].aController.on[link](data, function() {});
             }
         }
     };
@@ -95,7 +96,7 @@ var sv_core = new function() {
 };
 
 $(document).ready(function() {
-    SV.initControllers($('body'));
+    AA.initControllers($('body'));
 });
 
-var SV = $.extend(SV, sv_core);
+var AA = $.extend(AA, aloha_core);

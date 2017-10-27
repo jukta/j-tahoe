@@ -16,9 +16,9 @@
     </th:block>
 
     <th:block name="Button" dataHandler="buttonDataHandler">
-        <div class="button" sv-controller="button">
+        <div class="button" a-controller="button">
         ${message}
-        <button sv-click="clk">${name}</button>
+        <button a-click="clk">${name}</button>
         </div>
     </th:block>
 

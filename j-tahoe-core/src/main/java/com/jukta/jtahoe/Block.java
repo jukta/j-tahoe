@@ -1,12 +1,12 @@
 package com.jukta.jtahoe;
 
-import com.jukta.jtahoe.jschema.*;
+import com.jukta.jtahoe.jschema.JBody;
+import com.jukta.jtahoe.jschema.JElement;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.util.SimpleContext;
 
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,7 +29,6 @@ public abstract class Block {
                 attrs.getBlockHandler().after(getBlockType().getName(), attrs, el, this);
         });
         return el;
-
 
     }
 

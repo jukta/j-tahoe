@@ -21,6 +21,11 @@
             <artifactId>aloha-webjar</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -37,7 +42,7 @@
                         </goals>
                         <configuration>
                             <blocksDir>${project.basedir}/src/main/blocks</blocksDir>
-                            <jsDependecies>jquery.min.js;sv.js;${artifactId}.js</jsDependecies>
+                            <jsDependecies>jquery.min.js;aloha.js;aloha-http.js;${artifactId}.js</jsDependecies>
                             <cssDependecies>${artifactId}.css</cssDependecies>
                         </configuration>
                     </execution>

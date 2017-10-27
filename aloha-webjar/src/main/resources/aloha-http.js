@@ -1,8 +1,8 @@
-var sv_http = new function() {
+var aa_http = new function() {
 
     this.http = {};
 
-    this.http.emmit = function (type, data) {
+    this.http.emit = function (type, data) {
         $.ajax({
             type: 'POST',
             url: '/__event/'+type,
@@ -16,11 +16,11 @@ var sv_http = new function() {
     var handleResponse = function(resp, q, e) {
         var type = e.getResponseHeader("response-type");
         if (e.getResponseHeader("content-type") == "application/json") {
-            SV.emmit(type, JSON.parse(resp));
+            AA.emit(type, JSON.parse(resp));
         } else {
-            SV.emmit(type, resp);
+            AA.emit(type, resp);
         }
     };
 };
 
-var SV = $.extend(SV, sv_http);
+var AA = $.extend(AA, aa_http);

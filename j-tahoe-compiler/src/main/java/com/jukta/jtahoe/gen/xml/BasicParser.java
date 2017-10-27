@@ -11,6 +11,7 @@ import java.util.regex.MatchResult;
 public class BasicParser {
 
     private Handler handler;
+    private boolean bypass = false;
 
     public BasicParser(Handler handler) {
         this.handler = handler;
@@ -38,8 +39,17 @@ public class BasicParser {
         sc.close();
     }
 
-    protected void handle(String l) {
-        if (l.startsWith("</")) {
+        protected void handle(String l) {
+
+        if (!bypass && l.startsWith("<!--")) {
+            bypass = true;
+            handler.text(l);
+        } else if (bypass && l.trim().endsWith("-->")) {
+            bypass = false;
+            handler.text(l);
+        }else if (bypass) {
+            handler.text(l);
+        } else if (l.startsWith("</")) {
             end(l, handler);
         } else if (l.startsWith("<")) {
             start(l, handler);
@@ -72,6 +82,14 @@ public class BasicParser {
 
     public Handler getHandler() {
         return handler;
+    }
+
+    public boolean isBypass() {
+        return bypass;
+    }
+
+    public void setBypass(boolean bypass) {
+        this.bypass = bypass;
     }
 
     public interface Handler {

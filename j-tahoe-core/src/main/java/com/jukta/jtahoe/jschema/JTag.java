@@ -1,5 +1,8 @@
 package com.jukta.jtahoe.jschema;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class JTag implements JElement {
     private String name;
     private JAttrs attrs;
@@ -32,18 +35,6 @@ public class JTag implements JElement {
     }
 
     @Override
-    public String toJson() {
-        String res = "{\"_name\":\"" + name + "\"";
-        if (attrs != null && !attrs.isEmpty()) res += "," + attrs.toJson();
-        if (jBody != null) {
-            String b = jBody.toJson();
-            if (!"".equals(b)) res += "," + b;
-        }
-        res += "}";
-        return res;
-    }
-
-    @Override
     public String toHtml() {
         String res = "<" + name;
         if (attrs != null && !attrs.isEmpty()) res += " " + attrs.toHtml();
@@ -55,6 +46,22 @@ public class JTag implements JElement {
             res += "</" + name + ">";
         }
         return res;
+    }
+
+    @Override
+    public void toHtml(OutputStream outputStream) throws IOException {
+        outputStream.write(("<" + name).getBytes());
+        if (attrs != null && !attrs.isEmpty()) {
+            outputStream.write(" ".getBytes());
+            attrs.toHtml(outputStream);
+        }
+        if (jBody == null) {
+            outputStream.write("/>".getBytes());
+        } else {
+            outputStream.write(">".getBytes());
+            jBody.toHtml(outputStream);
+            outputStream.write(("</" + name + ">").getBytes());
+        }
     }
 
     @Override

@@ -60,7 +60,6 @@ public class GeneralTest extends AbstractTest {
     public void cascadeDefInheritance() {
         Block b = newBlockInstance("test.CascadeDefInheritance_C");
         JElement el = b.body(new Attrs());
-        System.out.println(el.toJson());
         JBody expected = new JBody()
                 .addElement(new JText("A1"))
                 .addElement(new JBody()
@@ -256,7 +255,7 @@ public class GeneralTest extends AbstractTest {
         Attrs attrs = new Attrs();
         JElement el = b.body(attrs);
 
-        assertEquals("<!-- commentsa-->", el.toHtml());
+        assertEquals("<!-- comments<span>a</span>-->A<!-- comments b -->", el.toHtml());
     }
 
 }
