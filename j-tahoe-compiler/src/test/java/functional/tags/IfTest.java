@@ -84,5 +84,22 @@ public class IfTest extends AbstractTest {
         assertEquals(expected, el);
     }
 
+    @Test
+    public void If_Bool_as_String_A() {
+        Block b = newBlockInstance("test.tags.If_Bool_as_String_A");
+        JElement el = b.body(new Attrs().set("expr", "true"));
+        JBody expected = new JBody()
+                .addElement(new JBody()
+                        .addElement(new JText("A")));
+        assertEquals(expected, el);
+    }
 
+    @Test
+    public void If_Bool_as_String_B() {
+        Block b = newBlockInstance("test.tags.If_Bool_as_String_B");
+        JElement el = b.body(new Attrs().set("expr", "false"));
+        JBody expected = new JBody()
+                .addElement(new JBody());
+        assertEquals(expected, el);
+    }
 }

@@ -31,4 +31,16 @@
         </th:if>
     </th:block>
 
+    <th:block name="If_Bool_as_String_A">
+        <th:if exp="${expr}">
+            A
+        </th:if>
+    </th:block>
+
+    <th:block name="If_Bool_as_String_B">
+        <th:if exp="${expr}">
+            A
+        </th:if>
+    </th:block>
+
 </th:root>
