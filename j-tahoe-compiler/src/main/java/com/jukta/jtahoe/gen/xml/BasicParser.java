@@ -39,15 +39,21 @@ public class BasicParser {
         sc.close();
     }
 
-        protected void handle(String l) {
+    protected void handle(String l) {
 
-        if (!bypass && l.startsWith("<!--")) {
-            bypass = true;
+        if (!bypass && l.startsWith("<![CDATA[")) {
+            if (!l.trim().endsWith("]]>")) bypass = true;
+            handler.text(l);
+        } else if (bypass && l.trim().endsWith("]]>")) {
+            bypass = false;
+            handler.text(l);
+        } else if (!bypass && l.startsWith("<!--")) {
+            if (!l.trim().endsWith("-->")) bypass = true;
             handler.text(l);
         } else if (bypass && l.trim().endsWith("-->")) {
             bypass = false;
             handler.text(l);
-        }else if (bypass) {
+        } else if (bypass) {
             handler.text(l);
         } else if (l.startsWith("</")) {
             end(l, handler);

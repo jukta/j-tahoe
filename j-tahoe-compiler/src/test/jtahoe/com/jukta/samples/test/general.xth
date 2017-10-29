@@ -244,4 +244,8 @@
         <!-- comments b -->
     </th:block>
 
+    <th:block name="CDATA">
+        <![CDATA[some data]]>
+    </th:block>
+
 </th:root>

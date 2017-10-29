@@ -258,4 +258,13 @@ public class GeneralTest extends AbstractTest {
         assertEquals("<!-- comments<span>a</span>-->A<!-- comments b -->", el.toHtml());
     }
 
+    @Test
+    public void cdata() {
+        Block b = newBlockInstance("test.CDATA");
+        Attrs attrs = new Attrs();
+        JElement el = b.body(attrs);
+
+        assertEquals("<![CDATA[some data]]>", el.toHtml());
+    }
+
 }
