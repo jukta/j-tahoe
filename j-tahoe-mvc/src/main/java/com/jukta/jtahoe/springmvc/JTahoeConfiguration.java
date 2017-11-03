@@ -87,4 +87,10 @@ public class JTahoeConfiguration extends WebMvcConfigurerAdapter {
         return new DependenciesControllerBlockHandler();
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public RemoteStubController remoteStubController() {
+        return new RemoteStubController();
+    }
+
 }
