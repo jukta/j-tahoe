@@ -14,18 +14,21 @@ public class ParentHandler extends AbstractHandler {
 
     @Override
     public void end() {
-        DefHandler defHandler = getPar(getParent());
-        if (defHandler.getBlock(false) instanceof FuncHandler) {
-            String el = "parent(attrs, \"" + defHandler.getDefName() + "\", this)";
-            getParent().addElement(el);
-            defHandler.addSuperMethod(defHandler.getDefName());
-        } else if (defHandler.name == null) {
-            String el = "super.def_" + defHandler.getBlock(true).getParentBlock() + "(attrs)";
-            getParent().addElement(el);
-        } else {
-            String el = "super." + defHandler.getDefName() + "(attrs)";
-            getParent().addElement(el);
-        }
+//        DefHandler defHandler = getPar(getParent());
+//        if (defHandler.getBlock(false) instanceof FuncHandler) {
+//            String el = "parent(attrs, \"" + defHandler.getDefName() + "\", this)";
+//            getParent().addElement(el);
+//            defHandler.addSuperMethod(defHandler.getDefName());
+//        } else if (defHandler.name == null) {
+//            String el = "super.def_" + defHandler.getBlock(true).getParentBlock() + "(attrs)";
+//            getParent().addElement(el);
+//        } else {
+//            String el = "super." + defHandler.getDefName() + "(attrs)";
+//            getParent().addElement(el);
+//        }
+
+        String el = "parent(attrs, null)";
+        getParent().addElement(el);
 
     }
 

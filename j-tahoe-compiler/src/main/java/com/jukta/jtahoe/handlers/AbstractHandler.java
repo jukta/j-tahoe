@@ -117,7 +117,7 @@ public abstract class AbstractHandler {
     }
 
     private BlockHandler getBlock(AbstractHandler handler) {
-        if (handler instanceof BlockHandler) return (BlockHandler) handler;
+        if (handler == null || handler instanceof BlockHandler) return (BlockHandler) handler;
         else return getBlock(handler.getParent());
     }
 

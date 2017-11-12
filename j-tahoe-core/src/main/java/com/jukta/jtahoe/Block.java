@@ -8,13 +8,17 @@ import de.odysseus.el.util.SimpleContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 public abstract class Block {
     private String parent;
     protected String dataHandler;
     private static ExpressionFactory factory = new ExpressionFactoryImpl();
+    private Block parentBlock;
+
+    public Block() {
+        initDefs();
+    }
 
     public JElement body(Attrs attrs) {
         init(attrs);
@@ -100,6 +104,45 @@ public abstract class Block {
 
     public interface Callback {
         void call();
+    }
+
+    private Map<String, BlockDef> defs = new HashMap<>();
+
+    public Block addDef(String name, BlockDef blockDef) {
+        BlockDef prev = defs.get(name);
+        if (prev != null) {
+            blockDef.setParent(prev);
+        }
+        defs.put(name, blockDef);
+        return this;
+    }
+
+    public JElement def(String name, Attrs attrs) {
+        BlockDef blockDef = defs.get(name);
+        if (blockDef == null) return null;
+        return blockDef.doDef(attrs, this);
+    }
+
+    public void initDefs() {};
+
+    public Block create(String className, Attrs attrs) {
+        try {
+            Block block = (Block) Class.forName(className, false, Thread.currentThread().getContextClassLoader()).newInstance();
+            block.parentBlock = this;
+            Integer n = (Integer) attrs.getAttribute("__nesting");
+            if (n ==  null) {
+                n = 0;
+            }
+            attrs.setAttribute("__nesting", n++);
+            for (int i = 0; i < n; i++) {
+                System.out.print("\t");
+            }
+            System.out.println(block.parentBlock.getBlockType().getCanonicalName() + " / " + className);
+            return block;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

@@ -51,8 +51,39 @@ public class DefHandler extends AbstractHandler {
         body += getVarName()+".addElement(" + element + ");\n";
     }
 
+
     @Override
     public void end() {
+        BlockHandler blockHandler = getBlock(true);
+        BlockHandler blockHandlerInt = getBlock(false);
+
+        String defName = getDefName();
+
+        StringWriter fw = new StringWriter();
+        fw.write(".addDef(\"" + defName + "\", new BlockDef() {");
+
+        if (blockHandler.equals(blockHandlerInt)) {
+            fw.write("public JElement doDef(final Attrs attrs, Block block" + getVarName() + ")");
+        } else {
+            fw.write("public JElement doDef(final Attrs _attrs" + getVarName() + ", Block block" + getVarName() + ")");
+        }
+
+        fw.write("{");
+        fw.write("JBody " + getVarName() + " = new JBody();\n");
+        fw.write(body);
+        fw.write("return " + getVarName() + ";");
+        fw.write("}");
+        fw.write("})");
+
+        blockHandlerInt.addDef(defName, fw.toString());
+
+        if (!defaultDef) {
+            getParent().addElement("this.def(\"" + defName + "\", attrs)");
+        }
+
+    }
+
+    public void end1() {
         BlockHandler blockHandler = getBlock(true);
         BlockHandler blockHandlerInt = getBlock(false);
 
@@ -61,48 +92,56 @@ public class DefHandler extends AbstractHandler {
 
         String el;
         if (getParent() instanceof DefHandler) {
-            el = "this." + defName + "(attrs)";
+            el = "this.def(\"" + defName + "\", attrs)";
         } else {
-            el = "((" + blockHandler.getBlockName() + ")_" + blockHandler.getBlockName() + ")." + defName + "(attrs)";
+            el = "((" + blockHandler.getBlockName() + ")_" + blockHandler.getBlockName() + ").def(\"" + defName + "\", attrs)";
         }
         getParent().addElement(el);
 
-        String def;
-        if (blockHandler instanceof FuncHandler || (defaultDef && !blockHandler.equals(blockHandlerInt))) {
-            def = "public JElement " + defName + "(final Attrs _attrs" + getVarName()+ ")";
-        } else {
-            def = "public JElement " + defName + "(final Attrs attrs)";
-        }
         StringWriter fw = new StringWriter();
+
+        fw.write(".addDef(\"" + defName + "\", new BlockDef() {");
+        if (blockHandler instanceof FuncHandler || (defaultDef && !blockHandler.equals(blockHandlerInt))) {
+            fw.write("public JElement doDef(final Attrs _attrs" + getVarName()+ ", Block block" + getVarName() + ")");
+        } else {
+            fw.write("public JElement doDef(final Attrs attrs, Block block" + getVarName() + ")");
+        }
+
+
         fw.write("{");
         fw.write("JBody " + getVarName() + " = new JBody();\n");
         fw.write(body);
         fw.write("return " + getVarName() + ";");
         fw.write("}");
 
+        fw.write("})");
+
         if (!defaultDef && !blockHandler.equals(blockHandlerInt)) {
-            blockHandler.addDef(def, fw.toString());
+            blockHandler.addDef(defName, fw.toString());
         } else {
-            blockHandlerInt.addDef(def, fw.toString());
+            blockHandlerInt.addDef(defName, fw.toString());
         }
 
         if (!defaultDef && !blockHandler.equals(blockHandlerInt)) {
-            def = "public JElement " + defNameInt + "(final Attrs _attrs" + getVarName()+ ")";
-
             fw = new StringWriter();
+
+            fw.write(".addDef(\"" + defName + "\", new BlockDef() {");
+            fw.write("public JElement doDef(final Attrs _attrs" + getVarName()+ ", Block block" + getVarName() + ")");
+
+
             fw.write("{");
             fw.write("attrs.set(\"__parent__\", this);");
             fw.write("return " + el + ";");
             fw.write("}");
+            fw.write("})");
+            blockHandlerInt.addDef(defName, fw.toString());
 
-            blockHandlerInt.addDef(def, fw.toString());
-
-            if (superDefs.contains(defNameInt)) {
-                def = "public JElement " + defNameInt + "Super(final Attrs _attrs" + getVarName() + ")";
-                fw = new StringWriter();
-                fw.write("{ return super." + defNameInt + "(attrs); }");
-                blockHandlerInt.addDef(def, fw.toString());
-            }
+//            if (superDefs.contains(defNameInt)) {
+//                fw = new StringWriter();
+//                fw.write("public JElement " + defNameInt + "Super(final Attrs _attrs" + getVarName() + ")");
+//                fw.write("{ return super." + defNameInt + "(attrs); }");
+//                blockHandlerInt.addDef(defName, fw.toString());
+//            }
         }
 
     }

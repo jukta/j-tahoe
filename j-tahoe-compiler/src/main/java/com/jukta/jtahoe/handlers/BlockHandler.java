@@ -2,10 +2,10 @@ package com.jukta.jtahoe.handlers;
 
 import com.jukta.jtahoe.gen.GenContext;
 import com.jukta.jtahoe.gen.JavaSourceFromString;
-import com.jukta.jtahoe.definitions.BlockMeta;
 import com.jukta.jtahoe.gen.model.NamedNode;
 
 import javax.tools.JavaFileObject;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +18,7 @@ public class BlockHandler extends AbstractHandler {
     private String body = "";
     protected Map<String, String> defs = new HashMap<>();
     protected DefHandler defHandler;
+    protected List<String> innerClasses = new ArrayList<>();
 
     public BlockHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         super(genContext, node, parent);
@@ -27,16 +28,12 @@ public class BlockHandler extends AbstractHandler {
             NamedNode defNode = new NamedNode("", "def_", attrs, getNode());
             defHandler = new DefHandler(genContext, defNode, this);
             defHandler.setDefaultDef(true);
-
-//            attrs = new HashMap<>();
-//            attrs.put("name", getBlockName());
-//            defNode = new NamedNode("", "def_", attrs, getNode());
-//            DefHandler defH = new DefHandler(genContext, defNode, this);
-//            defH.setDefaultDef(true);
-////            defH.addElement("this.def_" + getParentBlock() + "(attrs)");
-//            defH.end();
         }
 
+    }
+
+    public void addInner(String s) {
+        innerClasses.add(s);
     }
 
     public void appendCode(String code) {
@@ -64,45 +61,124 @@ public class BlockHandler extends AbstractHandler {
 
     @Override
     public void end() {
+
         String name = getBlockName();
+        String fullName = this.processPrefix(name);
         if (name == null) {
             throw new RuntimeException("Undefined block name in namespace \"" + getGenContext().getCurrentNamespace() + "\"");
         }
+        Map<String, String> args = createArgs(getAttrs());
+
+        String parentName = null;
         String parent = getAttrs().get("parent");
+        if (parent != null) {
+            parentName = processPrefix(parent);
+        }
+
+        String pack = getCurPackage();
+        if (pack == null || "".equals(pack)) {
+            throw new RuntimeException("Package is empty for block " + pack + "." + name);
+        }
 
         DefHandler dh = defHandler;
         defHandler = null;
         if (dh != null && dh.body.length() > 0) dh.end();
 
-        BlockMeta meta = new BlockMeta(getSeq(), name, getAttrs(), genContext);
-        meta.setBody(body);
-        if (parent != null) {
-            meta.setParentName(processPrefix(parent));
-        }
-        if (getAttrs().get("dataHandler") != null) {
-            meta.setDataHandler(getAttrs().get("dataHandler"));
-        }
-        meta.setArgs(createArgs(getAttrs()));
+        BlockHandler blockHandler = getBlock(true);
 
-        meta.setDefs(defs);
-        meta.setPack(getCurPackage());
+        try {
+            String dataHandler = getAttrs().get("dataHandler");
+            StringWriter sw = new StringWriter();
+            if (blockHandler == null) {
+                sw.write("package " + pack + ";");
+                sw.write("import com.jukta.jtahoe.Attrs;");
+                sw.write("import com.jukta.jtahoe.jschema.*;");
+                sw.write("import  com.jukta.jtahoe.Block;");
+                sw.write("import  com.jukta.jtahoe.BlockDef;");
 
-        String relPath = getCurPackage();
-        meta.setRelPath(relPath);
+                String buildId = genContext.getBuildId();
+                if (buildId != null) {
+                    sw.write("import com.jukta.jtahoe.BuildId;");
+                    sw.write("@BuildId(\"" + buildId + "\")");
+                }
 
-        JavaFileObject file = new JavaSourceFromString(relPath + "/" + name, meta.toSource());
-        String pack = meta.getPack();
-        GenContext.Package aPackage = genContext.getFiles().get(pack);
-        if (aPackage == null) {
-            aPackage = new GenContext.Package(pack);
-            for (String n : genContext.getPrefixes().values()) {
-                if (!n.equals(genContext.getCurrentNamespace())) {
-                    aPackage.getDependedPackages().add(getPackage(n));
+                sw.write("public class " + name);
+            } else {
+                sw.write("public static class " + name);
+            }
+            if (parentName == null) {
+                sw.write(" extends Block {");
+            } else {
+                sw.write(" extends " + parentName + " {");
+            }
+            sw.write("Block" + " _" + name + " = this;");
+            if (dataHandler != null) {
+                sw.write("public " + name + "() {");
+                sw.write("dataHandler = \"" + dataHandler + "\";");
+                sw.write("}\n");
+            }
+
+
+            if (!defs.isEmpty()) {
+                sw.write("public void initDefs() {");
+                sw.write("super.initDefs();");
+                for (Map.Entry<String, String> entry : defs.entrySet()) {
+//                sw.write(entry.getKey());
+
+                    sw.write("this" + entry.getValue() + ";\n");
+                }
+                sw.write("}\n");
+            }
+            if (parentName == null) {
+                sw.write("public void doBody(final JBody " + getVarName() + ", final Attrs attrs) {");
+                sw.write("" + body + "\n");
+                sw.write("}\n");
+            } else if (args != null && !args.isEmpty()) {
+                sw.write("public void init(Attrs attrs) {");
+                sw.write("super.init(attrs);");
+                for (Map.Entry<String, String> entry : args.entrySet()) {
+                    sw.write("attrs.set(\"" + entry.getKey() + "\", " + entry.getValue() + ");");
+                }
+                sw.write("}\n");
+            }
+
+            if (innerClasses != null) {
+                for (String s : innerClasses) {
+                    sw.write(s);
                 }
             }
-            genContext.getFiles().put(pack, aPackage);
+
+            sw.write("}");
+            sw.close();
+            String res = sw.toString();
+            if (blockHandler == null) {
+                if (System.getProperty("debug") != null) {
+                    System.out.println(res);
+                }
+
+                String relPath = getCurPackage();
+
+                JavaFileObject file = new JavaSourceFromString(relPath + "/" + name, res);
+
+                GenContext.Package aPackage = genContext.getFiles().get(pack);
+                if (aPackage == null) {
+                    aPackage = new GenContext.Package(pack);
+                    for (String n : genContext.getPrefixes().values()) {
+                        if (!n.equals(genContext.getCurrentNamespace())) {
+                            aPackage.getDependedPackages().add(getPackage(n));
+                        }
+                    }
+                    genContext.getFiles().put(pack, aPackage);
+                }
+                aPackage.getJavaFileObjects().add(file);
+            } else {
+                blockHandler.addInner(res);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        aPackage.getJavaFileObjects().add(file);
+
     }
 
     public String getBlockName() {

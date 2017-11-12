@@ -53,13 +53,13 @@ public class FuncHandler extends BlockHandler {
         }
         String name = getName();
         name = getPackage(getNode().getNamespace()) + "." + name;
-        String el = "new " + name + "()";
+        String el = "this.create(\"" + name + "\", attrs)";
         if (!defs.isEmpty()) {
-            el += "{";
+//            el += "{";
             for (Map.Entry<String, String> entry : defs.entrySet()) {
-                el += entry.getKey() + entry.getValue() + "\n";
+                el += entry.getValue() + "";
             }
-            el += "}";
+//            el += "}";
         }
         el += ".body(" + attrs + ")";
         getParent().addElement(el);
