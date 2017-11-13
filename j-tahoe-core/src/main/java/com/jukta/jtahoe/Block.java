@@ -15,6 +15,7 @@ public abstract class Block {
     protected String dataHandler;
     private static ExpressionFactory factory = new ExpressionFactoryImpl();
     private Block parentBlock;
+    protected Map<String, Class> inners = new HashMap();
 
     public Block() {
         initDefs();
@@ -125,19 +126,23 @@ public abstract class Block {
 
     public void initDefs() {};
 
+    private Class findClass(String className, Block block) {
+        if (block == null) return null;
+        Class c = block.inners.get(className);
+        if (c == null) {
+            return findClass(className, block.parentBlock);
+        }
+        return c;
+    }
+
     public Block create(String className, Attrs attrs) {
         try {
-            Block block = (Block) Class.forName(className, false, Thread.currentThread().getContextClassLoader()).newInstance();
+            Class c = findClass(className, this);
+            if (c == null) {
+                c = Class.forName(className, false, Thread.currentThread().getContextClassLoader());
+            }
+            Block block = (Block) c.newInstance();
             block.parentBlock = this;
-            Integer n = (Integer) attrs.getAttribute("__nesting");
-            if (n ==  null) {
-                n = 0;
-            }
-            attrs.setAttribute("__nesting", n++);
-            for (int i = 0; i < n; i++) {
-                System.out.print("\t");
-            }
-            System.out.println(block.parentBlock.getBlockType().getCanonicalName() + " / " + className);
             return block;
         } catch (Exception e) {
             e.printStackTrace();

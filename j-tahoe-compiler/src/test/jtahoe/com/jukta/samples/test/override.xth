@@ -1,0 +1,44 @@
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test">
+
+    <th:block name="BlockOverride_A">
+        <th:def>
+        A
+        </th:def>
+    </th:block>
+
+    <th:block name="BlockOverride_B">
+        <lc:BlockOverride_A/>
+    </th:block>
+
+    <th:block name="BlockOverride_C">
+        <lc:BlockOverride_B/>
+    </th:block>
+
+
+    <th:block name="BlockOverride_D" parent="BlockOverride_C">
+        <th:block name="lc:BlockOverride_A" parent="lc:BlockOverride_A">
+            <th:parent/>
+            B
+        </th:block>
+    </th:block>
+
+    <th:block name="OverrideTemplate_A">
+        <th:block name="OverrideTemplate_B">
+            b
+        </th:block>
+        <th:block name="OverrideTemplate_C">
+            c
+        </th:block>
+        <th:block name="OverrideTemplate_D">
+            d
+        </th:block>
+        <th:def/>
+    </th:block>
+
+    <th:block name="OverrideTemplate_A1" parent="OverrideTemplate_A">
+        <lc:OverrideTemplate_B/>
+        <lc:OverrideTemplate_C/>
+        <lc:OverrideTemplate_D/>
+    </th:block>
+
+</th:root>

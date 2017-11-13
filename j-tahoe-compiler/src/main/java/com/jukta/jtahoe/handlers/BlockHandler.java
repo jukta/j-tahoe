@@ -18,7 +18,7 @@ public class BlockHandler extends AbstractHandler {
     private String body = "";
     protected Map<String, String> defs = new HashMap<>();
     protected DefHandler defHandler;
-    protected List<String> innerClasses = new ArrayList<>();
+    protected List<String[]> innerClasses = new ArrayList<>();
 
     public BlockHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         super(genContext, node, parent);
@@ -32,8 +32,8 @@ public class BlockHandler extends AbstractHandler {
 
     }
 
-    public void addInner(String s) {
-        innerClasses.add(s);
+    public void addInner(String blockName, String className, String s) {
+        innerClasses.add(new String[] {blockName, className, s});
     }
 
     public void appendCode(String code) {
@@ -93,8 +93,13 @@ public class BlockHandler extends AbstractHandler {
                 sw.write("package " + pack + ";");
                 sw.write("import com.jukta.jtahoe.Attrs;");
                 sw.write("import com.jukta.jtahoe.jschema.*;");
-                sw.write("import  com.jukta.jtahoe.Block;");
-                sw.write("import  com.jukta.jtahoe.BlockDef;");
+                sw.write("import com.jukta.jtahoe.Block;");
+                sw.write("import com.jukta.jtahoe.BlockDef;");
+
+                if (!innerClasses.isEmpty()) {
+                    sw.write("import java.util.HashMap;");
+                    sw.write("import java.util.Map;");
+                }
 
                 String buildId = genContext.getBuildId();
                 if (buildId != null) {
@@ -104,6 +109,10 @@ public class BlockHandler extends AbstractHandler {
 
                 sw.write("public class " + name);
             } else {
+                if (!name.contains(":")) {
+                    fullName = pack + "." + name;
+                }
+                name = fullName.replaceAll("\\.", "_");
                 sw.write("public static class " + name);
             }
             if (parentName == null) {
@@ -112,9 +121,19 @@ public class BlockHandler extends AbstractHandler {
                 sw.write(" extends " + parentName + " {");
             }
             sw.write("Block" + " _" + name + " = this;");
-            if (dataHandler != null) {
+            if (dataHandler != null || !innerClasses.isEmpty()) {
                 sw.write("public " + name + "() {");
-                sw.write("dataHandler = \"" + dataHandler + "\";");
+
+                if (dataHandler != null) {
+                    sw.write("dataHandler = \"" + dataHandler + "\";");
+                }
+
+                if (!innerClasses.isEmpty()) {
+                    for (String[] s : innerClasses) {
+                        sw.write("inners.put(\"" + s[0] + "\", " + s[1] + ".class);");
+                    }
+                }
+
                 sw.write("}\n");
             }
 
@@ -142,13 +161,13 @@ public class BlockHandler extends AbstractHandler {
                 sw.write("}\n");
             }
 
-            if (innerClasses != null) {
-                for (String s : innerClasses) {
-                    sw.write(s);
+            if (!innerClasses.isEmpty()) {
+                for (String[] s : innerClasses) {
+                    sw.write(s[2]);
                 }
             }
 
-            sw.write("}");
+            sw.write("}\n");
             sw.close();
             String res = sw.toString();
             if (blockHandler == null) {
@@ -172,7 +191,7 @@ public class BlockHandler extends AbstractHandler {
                 }
                 aPackage.getJavaFileObjects().add(file);
             } else {
-                blockHandler.addInner(res);
+                blockHandler.addInner(fullName, name, res);
             }
 
         } catch (Exception e) {
