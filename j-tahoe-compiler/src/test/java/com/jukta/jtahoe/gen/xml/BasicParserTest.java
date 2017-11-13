@@ -37,15 +37,14 @@ public class BasicParserTest {
                 "<!--<br/>-->" +
                 "</div>").getBytes()));
 
-        assertEquals(" null:div{}<!--<br/>-->/null:div", sb.toString());
+        assertEquals("null:div{}<!--<br/>-->/null:div", sb.toString());
 
         sb.delete(0, sb.length());
         p.parse(new ByteArrayInputStream(("<div>" +
                 "<!--\n<br/>\n-->\n    " +
                 "</div>").getBytes()));
 
-        System.out.println(sb.toString());
-        assertEquals(" null:div{}<!--\n<br/>\n-->\n" +
+        assertEquals("null:div{}<!--\n<br/>\n-->\n" +
                 "    /null:div", sb.toString());
 
 
@@ -73,16 +72,9 @@ public class BasicParserTest {
             }
         });
 
-        p.parse(new ByteArrayInputStream(("    <th:block name=\"BlockOverride_C\" parent=\"BlockOverride_B\">\n" +
-                "        <th:block name=\"lc:BlockOverride_A\" parent=\"lc:BlockOverride_A\">\n" +
-                "            <!--th:parent-->\n" +
-                "            B\n" +
-                "        </th:block>\n" +
-                "    </th:block>").getBytes()));
+        p.parse(new ByteArrayInputStream(("<!--<th:parent/>-->B<div></div>").getBytes()));
 
-        System.out.println(sb.toString());
-
-        assertEquals(" null:div{}<!--<br/>-->/null:div", sb.toString());
+        assertEquals("<!--<th:parent/>-->Bnull:div{}/null:div", sb.toString());
 
     }
 

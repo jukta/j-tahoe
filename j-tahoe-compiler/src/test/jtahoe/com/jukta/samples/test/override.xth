@@ -14,7 +14,6 @@
         <lc:BlockOverride_B/>
     </th:block>
 
-
     <th:block name="BlockOverride_D" parent="BlockOverride_C">
         <th:block name="lc:BlockOverride_A" parent="lc:BlockOverride_A">
             <th:parent/>

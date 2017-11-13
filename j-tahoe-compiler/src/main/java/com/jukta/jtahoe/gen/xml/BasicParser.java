@@ -25,33 +25,43 @@ public class BasicParser {
         sc.useDelimiter(d[i % 2]);
         while (sc.hasNext()) {
             String l = sc.next();
-            if (!l.equals(">")) {
-                if (l.startsWith("<")) {
-                    l = l + ">";
-                } else if (l.startsWith(">")) {
-                     l = l.substring(1);
-                }
-                handle(l);
+            if (i % 2 != 0) {
+                l = l + d[i % 2];
+            } else {
+                l = l.substring(1);
             }
-            i++;
-            sc.useDelimiter(d[i % 2]);
+            if (handle(l)) {
+                i++;
+                sc.useDelimiter(d[i % 2]);
+            }
         }
         sc.close();
     }
 
-    protected void handle(String l) {
+    boolean cdata = false;
+    boolean cmt = false;
 
+    protected boolean handle(String l) {
+        boolean res = true;
         if (!bypass && l.startsWith("<![CDATA[")) {
-            if (!l.trim().endsWith("]]>")) bypass = true;
+            if (!l.trim().endsWith("]]>")) {
+                bypass = true;
+                cdata = true;
+            }
             handler.text(l);
-        } else if (bypass && l.trim().endsWith("]]>")) {
+        } else if (cdata && l.trim().endsWith("]]>")) {
             bypass = false;
+            cdata = false;
             handler.text(l);
         } else if (!bypass && l.startsWith("<!--")) {
-            if (!l.trim().endsWith("-->")) bypass = true;
+            if (!l.trim().endsWith("-->")) {
+                bypass = true;
+                cmt = true;
+            }
             handler.text(l);
-        } else if (bypass && l.trim().endsWith("-->")) {
+        } else if (cmt && l.trim().endsWith("-->")) {
             bypass = false;
+            cmt = false;
             handler.text(l);
         } else if (bypass) {
             handler.text(l);
@@ -62,6 +72,8 @@ public class BasicParser {
         } else {
             handler.text(l);
         }
+        if (cdata || cmt) res = false;
+        return res;
     }
 
     protected void start(String line, Handler handler) {

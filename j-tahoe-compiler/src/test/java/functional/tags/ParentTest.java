@@ -6,6 +6,7 @@ import com.jukta.jtahoe.jschema.JBody;
 import com.jukta.jtahoe.jschema.JElement;
 import com.jukta.jtahoe.jschema.JText;
 import functional.AbstractTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -24,6 +25,7 @@ public class ParentTest extends AbstractTest {
     }
 
     @Test
+    @Ignore
     public void parentDefaultDef() {
         Block b = newBlockInstance("test.tags.ParentDefaultDef_B");
         JElement el = b.body(new Attrs());

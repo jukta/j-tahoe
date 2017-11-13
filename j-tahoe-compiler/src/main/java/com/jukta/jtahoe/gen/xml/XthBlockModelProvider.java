@@ -11,7 +11,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -59,12 +58,13 @@ public class XthBlockModelProvider implements BlockModelProvider {
                 FileHandler fileHandler = new FileHandler();
                 BasicParser parser = new BasicParser(fileHandler) {
                     @Override
-                    protected void handle(String l) {
+                    protected boolean handle(String l) {
                         if (l.startsWith("<!DOCTYPE")) {
                             getHandler().text(l);
                         } else {
                             super.handle(l);
                         }
+                        return true;
                     }
                 };
                 fileHandler.setParser(parser);
