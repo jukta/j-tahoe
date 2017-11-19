@@ -77,21 +77,6 @@ public abstract class Block {
         return (Iterable) o;
     }
 
-    public JElement parent(Attrs attrs, String name, Block parent) {
-        Block block = (Block) attrs.get("__parent__");
-        if (block == null) {
-           block = parent;
-        }
-
-        try {
-            Method method = block.getClass().getDeclaredMethod(name+"Super", Attrs.class);
-            return (JElement) method.invoke(block, attrs);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new JBody();
-    }
-
     public Class getBlockType() {
         return getBlockType(this.getClass());
     }
@@ -114,6 +99,7 @@ public abstract class Block {
         if (prev != null) {
             blockDef.setParent(prev);
         }
+        blockDef.setBlock(this);
         defs.put(name, blockDef);
         return this;
     }

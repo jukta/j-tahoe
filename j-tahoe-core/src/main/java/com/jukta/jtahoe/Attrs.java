@@ -8,6 +8,7 @@ public class Attrs {
     private Map<String, Object> attributes = new HashMap<String, Object>();
     private DataHandlerProvider dataHandlerProvider;
     private BlockHandler blockHandler;
+    private Attrs parentAttrs;
 
     public Attrs() {
     }
@@ -16,6 +17,7 @@ public class Attrs {
         dataHandlerProvider = attrs.dataHandlerProvider;
         blockHandler = attrs.blockHandler;
         attributes = attrs.attributes;
+        parentAttrs = attrs;
     }
 
     public Attrs set(String name, Object value) {
@@ -68,6 +70,10 @@ public class Attrs {
 
     public void setBlockHandler(BlockHandler blockHandler) {
         this.blockHandler = blockHandler;
+    }
+
+    public Attrs getParentAttrs() {
+        return parentAttrs;
     }
 }
 
