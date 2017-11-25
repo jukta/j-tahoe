@@ -54,15 +54,28 @@ public class JTahoeConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     @ConditionalOnMissingBean
     public DataHandlerProvider dataHandlerProvider() {
-        return new SpringContextDataHandlerProvider(applicationContext);
+        SpringContextDataHandlerProvider provider = new SpringContextDataHandlerProvider(applicationContext);
+        provider.setExecutor(executor());
+        return provider;
     }
 
     @Bean
     @ConditionalOnMissingBean
+    public AttrsBuilder attrsBuilder() {
+        return new AttrsBuilder(dataHandlerProvider(), applicationContext);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public BlockRenderer blockRenderer() {
+        return new BlockRenderer(blockFactory());
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
     public JTahoeViewResolver viewResolver() {
-        JTahoeViewResolver resolver = new JTahoeViewResolver(blockFactory(), executor(), dataHandlerProvider());
-        resolver.setApplicationContext(applicationContext);
-        return resolver;
+        return new JTahoeViewResolver(attrsBuilder(), blockRenderer());
     }
 
     @Override

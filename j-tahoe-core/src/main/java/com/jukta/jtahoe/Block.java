@@ -66,7 +66,7 @@ public abstract class Block {
     }
 
     public Iterable evalIt(Attrs attrs, String exp) {
-        exp = exp.replaceAll("#\\{", "\\$\\{");
+//        exp = exp.replaceAll("#\\{", "\\$\\{");
         Object o = eval(attrs, exp);
         if (o.getClass().isArray()) {
             Object[] o1 = (Object[]) o;
