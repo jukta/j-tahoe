@@ -79,7 +79,7 @@ public class BasicParser {
     protected void start(String line, Handler handler) {
         line = line.replaceAll("\n", "").replaceAll("\r", "");
         Scanner s = new Scanner(line);
-        s.findInLine("<((\\w+):)?(\\w+)");
+        s.findInLine("<((\\w+):)?([a-zA-Z_0-9-]+)");
         MatchResult n = s.match();
 
         String attrPat = "([a-zA-Z:-]+)\\s*(=\\s*\"([^\"]+)\")?";
