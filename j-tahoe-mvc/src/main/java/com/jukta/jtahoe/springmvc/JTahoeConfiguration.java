@@ -1,9 +1,6 @@
 package com.jukta.jtahoe.springmvc;
 
-import com.jukta.jtahoe.BlockFactory;
-import com.jukta.jtahoe.DataHandlerProvider;
-import com.jukta.jtahoe.LibraryResourcesFilter;
-import com.jukta.jtahoe.RuntimeBlockFactory;
+import com.jukta.jtahoe.*;
 import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,10 +50,8 @@ public class JTahoeConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     @ConditionalOnMissingBean
-    public DataHandlerProvider dataHandlerProvider() {
-        SpringContextDataHandlerProvider provider = new SpringContextDataHandlerProvider(applicationContext);
-        provider.setExecutor(executor());
-        return provider;
+    public DataHandlerProviderFactory dataHandlerProvider() {
+        return new SpringContextDataHandlerProviderFactory(applicationContext, executor());
     }
 
     @Bean

@@ -1,7 +1,6 @@
 package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.Attrs;
-import com.jukta.jtahoe.DataHandlerProvider;
 import org.springframework.context.ApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,17 +12,16 @@ import java.util.Map;
  */
 public class AttrsBuilder {
 
-    private DataHandlerProvider handlerProvider;
+    private DataHandlerProviderFactory dataHandlerProviderFactory;
     private ApplicationContext applicationContext;
 
-    public AttrsBuilder(DataHandlerProvider handlerProvider, ApplicationContext applicationContext) {
-        this.handlerProvider = handlerProvider;
+    public AttrsBuilder(DataHandlerProviderFactory dataHandlerProviderFactory, ApplicationContext applicationContext) {
+        this.dataHandlerProviderFactory = dataHandlerProviderFactory;
         this.applicationContext = applicationContext;
     }
 
     public Attrs build(Map<String, ?> map, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) {
         Attrs attrs = new Attrs();
-        attrs.setDataHandlerProvider(handlerProvider);
         for (Map.Entry<String, ?> entry : map.entrySet()) {
             attrs.set(entry.getKey(), entry.getValue());
         }
@@ -32,6 +30,7 @@ public class AttrsBuilder {
         attrs.setAttribute("request", httpservletrequest);
 
         attrs.setBlockHandler(new SpringContextBlockHandler(applicationContext));
+        attrs.setDataHandlerProvider(dataHandlerProviderFactory.create(attrs));
         return attrs;
 
     }
