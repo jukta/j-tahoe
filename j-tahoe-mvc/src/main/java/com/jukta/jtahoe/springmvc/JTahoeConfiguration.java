@@ -63,14 +63,14 @@ public class JTahoeConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     @ConditionalOnMissingBean
     public BlockRenderer blockRenderer() {
-        return new BlockRenderer(blockFactory());
+        return new BlockRenderer(blockFactory().getClassLoader());
     }
 
 
     @Bean
     @ConditionalOnMissingBean
     public JTahoeViewResolver viewResolver() {
-        return new JTahoeViewResolver(attrsBuilder(), blockRenderer());
+        return new JTahoeViewResolver(blockFactory(), attrsBuilder(), blockRenderer());
     }
 
     @Override

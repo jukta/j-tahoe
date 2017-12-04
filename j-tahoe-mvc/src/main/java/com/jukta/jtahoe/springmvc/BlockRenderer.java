@@ -17,15 +17,18 @@ public class BlockRenderer {
 
     private String contentType = "text/html;charset=UTF-8";
 
-    private BlockFactory blockFactory;
+    private ClassLoader classLoader;
 
-    public BlockRenderer(BlockFactory blockFactory) {
-        this.blockFactory = blockFactory;
+    public BlockRenderer() {
+        classLoader = this.getClass().getClassLoader();
     }
 
-    public JElement render(String viewName, Attrs attrs) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        Thread.currentThread().setContextClassLoader(blockFactory.getClassLoader());
-        Block block = blockFactory.create(viewName);
+    public BlockRenderer(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
+
+    public JElement render(Block block, Attrs attrs) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        Thread.currentThread().setContextClassLoader(classLoader);
 
         BlockHandler blockHandler = attrs.getBlockHandler();
         if (blockHandler != null) {
@@ -43,8 +46,8 @@ public class BlockRenderer {
         return el;
     }
 
-    public void render(String viewName, Attrs attrs, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) throws IllegalAccessException, ClassNotFoundException, InstantiationException, IOException {
-        JElement el = render(viewName, attrs);
+    public void render(Block block, Attrs attrs, HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse) throws IllegalAccessException, ClassNotFoundException, InstantiationException, IOException {
+        JElement el = render(block, attrs);
 
         httpservletresponse.setCharacterEncoding("UTF-8");
         httpservletresponse.setContentType(getContentType());
