@@ -19,6 +19,7 @@ public class BlockHandler extends AbstractHandler {
     protected Map<String, String> defs = new HashMap<>();
     protected DefHandler defHandler;
     protected List<String[]> innerClasses = new ArrayList<>();
+    protected Map<String, String> aliases = new HashMap<>();
 
     public BlockHandler(GenContext genContext, NamedNode node, AbstractHandler parent) {
         super(genContext, node, parent);
@@ -34,6 +35,10 @@ public class BlockHandler extends AbstractHandler {
 
     public void addInner(String blockName, String className, String s) {
         innerClasses.add(new String[] {blockName, className, s});
+    }
+
+    public void addAlias(String alias, String name) {
+        aliases.put(alias, name);
     }
 
     public void appendCode(String code) {
@@ -121,7 +126,7 @@ public class BlockHandler extends AbstractHandler {
                 sw.write(" extends " + parentName + " {");
             }
             sw.write("Block" + " _" + name + " = this;");
-            if (dataHandler != null || !innerClasses.isEmpty()) {
+            if (dataHandler != null || !innerClasses.isEmpty() || !aliases.isEmpty()) {
                 sw.write("public " + name + "() {");
 
                 if (dataHandler != null) {
@@ -131,6 +136,12 @@ public class BlockHandler extends AbstractHandler {
                 if (!innerClasses.isEmpty()) {
                     for (String[] s : innerClasses) {
                         sw.write("inners.put(\"" + s[0] + "\", " + s[1] + ".class);");
+                    }
+                }
+
+                if (!aliases.isEmpty()) {
+                    for (Map.Entry<String, String> entry : aliases.entrySet()) {
+                        sw.write("aliases.put(\"" + entry.getKey() + "\", " + entry.getValue() + ".class);");
                     }
                 }
 

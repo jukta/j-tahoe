@@ -152,7 +152,7 @@ public abstract class AbstractHandler {
 
     protected String processPrefix(String name) {
         String[] sp = name.split(":");
-        if (sp.length < 2) return name;
+        if (sp.length < 2) return getCurPackage() + "." + name;
         String prefix = sp[0];
         prefix = getGenContext().getPrefixes().get(prefix);
         if (prefix != null) {

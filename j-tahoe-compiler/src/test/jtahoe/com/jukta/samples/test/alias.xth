@@ -1,0 +1,23 @@
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml" xmlns:lc="." namespace="test">
+
+    <th:block name="BlockAlias_A">
+        A
+    </th:block>
+
+    <th:block name="BlockAlias_B">
+        B
+    </th:block>
+
+    <th:block name="BlockAlias_C">
+        <th:alias name="BlockAlias_A" alias="NotExistingBlock"/>
+        <th:alias name="BlockAlias_B" alias="BlockAlias_A"/>
+        <th:def/>
+    </th:block>
+
+    <th:block name="BlockAlias_D" parent="BlockAlias_C">
+        <lc:NotExistingBlock/>
+        <lc:BlockAlias_A/>
+        <lc:BlockAlias_B/>
+    </th:block>
+
+</th:root>

@@ -7,8 +7,10 @@ import de.odysseus.el.util.SimpleContext;
 
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Block {
     private String parent;
@@ -16,6 +18,7 @@ public abstract class Block {
     private static ExpressionFactory factory = new ExpressionFactoryImpl();
     private Block parentBlock;
     protected Map<String, Class> inners = new HashMap();
+    protected Map<String, Class> aliases = new HashMap();
 
     public Block() {
         initDefs();
@@ -25,16 +28,21 @@ public abstract class Block {
         init(attrs);
         final JBody el = new JBody();
         callDataHandler(attrs, () -> {
-            if (attrs.getBlockHandler() != null)
-                attrs.getBlockHandler().before(getBlockType().getName(), attrs, this);
-
+            beforeRendering(attrs);
             doBody(el, attrs);
-
-            if (attrs.getBlockHandler() != null)
-                attrs.getBlockHandler().after(getBlockType().getName(), attrs, el, this);
+            afterRendering(attrs, el);
         });
         return el;
+    }
 
+    protected void beforeRendering(Attrs attrs) {
+        if (attrs.getBlockHandler() != null)
+            attrs.getBlockHandler().before(getBlockType().getName(), attrs, this);
+    }
+
+    protected void afterRendering(Attrs attrs, JBody body) {
+        if (attrs.getBlockHandler() != null)
+            attrs.getBlockHandler().after(getBlockType().getName(), attrs, body, this);
     }
 
     protected void doBody(JBody el, Attrs attrs) {
@@ -114,6 +122,10 @@ public abstract class Block {
 
     private Class findClass(String className, Block block) {
         if (block == null) return null;
+        Class alias = block.aliases.get(className);
+        if (alias != null) {
+            return alias;
+        }
         Class c = block.inners.get(className);
         if (c == null) {
             return findClass(className, block.parentBlock);
@@ -122,18 +134,24 @@ public abstract class Block {
     }
 
     public Block create(String className, Attrs attrs) {
-        try {
-            Class c = findClass(className, this);
-            if (c == null) {
+        Class c = findClass(className, this);
+        if (c == null) {
+            try {
                 c = Class.forName(className, false, Thread.currentThread().getContextClassLoader());
-            }
-            Block block = (Block) c.newInstance();
-            block.parentBlock = this;
-            return block;
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (ClassNotFoundException e) {}
         }
-        return null;
+        Block block ;
+        if (c == null) {
+            block = new NullBlock();
+        } else {
+            try {
+                block = (Block) c.newInstance();
+            } catch (Exception e) {
+                block = new NullBlock();
+            }
+        }
+        block.parentBlock = this;
+        return block;
     }
 
 }

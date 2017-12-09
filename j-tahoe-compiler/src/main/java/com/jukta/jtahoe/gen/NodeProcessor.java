@@ -90,6 +90,8 @@ public class NodeProcessor {
                 handler = new NbspHandler(genContext, node, parent);
             } else if (node.getName().equals("escape")) {
                 handler = new EscapeHandler(genContext, node, parent);
+            } else if (node.getName().equals("alias")) {
+                handler = new AliasHandler(genContext, node, parent);
             }
         } else {
             if (!isHtml(node)) {
