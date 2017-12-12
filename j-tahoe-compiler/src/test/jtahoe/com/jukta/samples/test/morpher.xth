@@ -1,0 +1,16 @@
+<th:root xmlns:th="http://jukta.com/tahoe/schema" xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:m="com/jukta/jtahoe"
+         xmlns:lc="."
+         namespace="test">
+
+    <th:block name="MorpherBlockTest">
+        <m:Morpher selector=".outer .inner *" operator="addClass('morph')">
+            <div class="outer">
+                <div class="inner">
+                    <span>hello</span>
+                </div>
+            </div>
+        </m:Morpher>
+    </th:block>
+
+</th:root>

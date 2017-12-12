@@ -58,7 +58,6 @@ public class TagSelector {
         }
         StringTokenizer tokenizer = new StringTokenizer(selector, delim, true);
 
-
         String prev = null;
         while (tokenizer.hasMoreTokens()) {
             String t = tokenizer.nextToken();
@@ -85,8 +84,4 @@ public class TagSelector {
         return ts;
     }
 
-    public static void main(String[] args) {
-        TagSelector selector = TagSelector.parse("*[data='hekfe']");
-        System.out.println();
-    }
 }

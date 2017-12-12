@@ -15,7 +15,7 @@ import java.util.Map;
 public abstract class Block {
     private String parent;
     protected String dataHandler;
-    private static ExpressionFactory factory = new ExpressionFactoryImpl();
+    protected static ExpressionFactory factory = new ExpressionFactoryImpl();
     private Block parentBlock;
     protected Map<String, Class> inners = new HashMap();
     protected Map<String, Class> aliases = new HashMap();
