@@ -18,7 +18,7 @@ public class MorpherTest extends AbstractTest {
         Attrs attrs = new Attrs();
         JElement el = b.body(attrs);
         System.out.println(el.toHtml());
-        assertEquals("AB", el.toHtml());
+        assertEquals("<div class=\"outer\"><div class=\"inner\"><span class=\"morph\">hello</span></div></div>", el.toHtml());
     }
 
 }
