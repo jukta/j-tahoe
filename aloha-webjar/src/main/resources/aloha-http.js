@@ -15,7 +15,9 @@ var aa_http = new function() {
 
     var handleResponse = function(resp, q, e) {
         var type = e.getResponseHeader("response-type");
-        if (e.getResponseHeader("content-type").indexOf("application/json") !== -1) {
+        if (type == null) return;
+        var ct = e.getResponseHeader("content-type");
+        if (ct && ct.indexOf("application/json") !== -1) {
             AA.emit(type, JSON.parse(resp));
         } else {
             AA.emit(type, resp);

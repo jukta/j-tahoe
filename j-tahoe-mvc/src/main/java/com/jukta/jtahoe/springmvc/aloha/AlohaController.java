@@ -1,4 +1,4 @@
-package com.jukta.jtahoe.springmvc;
+package com.jukta.jtahoe.springmvc.aloha;
 
 import org.springframework.stereotype.Component;
 
@@ -11,5 +11,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-public @interface TahoeController {
+public @interface AlohaController {
 }

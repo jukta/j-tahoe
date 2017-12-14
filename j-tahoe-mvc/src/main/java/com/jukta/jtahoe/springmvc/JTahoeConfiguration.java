@@ -2,6 +2,9 @@ package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.*;
 import com.jukta.jtahoe.gen.xml.XthBlockModelProvider;
+import com.jukta.jtahoe.springmvc.aloha.RemoteStubController;
+import com.jukta.jtahoe.springmvc.datahandler.DataHandlerProviderFactory;
+import com.jukta.jtahoe.springmvc.datahandler.SpringContextDataHandlerProviderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

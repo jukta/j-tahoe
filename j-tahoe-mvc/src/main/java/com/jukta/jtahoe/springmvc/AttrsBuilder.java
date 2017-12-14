@@ -1,6 +1,7 @@
 package com.jukta.jtahoe.springmvc;
 
 import com.jukta.jtahoe.Attrs;
+import com.jukta.jtahoe.springmvc.datahandler.DataHandlerProviderFactory;
 import org.springframework.context.ApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ public class AttrsBuilder {
 
         attrs.setAttribute("session", httpservletrequest.getSession());
         attrs.setAttribute("request", httpservletrequest);
+        attrs.setAttribute("response", httpservletresponse);
 
         attrs.setBlockHandler(new SpringContextBlockHandler(applicationContext));
         attrs.setDataHandlerProvider(dataHandlerProviderFactory.create(attrs));
