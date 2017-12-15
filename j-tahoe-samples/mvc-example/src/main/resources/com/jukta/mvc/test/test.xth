@@ -23,11 +23,8 @@
         <lib:Main>
             <th:def name="head">
 
-                <mvc:Stylesheet artifact="lib-example" version="1.1.1-SNAPSHOT" resource="lib-example.css"/>
-                <mvc:Stylesheet/>
-
+                <mvc:Stylesheet auto="true"/>
                 <mvc:Script auto="true"/>
-                <script src="/app.js"></script>
 
             </th:def>
             <th:def name="body">

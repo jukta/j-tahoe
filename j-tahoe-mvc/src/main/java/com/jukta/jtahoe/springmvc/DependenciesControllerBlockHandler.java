@@ -16,11 +16,12 @@ import java.util.*;
 public class DependenciesControllerBlockHandler implements BlockHandler {
 
     private Map<String, Dependencies> deps = new HashMap<>();
-
+    private boolean addAllDeps;
 
     @PostConstruct
     public void load() throws IOException {
-
+        String autoDeps = System.getProperty("auto.dependencies");
+        addAllDeps = "all".equals(autoDeps);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
         Resource[] r = resolver.getResources("classpath*:/jtahoe.properties");
@@ -54,7 +55,7 @@ public class DependenciesControllerBlockHandler implements BlockHandler {
 
     @Override
     public void before(String blockName, Attrs attrs, Block block) {
-        if (block.getClass().isAnnotationPresent(BuildId.class)) {
+        if (!addAllDeps && block.getClass().isAnnotationPresent(BuildId.class)) {
             Set<String> depIds = (Set<String>) attrs.getAttribute("__deps");
             if (depIds == null) {
                 depIds = new HashSet<>();
@@ -70,28 +71,53 @@ public class DependenciesControllerBlockHandler implements BlockHandler {
     @Override
     public void after(String blockName, Attrs attrs, JElement jElement, Block block) {
         if (block instanceof Script && ((Script) block).isAutoMode()) {
-            attrs.setAttribute("__depsBody", jElement);
+            attrs.setAttribute("__scriptDepsBody", jElement);
+        } else if (block instanceof Stylesheet && ((Stylesheet) block).isAutoMode()) {
+            attrs.setAttribute("__styleDepsBody", jElement);
         }
     }
 
     @Override
     public void stopRendering(Attrs attrs, JElement jElement) {
         Set<String> depIds = (Set<String>) attrs.getAttribute("__deps");
+        if (addAllDeps) {
+            depIds = deps.keySet();
+        }
+        if (depIds == null) {
+            return;
+        }
 
         List<String> entries = new ArrayList<>();
 
-        if (depIds != null) {
-            JBody jBody = (JBody) attrs.getAttribute("__depsBody");
+        JBody jBody = (JBody) attrs.getAttribute("__scriptDepsBody");
+        if (jBody != null) {
             for (String id : depIds) {
                 Dependencies d = deps.get(id);
                 for (String s : d.getJs()) {
                     if (!entries.contains(s)) {
                         entries.add(s);
-                        jBody.addElement(Script.getScripEntry(s));
+                        jBody.addElement(Script.getScriptElement(s));
                     }
                 }
             }
+            jBody.addElement(Script.getScriptElement("/app.js"));
         }
+
+        entries.clear();
+        jBody = (JBody) attrs.getAttribute("__styleDepsBody");
+        if (jBody != null) {
+            for (String id : depIds) {
+                Dependencies d = deps.get(id);
+                for (String s : d.getCss()) {
+                    if (!entries.contains(s)) {
+                        entries.add(s);
+                        jBody.addElement(Stylesheet.getStylesheetElement(s));
+                    }
+                }
+            }
+            jBody.addElement(Stylesheet.getStylesheetElement("/app.css"));
+        }
+
     }
 
     public static class Dependencies {

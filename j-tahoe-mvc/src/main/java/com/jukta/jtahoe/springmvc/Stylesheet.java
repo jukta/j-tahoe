@@ -12,31 +12,45 @@ import com.jukta.jtahoe.jschema.JTag;
  */
 public class Stylesheet extends Block {
 
-    @Override
-    public JElement body(Attrs attrs) {
+    private boolean autoMode = false;
 
+    @Override
+    public void doBody(JBody jBody, Attrs attrs) {
+        String auto = (String) attrs.get("auto");
         String artifact = (String) attrs.get("artifact");
         String version = (String) attrs.get("version");
         String resource = (String) attrs.get("resource");
 
-        String src;
+        String link = (String) attrs.get("href");
+        if ("true".equals(auto)) {
+            autoMode = true;
+            return;
+        } else if (link != null) {
 
-        if (artifact == null && version == null && resource == null) {
-            src = "/app.css";
+        } else if (artifact == null && version == null && resource == null) {
+            link = "/app.css";
         } else if (artifact != null && version != null && resource != null) {
-            src = "/webjars/" + artifact+ "/" + version + "/" + resource;
+            link = "/webjars/" + artifact+ "/" + version + "/" + resource;
         } else {
             throw new IllegalArgumentException("'artifact', 'version', 'resource' are required");
         }
 
+        jBody.addElement(getStylesheetElement(link));
+    }
 
+    public boolean isAutoMode() {
+        return autoMode;
+    }
+
+    public static JElement getStylesheetElement(String link) {
         JTag element = new JTag("link");
         element.setAttrs(new JAttrs()
                 .addAttr("rel", "stylesheet")
-                .addAttr("href", src)
+                .addAttr("href", link)
                 .addAttr("type", "text/css")
         );
         element.setjBody(new JBody());
         return element;
     }
+
 }

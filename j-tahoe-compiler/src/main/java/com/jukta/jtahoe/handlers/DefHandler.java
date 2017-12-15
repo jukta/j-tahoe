@@ -83,7 +83,19 @@ public class DefHandler extends AbstractHandler {
         blockHandlerInt.addDef(defName, fw.toString());
 
         if (!defaultDef) {
-            getParent().addElement("this.def(\"" + defName + "\", attrs)");
+            String n = blockHandler.getBlockName();
+
+            if (blockHandler.getBlock(true) != null) {
+
+                String fullName = blockHandler.processPrefix(n);
+                String pack = blockHandler.getCurPackage();
+                if (!n.contains(":")) {
+                    fullName = pack + "." + n;
+                }
+                n = fullName.replaceAll("\\.", "_");
+            }
+
+            getParent().addElement("_" + n + ".def(\"" + defName + "\", attrs)");
         }
 
     }

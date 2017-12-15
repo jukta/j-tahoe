@@ -19,36 +19,29 @@ public class Script extends Block {
         String artifact = (String) attrs.get("artifact");
         String version = (String) attrs.get("version");
         String resource = (String) attrs.get("resource");
+        String src = (String) attrs.get("src");
         String auto = (String) attrs.get("auto");
 
-        String src;
-
-        JElement el;
-
-        if (auto.equals("true")) {
+        if ("true".equals(auto)) {
             autoMode = true;
-            el = new JBody();
+            return;
+        } else if (src != null) {
+
+        } else if (artifact == null && version == null && resource == null) {
+            src = "/app.js";
+        } else if (artifact != null && version != null && resource != null) {
+            src = "/webjars/" + artifact + "/" + version + "/" + resource;
         } else {
-
-            if (artifact == null && version == null && resource == null) {
-                src = "/app.js";
-            } else if (artifact != null && version != null && resource != null) {
-                src = "/webjars/" + artifact + "/" + version + "/" + resource;
-            } else {
-                throw new IllegalArgumentException("'artifact', 'version', 'resource' are required");
-            }
-            el = getScripEntry(src);
+            throw new IllegalArgumentException("'artifact', 'version', 'resource' are required");
         }
-
-        jBody.addElement(el);
-
+        jBody.addElement(getScriptElement(src));
     }
 
     public boolean isAutoMode() {
         return autoMode;
     }
 
-    public static JElement getScripEntry(String src) {
+    public static JElement getScriptElement(String src) {
         JTag element = new JTag("script");
         element.setAttrs(new JAttrs()
                 .addAttr("src", src)
