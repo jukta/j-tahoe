@@ -26,9 +26,9 @@ var aa_http = new function() {
 
     this.http.stub = function(beanName, methods) {
         var bean = {};
-        for (var j = 0; j < methods.length; j++) {
-            var method = methods[j];
-            bean[method] = function() {
+
+        var add = function(method) {
+            return function() {
                 var args = arguments;
                 return {
                     call: function(handler) {
@@ -36,6 +36,11 @@ var aa_http = new function() {
                     }
                 }
             }
+        }
+
+        for (var j = 0; j < methods.length; j++) {
+            var method = methods[j];
+            bean[method] = add(method);
         }
         return bean;
     }
