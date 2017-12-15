@@ -17,7 +17,7 @@ public class IfHandler extends AbstractHandler {
     public void end() {
         String exp = parseExp(getAttrs().get("exp"), true);
         String cd = "JBody " + getVarName() + " = new JBody();\n";
-        cd += "if (Boolean.valueOf((String)" + exp + ")) {\n";
+        cd += "if (" + exp + ") {\n";
         cd += body;
         cd += "}\n";
         getParent().appendCode(cd);
@@ -35,4 +35,16 @@ public class IfHandler extends AbstractHandler {
     public void appendCode(String code) {
         body += code;
     }
+
+    public String parseExp(String str, boolean wrap) {
+        if (str == null) {
+            return null;
+        }
+        if (!str.contains("${")) {
+            return "\"" + str + "\"";
+        }
+        str = str.replaceAll("\\$\\{", "#{");
+        return "evalBool(attrs, \"" + str + "\")";
+    }
+
 }

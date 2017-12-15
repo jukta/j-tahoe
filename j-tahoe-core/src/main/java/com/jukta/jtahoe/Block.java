@@ -73,6 +73,16 @@ public abstract class Block {
         }
     }
 
+    public Boolean evalBool(Attrs attrs, String exp) {
+        Object res = eval(attrs, exp);
+        if (res instanceof Boolean) {
+            return (Boolean) res;
+        } else if (res instanceof String) {
+            return Boolean.valueOf((String) res);
+        }
+        return false;
+    }
+
     public Iterable evalIt(Attrs attrs, String exp) {
 //        exp = exp.replaceAll("#\\{", "\\$\\{");
         Object o = eval(attrs, exp);
