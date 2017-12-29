@@ -169,8 +169,16 @@ public class JarBuilder {
         generateResourceFile(resolver, ResourceType.CSS);
         generateResourceFile(resolver, ResourceType.JS);
 
+        List<Resource> res = new ArrayList<>();
         for (Resource r : mavenProject.getResources()) {
+            res.add(r.clone());
+            r.setExcludes(Collections.singletonList("META-INF/*"));
             r.setTargetPath(mavenProject.getBuild().getOutputDirectory() + "/META-INF/resources/webjars/" + mavenProject.getArtifactId() + "/" + mavenProject.getVersion());
+        }
+
+        for (Resource r : res) {
+            r.setIncludes(Collections.singletonList("META-INF/*"));
+            mavenProject.addResource(r);
         }
 
 //        copyResources();
